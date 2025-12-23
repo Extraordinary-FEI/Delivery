@@ -9,7 +9,7 @@
 
     <string name="title_main">Home</string>
     <string name="home_empty_title">Welcome to Home</string>
-    <string name="home_empty_description">There&apos;s nothing here yet. Browse shops or place an order.</string>
+    <string name="home_empty_description">There\'s nothing here yet. Browse shops or place an order.</string>
     <string name="home_empty_action">Browse shops</string>
     <string name="title_shop_list">Shop List</string>
     <string name="default_product_name">Product</string>
