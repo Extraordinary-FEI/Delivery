@@ -28,6 +28,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        setupBackButton();
 
         cartRecyclerView = (RecyclerView) findViewById(R.id.recycler_cart);
         totalAmountView = (TextView) findViewById(R.id.text_total_amount);

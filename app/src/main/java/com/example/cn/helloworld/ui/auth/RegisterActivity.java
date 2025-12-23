@@ -24,6 +24,7 @@ public class RegisterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        setupBackButton();
 
         usernameInput = (EditText) findViewById(R.id.edit_username);
         passwordInput = (EditText) findViewById(R.id.edit_password);

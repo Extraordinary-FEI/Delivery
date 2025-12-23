@@ -9,10 +9,17 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <Button
+            android:id="@+id/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_back" />
+
         <ImageView
             android:id="@+id/food_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_marginTop="12dp"
             android:contentDescription="@string/food_image_description"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher" />
@@ -66,4 +73,3 @@
 
     </LinearLayout>
 </ScrollView>
-

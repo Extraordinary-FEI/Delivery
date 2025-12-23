@@ -12,6 +12,7 @@ public class CheckoutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+        setupBackButton();
 
         TextView titleView = (TextView) findViewById(R.id.text_checkout_title);
         titleView.setText(R.string.checkout_title);

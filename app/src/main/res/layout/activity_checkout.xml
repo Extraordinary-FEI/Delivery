@@ -6,10 +6,18 @@
     android:orientation="vertical"
     android:padding="24dp">
 
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:text="@string/action_back" />
+
     <TextView
         android:id="@+id/text_checkout_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/checkout_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 

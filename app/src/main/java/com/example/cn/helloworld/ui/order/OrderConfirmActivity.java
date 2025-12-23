@@ -37,6 +37,7 @@ public class OrderConfirmActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
+        setupBackButton();
 
         orderIdView = (TextView) findViewById(R.id.order_id);
         orderTimeView = (TextView) findViewById(R.id.order_time);

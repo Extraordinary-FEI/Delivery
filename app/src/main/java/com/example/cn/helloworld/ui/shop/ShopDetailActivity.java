@@ -41,6 +41,7 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail);
+        setupBackButton();
 
         TextView nameView = (TextView) findViewById(R.id.shop_detail_name);
         TextView addressView = (TextView) findViewById(R.id.shop_detail_address);

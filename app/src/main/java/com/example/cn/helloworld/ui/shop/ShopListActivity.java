@@ -25,6 +25,7 @@ public class ShopListActivity extends BaseActivity implements ShopAdapter.OnShop
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_list);
+        setupBackButton();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_shops);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

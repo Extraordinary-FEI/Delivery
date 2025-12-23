@@ -27,6 +27,7 @@ public class FoodDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
+        setupBackButton();
 
         ImageView foodImage = (ImageView) findViewById(R.id.food_image);
         TextView foodName = (TextView) findViewById(R.id.food_name);
