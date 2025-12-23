@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "星愿咖啡",
+    "address": "上海市静安区南京西路88号",
+    "rating": 4.8,
+    "description": "主打精品手冲与轻食的街角咖啡馆。",
+    "phone": "021-88886666",
+    "imageUrl": "https://example.com/images/coffee.jpg"
+  },
+  {
+    "id": 2,
+    "name": "花火日料",
+    "address": "上海市黄浦区淮海中路120号",
+    "rating": 4.6,
+    "description": "精选时令刺身与创意寿司，环境安静。",
+    "phone": "021-66668888",
+    "imageUrl": "https://example.com/images/sushi.jpg"
+  },
+  {
+    "id": 3,
+    "name": "云上书店",
+    "address": "上海市徐汇区衡山路35号",
+    "rating": 4.9,
+    "description": "书香与咖啡结合的阅读空间，适合安静停留。",
+    "phone": "021-55557777",
+    "imageUrl": "https://example.com/images/bookstore.jpg"
+  }
+]

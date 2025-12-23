@@ -2,22 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cn.helloworld">
 
-    <!-- 读写存储权限：用于从相册/文件中读取歌单封面、歌曲文件等 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".AdminApplication"
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <!-- 登录页（启动页） -->
         <activity
-            android:name="com.example.cn.helloworld.ui.auth.LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,195 +19,29 @@
             </intent-filter>
         </activity>
 
-        <!-- 主界面 -->
         <activity
-            android:name="com.example.cn.helloworld.ui.main.MainActivity"
+            android:name=".ui.auth.RegisterActivity"
+            android:label="@string/title_register" />
+
+        <activity
+            android:name=".ui.main.MainActivity"
             android:label="@string/title_main" />
 
-        <!-- 应援任务详情 -->
         <activity
-            android:name="com.example.cn.helloworld.ui.main.SupportTaskDetailActivity"
-            android:parentActivityName="com.example.cn.helloworld.ui.main.MainActivity" />
-
-        <!-- 注册 -->
-
-        <!-- 注册确认 -->
-
-        <!-- 用户列表 -->
-
-        <!-- 音乐播放 -->
-
-        <!-- 商品详情 -->
-        <activity
-            android:name="com.example.cn.helloworld.ui.product.ProductDetailActivity"
-            android:label="@string/default_product_name" />
-
-        <!-- 订单详情 -->
-        <activity
-            android:name="com.example.cn.helloworld.ui.order.OrderDetailActivity"
-            android:label="@string/title_order_detail" />
-        <activity
-            android:name="com.example.cn.helloworld.ui.order.CheckoutActivity"
-            android:label="@string/checkout_title"
-            android:parentActivityName="com.example.cn.helloworld.ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.main.MainActivity" />
-        </activity>
-
-        <!-- 管理员控制台 -->
-        <activity
-            android:name="com.example.cn.helloworld.ui.admin.AdminDashboardActivity"
-            android:label="@string/title_admin_dashboard" />
+            android:name=".ui.shop.ShopDetailActivity"
+            android:label="@string/title_shop_detail" />
 
         <activity
-            android:name="com.example.cn.helloworld.ui.admin.ProductManagementActivity"
-            android:label="@string/title_admin_manage_products" />
+            android:name=".ui.food.FoodDetailActivity"
+            android:label="@string/title_food_detail" />
 
         <activity
-            android:name="com.example.cn.helloworld.ui.admin.PlaylistManagementActivity"
-            android:label="@string/title_admin_manage_playlists" />
+            android:name=".ui.cart.CartActivity"
+            android:label="@string/title_cart" />
 
         <activity
-            android:name="com.example.cn.helloworld.ui.admin.BannerManagementActivity"
-            android:label="@string/title_admin_manage_banners"
-            android:parentActivityName="com.example.cn.helloworld.ui.admin.AdminDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.admin.AdminDashboardActivity" />
-        </activity>
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.admin.PlaylistEditorActivity"
-            android:label="@string/title_admin_manage_playlists" />
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.admin.SupportTaskApprovalActivity"
-            android:label="@string/title_admin_support_tasks" />
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.admin.SupportTaskManagementActivity"
-            android:label="@string/title_admin_manage_support_tasks" />
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.admin.AdminOrderListActivity"
-            android:label="@string/title_admin_order_list"
-            android:parentActivityName="com.example.cn.helloworld.ui.admin.AdminDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.admin.AdminDashboardActivity" />
-        </activity>
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.admin.AdminUserAddressActivity"
-            android:label="@string/title_admin_manage_addresses"
-            android:parentActivityName="com.example.cn.helloworld.ui.admin.AdminDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.admin.AdminDashboardActivity" />
-        </activity>
-
-        <!-- 用户中心 -->
-        <activity
-            android:name="com.example.cn.helloworld.ui.user.UserProfileActivity"
-            android:label="@string/title_user_profile"
-            android:parentActivityName="com.example.cn.helloworld.ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.main.MainActivity" />
-        </activity>
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.user.AddressManagementActivity"
-            android:label="收货地址管理"
-            android:parentActivityName="com.example.cn.helloworld.ui.user.UserProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.user.UserProfileActivity" />
-        </activity>
-
-        <!-- 应援商城（商品详情） -->
-        <activity
-            android:name="com.example.cn.helloworld.ui.catalog.ProductDetailActivity"
-            android:label="@string/app_name" />
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.product.ReviewWallActivity"
-            android:label="@string/title_review_wall"
-            android:parentActivityName="com.example.cn.helloworld.ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.main.MainActivity" />
-        </activity>
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.catalog.ProductListActivity"
-            android:label="@string/title_product_list"
-            android:parentActivityName="com.example.cn.helloworld.ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.main.MainActivity" />
-        </activity>
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.catalog.ProductWebSearchActivity"
-            android:label="@string/title_product_web_search"
-            android:parentActivityName="com.example.cn.helloworld.ui.catalog.ProductListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.catalog.ProductListActivity" />
-        </activity>
-
-        <!-- 歌单详情 -->
-        <activity
-            android:name="com.example.cn.helloworld.ui.playlist.PlaylistDetailActivity"
-            android:label="@string/title_playlist_detail"
-            android:parentActivityName="com.example.cn.helloworld.ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.main.MainActivity" />
-        </activity>
-
-        <!-- 全部歌单 -->
-        <activity
-            android:name="com.example.cn.helloworld.ui.playlist.PlaylistOverviewActivity"
-            android:label="@string/title_playlist_overview"
-            android:parentActivityName="com.example.cn.helloworld.ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.main.MainActivity" />
-        </activity>
-
-        <!-- 收藏与订单（用户侧） -->
-        <activity
-            android:name="com.example.cn.helloworld.ui.user.FavoritesActivity"
-            android:label="@string/user_action_favorites"
-            android:parentActivityName="com.example.cn.helloworld.ui.user.UserProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.user.UserProfileActivity" />
-        </activity>
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.user.UserOrderListActivity"
-            android:label="@string/user_action_orders"
-            android:parentActivityName="com.example.cn.helloworld.ui.user.UserProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.user.UserProfileActivity" />
-        </activity>
-
-        <activity
-            android:name="com.example.cn.helloworld.ui.user.SettingsActivity"
-            android:label="@string/user_action_settings"
-            android:parentActivityName="com.example.cn.helloworld.ui.user.UserProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cn.helloworld.ui.user.UserProfileActivity" />
-        </activity>
-
-        <!-- 音乐后台服务 -->
-
+            android:name=".ui.order.OrderConfirmActivity"
+            android:label="@string/title_order_confirm" />
     </application>
 
 </manifest>
