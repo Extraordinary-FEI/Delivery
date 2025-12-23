@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        // 兼容 AS 2.3.2，无需 google() 写法
+        maven { url 'https://dl.google.com/dl/android/maven2/' }
+        jcenter()
+    }
+    dependencies {
+        // Plugin 版本锁定到 AS 2.3.2 随附的稳定版
+        classpath 'com.android.tools.build:gradle:2.3.2'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://dl.google.com/dl/android/maven2/' }
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
