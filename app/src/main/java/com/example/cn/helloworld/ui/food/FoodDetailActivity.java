@@ -1,18 +1,18 @@
 package com.example.cn.helloworld.ui.food;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.data.cart.CartManager;
 import com.example.cn.helloworld.data.cart.FoodItem;
 
 import java.util.Locale;
 
-public class FoodDetailActivity extends AppCompatActivity {
+public class FoodDetailActivity extends BaseActivity {
     public static final String EXTRA_FOOD_NAME = "extra_food_name";
     public static final String EXTRA_FOOD_PRICE = "extra_food_price";
     public static final String EXTRA_FOOD_DESCRIPTION = "extra_food_description";

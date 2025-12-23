@@ -32,6 +32,10 @@
             android:label="@string/title_shop_detail" />
 
         <activity
+            android:name=".ui.shop.ShopListActivity"
+            android:label="@string/title_shop_list" />
+
+        <activity
             android:name=".ui.food.FoodDetailActivity"
             android:label="@string/title_food_detail" />
 

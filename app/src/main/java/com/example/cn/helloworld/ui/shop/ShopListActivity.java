@@ -2,12 +2,12 @@ package com.example.cn.helloworld.ui.shop;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.data.JsonUtils;
 import com.example.cn.helloworld.model.Shop;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopListActivity extends AppCompatActivity implements ShopAdapter.OnShopClickListener {
+public class ShopListActivity extends BaseActivity implements ShopAdapter.OnShopClickListener {
     private final List<Shop> shops = new ArrayList<Shop>();
     private ShopAdapter adapter;
 
@@ -40,9 +40,9 @@ public class ShopListActivity extends AppCompatActivity implements ShopAdapter.O
             shops.addAll(JsonUtils.loadShops(this));
             adapter.notifyDataSetChanged();
         } catch (IOException e) {
-            Toast.makeText(this, "读取店铺数据失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_shop_load_failed, Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
-            Toast.makeText(this, "店铺数据格式错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_shop_format_invalid, Toast.LENGTH_SHORT).show();
         }
     }
 

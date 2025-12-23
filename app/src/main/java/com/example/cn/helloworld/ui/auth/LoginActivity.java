@@ -3,16 +3,20 @@ package com.example.cn.helloworld.ui.auth;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.main.MainActivity;
+import com.example.cn.helloworld.utils.LocaleManager;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private static final String PREFS_NAME = "auth_prefs";
     private static final String KEY_USERNAME = "username";
@@ -20,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameInput;
     private EditText passwordInput;
+    private boolean isInitialLanguageSelection = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordInput = (EditText) findViewById(R.id.edit_password);
         Button loginButton = (Button) findViewById(R.id.button_login);
         Button registerButton = (Button) findViewById(R.id.button_register);
+
+        setupLanguageSelector();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +50,47 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void setupLanguageSelector() {
+        Spinner languageSpinner = (Spinner) findViewById(R.id.spinner_language);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.language_options,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        languageSpinner.setAdapter(adapter);
+
+        final String[] languageValues = getResources().getStringArray(R.array.language_option_values);
+        String savedLanguage = LocaleManager.getSavedLanguage(this);
+        int selectedIndex = 0;
+        for (int i = 0; i < languageValues.length; i++) {
+            if (languageValues[i].equals(savedLanguage)) {
+                selectedIndex = i;
+                break;
+            }
+        }
+        languageSpinner.setSelection(selectedIndex);
+
+        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isInitialLanguageSelection) {
+                    isInitialLanguageSelection = false;
+                    return;
+                }
+
+                String language = languageValues[position];
+                if (!language.equals(LocaleManager.getSavedLanguage(LoginActivity.this))) {
+                    LocaleManager.setNewLocale(LoginActivity.this, language);
+                    recreate();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
     }
@@ -70,4 +118,3 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 }
-

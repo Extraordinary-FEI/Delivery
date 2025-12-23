@@ -2,15 +2,15 @@ package com.example.cn.helloworld.ui.auth;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.ui.common.BaseActivity;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private static final String PREFS_NAME = "auth_prefs";
     private static final String KEY_USERNAME = "username";
@@ -76,4 +76,3 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 }
-

@@ -1,12 +1,12 @@
 package com.example.cn.helloworld.ui.order;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.ui.common.BaseActivity;
 
-public class CheckoutActivity extends AppCompatActivity {
+public class CheckoutActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,4 +17,3 @@ public class CheckoutActivity extends AppCompatActivity {
         titleView.setText(R.string.checkout_title);
     }
 }
-

@@ -2,7 +2,6 @@ package com.example.cn.helloworld.ui.cart;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,13 +9,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.order.CheckoutActivity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartActivity extends AppCompatActivity implements CartAdapter.CartActionListener {
+public class CartActivity extends BaseActivity implements CartAdapter.CartActionListener {
 
     private RecyclerView cartRecyclerView;
     private TextView totalAmountView;

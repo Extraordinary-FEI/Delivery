@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.ui.common.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-public class OrderConfirmActivity extends AppCompatActivity {
+public class OrderConfirmActivity extends BaseActivity {
     public static final String EXTRA_ORDER_ID = "extra_order_id";
     public static final String EXTRA_ORDER_TIME = "extra_order_time";
     public static final String EXTRA_ORDER_ITEMS = "extra_order_items";

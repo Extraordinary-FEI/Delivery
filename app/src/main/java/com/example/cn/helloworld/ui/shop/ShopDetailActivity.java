@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.model.Food;
 import com.example.cn.helloworld.model.Shop;
 import com.example.cn.helloworld.ui.food.FoodDetailActivity;
@@ -26,7 +26,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopDetailActivity extends AppCompatActivity implements FoodAdapter.OnFoodClickListener {
+public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFoodClickListener {
     public static final String EXTRA_SHOP_ID = "extra_shop_id";
     public static final String EXTRA_SHOP_NAME = "extra_shop_name";
     public static final String EXTRA_SHOP_ADDRESS = "extra_shop_address";
