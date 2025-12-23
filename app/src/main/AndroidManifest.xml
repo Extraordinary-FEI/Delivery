@@ -32,6 +32,10 @@
             android:label="@string/title_shop_detail" />
 
         <activity
+            android:name=".ui.discover.DiscoverActivity"
+            android:label="@string/title_discover" />
+
+        <activity
             android:name=".ui.shop.ShopListActivity"
             android:label="@string/title_shop_list" />
 
@@ -44,24 +48,8 @@
             android:label="@string/title_cart" />
 
         <activity
-            android:name=".ui.order.CheckoutActivity"
-            android:label="@string/checkout_title" />
-
-        <activity
             android:name=".ui.order.OrderConfirmActivity"
             android:label="@string/title_order_confirm" />
-
-        <activity
-            android:name=".ui.search.ProductWebSearchActivity"
-            android:label="@string/title_product_web_search" />
-
-        <activity
-            android:name=".ui.entry.QuickEntryActivity"
-            android:label="@string/quick_entry_title" />
-
-        <activity
-            android:name=".ui.user.UserProfileActivity"
-            android:label="@string/title_user_profile" />
     </application>
 
 </manifest>

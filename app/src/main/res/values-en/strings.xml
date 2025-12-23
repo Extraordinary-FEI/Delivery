@@ -18,18 +18,7 @@
     <string name="checkout_placeholder">Ready to place your order?</string>
     <string name="cart_total_placeholder">Total: $0.00</string>
     <string name="cart_checkout">Proceed to checkout</string>
-    <string name="cart_remove">Remove item</string>
-    <string name="home_search_action">Tap to search the web</string>
-    <string name="home_bottom_nav_home">Home</string>
-    <string name="home_bottom_nav_search">Search</string>
-    <string name="home_bottom_nav_cart">Cart</string>
-    <string name="home_bottom_nav_profile">Profile</string>
-    <string name="quick_entry_title">Quick Entry</string>
-    <string name="quick_entry_intro">More curated services are on the way</string>
-    <string name="quick_entry_action">Enter now</string>
-    <string name="search_hint">Enter keywords or URL</string>
-    <string name="search_action">Browse</string>
-    <string name="search_default_url">https://m.baidu.com</string>
+    <string name="cart_remove">Remove</string>
 
     <string name="title_admin_dashboard">Admin Dashboard</string>
     <string name="title_admin_manage_products">Manage Products</string>

@@ -15,9 +15,9 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
 
     interface CartActionListener {
-        void onQuantityChanged();
+        void onQuantityChanged(CartItem item);
 
-        void onItemRemoved(int position);
+        void onItemRemoved(int position, CartItem item);
     }
 
     private final List<CartItem> items;
@@ -53,7 +53,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 holder.quantityView.setText(String.valueOf(quantity));
                 updateLineTotal(holder, item);
                 if (actionListener != null) {
-                    actionListener.onQuantityChanged();
+                    actionListener.onQuantityChanged(item);
                 }
             }
         });
@@ -68,7 +68,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                     holder.quantityView.setText(String.valueOf(quantity));
                     updateLineTotal(holder, item);
                     if (actionListener != null) {
-                        actionListener.onQuantityChanged();
+                        actionListener.onQuantityChanged(item);
                     }
                 }
             }
@@ -78,7 +78,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             @Override
             public void onClick(View view) {
                 if (actionListener != null) {
-                    actionListener.onItemRemoved(holder.getAdapterPosition());
+                    actionListener.onItemRemoved(holder.getAdapterPosition(), item);
                 }
             }
         });

@@ -93,7 +93,6 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_NAME, food.getName());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_PRICE, food.getPrice());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_DESCRIPTION, food.getDescription());
-        intent.putExtra(FoodDetailActivity.EXTRA_FOOD_IMAGE_RES, food.getImageResId());
         startActivity(intent);
     }
 
@@ -111,31 +110,18 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
                 if (!TextUtils.equals(shopId, targetShopId)) {
                     continue;
                 }
-                int imageResId = resolveFoodImage(context, item.optString("image"));
                 foods.add(new Food(
                         item.optString("id"),
                         item.optString("name"),
                         shopId,
                         item.optString("description"),
-                        item.optDouble("price", 0),
-                        imageResId
+                        item.optDouble("price", 0)
                 ));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return foods;
-    }
-
-    private int resolveFoodImage(Context context, String imageName) {
-        if (TextUtils.isEmpty(imageName)) {
-            return R.mipmap.ic_launcher;
-        }
-        int resId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
-        if (resId == 0) {
-            return R.mipmap.ic_launcher;
-        }
-        return resId;
     }
 
     private String loadAssetText(Context context, String fileName) {

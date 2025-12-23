@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.data.cart.CartManager;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.order.CheckoutActivity;
 
@@ -23,6 +24,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
     private Button checkoutButton;
     private CartAdapter cartAdapter;
     private final List<CartItem> cartItems = new ArrayList<CartItem>();
+    private CartManager cartManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +37,11 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
         checkoutButton = (Button) findViewById(R.id.button_checkout);
 
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        seedCartItems();
-
+        cartManager = CartManager.getInstance(this);
         cartAdapter = new CartAdapter(cartItems, this);
         cartRecyclerView.setAdapter(cartAdapter);
 
-        updateTotal();
+        refreshCartItems();
 
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,13 +53,21 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
     }
 
     @Override
-    public void onQuantityChanged() {
+    protected void onResume() {
+        super.onResume();
+        refreshCartItems();
+    }
+
+    @Override
+    public void onQuantityChanged(CartItem item) {
+        cartManager.updateItemQuantity(item.getName(), item.getQuantity());
         updateTotal();
     }
 
     @Override
-    public void onItemRemoved(int position) {
+    public void onItemRemoved(int position, CartItem item) {
         if (position >= 0 && position < cartItems.size()) {
+            cartManager.removeItem(item.getName());
             cartItems.remove(position);
             cartAdapter.notifyItemRemoved(position);
             cartAdapter.notifyItemRangeChanged(position, cartItems.size() - position);
@@ -76,9 +85,12 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
         checkoutButton.setEnabled(!cartItems.isEmpty());
     }
 
-    private void seedCartItems() {
-        cartItems.add(new CartItem("定制应援手幅", new BigDecimal("39.9"), 1));
-        cartItems.add(new CartItem("纪念徽章套装", new BigDecimal("59.0"), 2));
-        cartItems.add(new CartItem("专辑海报", new BigDecimal("19.5"), 1));
+    private void refreshCartItems() {
+        cartItems.clear();
+        for (com.example.cn.helloworld.data.cart.CartItem item : cartManager.getItems()) {
+            cartItems.add(new CartItem(item.getName(), BigDecimal.valueOf(item.getPrice()), item.getQuantity()));
+        }
+        cartAdapter.notifyDataSetChanged();
+        updateTotal();
     }
 }

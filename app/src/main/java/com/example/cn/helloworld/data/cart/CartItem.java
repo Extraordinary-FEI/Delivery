@@ -23,6 +23,10 @@ public class CartItem {
         return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public void increaseQuantity(int delta) {
         this.quantity += delta;
     }
