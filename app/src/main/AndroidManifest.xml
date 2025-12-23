@@ -44,8 +44,24 @@
             android:label="@string/title_cart" />
 
         <activity
+            android:name=".ui.order.CheckoutActivity"
+            android:label="@string/checkout_title" />
+
+        <activity
             android:name=".ui.order.OrderConfirmActivity"
             android:label="@string/title_order_confirm" />
+
+        <activity
+            android:name=".ui.search.ProductWebSearchActivity"
+            android:label="@string/title_product_web_search" />
+
+        <activity
+            android:name=".ui.entry.QuickEntryActivity"
+            android:label="@string/quick_entry_title" />
+
+        <activity
+            android:name=".ui.user.UserProfileActivity"
+            android:label="@string/title_user_profile" />
     </application>
 
 </manifest>

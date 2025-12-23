@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
@@ -38,6 +39,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.descView.setText(food.getDescription());
         holder.priceView.setText(holder.itemView.getContext()
                 .getString(R.string.food_price_format, food.getPrice()));
+        holder.imageView.setImageResource(food.getImageResId());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,13 +59,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         final TextView nameView;
         final TextView descView;
         final TextView priceView;
+        final ImageView imageView;
 
         FoodViewHolder(View itemView) {
             super(itemView);
             nameView = (TextView) itemView.findViewById(R.id.food_item_name);
             descView = (TextView) itemView.findViewById(R.id.food_item_desc);
             priceView = (TextView) itemView.findViewById(R.id.food_item_price);
+            imageView = (ImageView) itemView.findViewById(R.id.food_item_image);
         }
     }
 }
-

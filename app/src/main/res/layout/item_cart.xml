@@ -70,7 +70,10 @@
                 android:id="@+id/button_delete_item"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="@string/cart_remove" />
+                android:background="@drawable/bg_remove_button"
+                android:text="@string/cart_remove"
+                android:textColor="#D32F2F"
+                android:textSize="12sp" />
         </LinearLayout>
 
     </LinearLayout>
