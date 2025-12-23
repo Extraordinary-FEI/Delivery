@@ -49,8 +49,10 @@ public class ShopListActivity extends AppCompatActivity implements ShopAdapter.O
     @Override
     public void onShopClick(Shop shop) {
         Intent intent = new Intent(this, ShopDetailActivity.class);
-        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_ID, shop.getId());
-        intent.putExtra(ShopDetailActivity.EXTRA_SHOP, shop);
+        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_ID, "shop_" + shop.getId());
+        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_NAME, shop.getName());
+        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_ADDRESS, shop.getAddress());
+        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_RATING, (float) shop.getRating());
         startActivity(intent);
     }
 }

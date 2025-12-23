@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.model.Food;
+import com.example.cn.helloworld.model.Shop;
 import com.example.cn.helloworld.ui.food.FoodDetailActivity;
 
 import org.json.JSONArray;
@@ -31,6 +32,7 @@ public class ShopDetailActivity extends AppCompatActivity implements FoodAdapter
     public static final String EXTRA_SHOP_ADDRESS = "extra_shop_address";
     public static final String EXTRA_SHOP_RATING = "extra_shop_rating";
     public static final String EXTRA_SHOP_HOURS = "extra_shop_hours";
+    public static final String EXTRA_SHOP = "extra_shop";
 
     private String shopId;
     private String shopName;
@@ -52,6 +54,14 @@ public class ShopDetailActivity extends AppCompatActivity implements FoodAdapter
         String address = intent.getStringExtra(EXTRA_SHOP_ADDRESS);
         float rating = intent.getFloatExtra(EXTRA_SHOP_RATING, 0f);
         String hours = intent.getStringExtra(EXTRA_SHOP_HOURS);
+        Shop shop = (Shop) intent.getSerializableExtra(EXTRA_SHOP);
+
+        if (shop != null) {
+            shopId = String.valueOf(shop.getId());
+            shopName = shop.getName();
+            address = shop.getAddress();
+            rating = (float) shop.getRating();
+        }
 
         if (TextUtils.isEmpty(shopId)) {
             shopId = "shop_1";
@@ -81,8 +91,7 @@ public class ShopDetailActivity extends AppCompatActivity implements FoodAdapter
         Intent intent = new Intent(this, FoodDetailActivity.class);
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_NAME, food.getName());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_PRICE, food.getPrice());
-        intent.putExtra(FoodDetailActivity.EXTRA_FOOD_DESC, food.getDescription());
-        intent.putExtra(FoodDetailActivity.EXTRA_SHOP_NAME, shopName);
+        intent.putExtra(FoodDetailActivity.EXTRA_FOOD_DESCRIPTION, food.getDescription());
         startActivity(intent);
     }
 
@@ -148,4 +157,3 @@ public class ShopDetailActivity extends AppCompatActivity implements FoodAdapter
         return null;
     }
 }
-

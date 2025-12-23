@@ -17,6 +17,8 @@ public class FoodDetailActivity extends AppCompatActivity {
     public static final String EXTRA_FOOD_PRICE = "extra_food_price";
     public static final String EXTRA_FOOD_DESCRIPTION = "extra_food_description";
     public static final String EXTRA_FOOD_IMAGE_RES = "extra_food_image_res";
+    public static final String EXTRA_FOOD_DESC = EXTRA_FOOD_DESCRIPTION;
+    public static final String EXTRA_SHOP_NAME = "extra_shop_name";
 
     private TextView cartCountView;
     private TextView cartTotalView;
@@ -74,4 +76,3 @@ public class FoodDetailActivity extends AppCompatActivity {
         return String.format(Locale.CHINA, "%.2f", price);
     }
 }
-

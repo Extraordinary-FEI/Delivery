@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Delivery</string>
+        <string name="title_register">注册</string>
+        <string name="title_shop_detail">店铺详情</string>
+        <string name="title_food_detail">商品详情</string>
+        <string name="title_cart">购物车</string>
+        <string name="title_order_confirm">订单确认</string>
 
     <string name="title_main">Home</string>
     <string name="default_product_name">Product</string>
@@ -41,4 +46,21 @@
     <string name="label_confirm_password">Confirm password</string>
     <string name="action_back_to_login">Back to login</string>
     <string name="shop_foods_title">Shop Foods</string>
+    <string name="login_error_empty_fields">Please enter your username and password.</string>
+    <string name="login_error_invalid">Invalid username or password.</string>
+    <string name="register_error_empty_fields">Please fill out all fields.</string>
+    <string name="register_error_password_short">Password must be at least 6 characters.</string>
+    <string name="register_error_password_mismatch">Passwords do not match.</string>
+    <string name="register_success">Registration successful.</string>
+    <string name="cart_total_format">Total: ¥%1$s</string>
+    <string name="cart_item_price_format">Price: ¥%1$s</string>
+    <string name="cart_item_total_format">Subtotal: ¥%1$s</string>
+    <string name="default_food_name">Delicious food</string>
+    <string name="default_food_description">Freshly prepared and ready to enjoy.</string>
+    <string name="food_price_format">¥%1$s</string>
+    <string name="cart_count_format">Items: %1$d</string>
+    <string name="default_shop_name">Featured shop</string>
+    <string name="default_shop_address">123 Main Street</string>
+    <string name="default_shop_hours">10:00 - 22:00</string>
+    <string name="shop_rating_format">Rating: %1$.1f</string>
 </resources>
