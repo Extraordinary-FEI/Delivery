@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">HelloWorld</string>
+    <string name="app_name">Delivery</string>
     <string name="title_main">首页</string>
     <string name="default_product_name">商品详情</string>
     <string name="title_order_detail">订单详情</string>
-    <string name="checkout_title">确认订单</string>
+    <string name="checkout_title">订单确认</string>
     <string name="title_admin_dashboard">管理员控制台</string>
     <string name="title_admin_manage_products">商品管理</string>
     <string name="title_admin_manage_playlists">歌单管理</string>
-    <string name="title_admin_manage_banners">轮播管理</string>
-    <string name="title_admin_support_tasks">应援任务审核</string>
+    <string name="title_admin_manage_banners">Banner管理</string>
+    <string name="title_admin_support_tasks">应援任务审批</string>
     <string name="title_admin_manage_support_tasks">应援任务管理</string>
     <string name="title_admin_order_list">订单列表</string>
     <string name="title_admin_manage_addresses">地址管理</string>
-    <string name="title_user_profile">个人中心</string>
+    <string name="title_user_profile">用户中心</string>
     <string name="title_review_wall">评价墙</string>
     <string name="title_product_list">商品列表</string>
     <string name="title_product_web_search">商品搜索</string>
@@ -23,13 +23,15 @@
     <string name="user_action_orders">我的订单</string>
     <string name="user_action_settings">设置</string>
 
-    <string name="cart_title">购物车</string>
-    <string name="cart_checkout">结算</string>
-    <string name="cart_remove">删除</string>
-    <string name="cart_total_placeholder">合计：¥0.00</string>
-    <string name="cart_total_format">合计：¥%1$s</string>
-    <string name="cart_item_price_format">单价：¥%1$s</string>
-    <string name="cart_item_total_format">小计：¥%1$s</string>
-    <string name="checkout_placeholder">请确认订单信息</string>
+    <string name="food_image_description">商品图片</string>
+    <string name="add_to_cart">加入购物车</string>
+    <string name="login_title">登录</string>
+    <string name="label_username">用户名</string>
+    <string name="label_password">密码</string>
+    <string name="action_login">登录</string>
+    <string name="action_register">注册</string>
+    <string name="register_title">注册</string>
+    <string name="label_confirm_password">确认密码</string>
+    <string name="action_back_to_login">返回登录</string>
+    <string name="shop_foods_title">商品列表</string>
 </resources>
-
