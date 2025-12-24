@@ -1,7 +1,6 @@
 package com.example.cn.helloworld.ui.auth;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,19 +11,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.data.AuthApiClient;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.main.MainActivity;
 import com.example.cn.helloworld.utils.LocaleManager;
 import com.example.cn.helloworld.utils.SessionManager;
 
 public class LoginActivity extends BaseActivity {
-
-    private static final String PREFS_NAME = "auth_prefs";
-    private static final String KEY_USERNAME = "username";
-    private static final String KEY_PASSWORD = "password";
-    private static final String KEY_ROLE = "role";
-    private static final String ADMIN_USERNAME = "admin";
-    private static final String ADMIN_PASSWORD = "admin123";
 
     private EditText usernameInput;
     private EditText passwordInput;
@@ -108,24 +101,20 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String storedUsername = preferences.getString(KEY_USERNAME, "");
-        String storedPassword = preferences.getString(KEY_PASSWORD, "");
-        String storedRole = preferences.getString(KEY_ROLE, SessionManager.ROLE_USER);
-
-        boolean isAdmin = ADMIN_USERNAME.equals(username) && ADMIN_PASSWORD.equals(password);
-        if (!isAdmin) {
-            if (!username.equals(storedUsername) || !password.equals(storedPassword)) {
-                Toast.makeText(this, R.string.login_error_invalid, Toast.LENGTH_SHORT).show();
-                return;
+        AuthApiClient.login(this, username, password, new AuthApiClient.Callback<AuthApiClient.LoginResponse>() {
+            @Override
+            public void onSuccess(AuthApiClient.LoginResponse result) {
+                SessionManager.saveSession(LoginActivity.this, result.getUsername(), result.getRole(),
+                        result.getToken(), result.getUserId());
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
-        }
 
-        String role = isAdmin ? SessionManager.ROLE_ADMIN : storedRole;
-        SessionManager.saveSession(this, username, role);
-
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+            @Override
+            public void onError(String message) {
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

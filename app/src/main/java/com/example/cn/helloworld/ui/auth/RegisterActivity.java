@@ -1,6 +1,5 @@
 package com.example.cn.helloworld.ui.auth;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,15 +7,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.data.AuthApiClient;
 import com.example.cn.helloworld.ui.common.BaseActivity;
-import com.example.cn.helloworld.utils.SessionManager;
 
 public class RegisterActivity extends BaseActivity {
-
-    private static final String PREFS_NAME = "auth_prefs";
-    private static final String KEY_USERNAME = "username";
-    private static final String KEY_PASSWORD = "password";
-    private static final String KEY_ROLE = "role";
 
     private EditText usernameInput;
     private EditText passwordInput;
@@ -69,14 +63,17 @@ public class RegisterActivity extends BaseActivity {
             return;
         }
 
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        preferences.edit()
-                .putString(KEY_USERNAME, username)
-                .putString(KEY_PASSWORD, password)
-                .putString(KEY_ROLE, SessionManager.ROLE_USER)
-                .apply();
+        AuthApiClient.register(this, username, password, new AuthApiClient.Callback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                Toast.makeText(RegisterActivity.this, R.string.register_success, Toast.LENGTH_SHORT).show();
+                finish();
+            }
 
-        Toast.makeText(this, R.string.register_success, Toast.LENGTH_SHORT).show();
-        finish();
+            @Override
+            public void onError(String message) {
+                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

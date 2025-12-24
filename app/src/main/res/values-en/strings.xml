@@ -73,10 +73,14 @@
     <string name="shop_foods_title">Shop Foods</string>
     <string name="login_error_empty_fields">Please enter your username and password.</string>
     <string name="login_error_invalid">Invalid username or password.</string>
+    <string name="login_error_network">Login failed. Check network or server configuration.</string>
     <string name="register_error_empty_fields">Please fill out all fields.</string>
     <string name="register_error_password_short">Password must be at least 6 characters.</string>
     <string name="register_error_password_mismatch">Passwords do not match.</string>
     <string name="register_success">Registration successful.</string>
+    <string name="register_error_failed">Registration failed. Please try again.</string>
+    <string name="register_error_network">Registration failed. Check network or server configuration.</string>
+    <string name="api_base_url">http://10.0.2.2:8080</string>
     <string name="error_shop_load_failed">Failed to load shop data.</string>
     <string name="error_shop_format_invalid">Shop data format is invalid.</string>
     <string name="cart_total_format">Total: $%1$s</string>

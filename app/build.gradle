@@ -29,14 +29,9 @@ android {
         exclude 'META-INF/LICENSE'
     }
 
-    // ❌ 删除 Java 8 配置（否则会报 Jack 错误）
-    // compileOptions {
-    //     targetCompatibility 1.8
-    //     sourceCompatibility 1.8
-    // }
     compileOptions {
-        targetCompatibility 1.7
-        sourceCompatibility 1.7
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
