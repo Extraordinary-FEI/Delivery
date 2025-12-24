@@ -1,10 +1,8 @@
 package com.example.cn.helloworld.data;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.RequiresApi;
 
 import com.example.cn.helloworld.R;
 
@@ -12,13 +10,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -149,9 +147,13 @@ public final class AuthApiClient {
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
-            byte[] body = payload.toString().getBytes(StandardCharsets.UTF_8);
-            try (OutputStream outputStream = connection.getOutputStream()) {
+            byte[] body = payload.toString().getBytes("UTF-8");
+            OutputStream outputStream = null;
+            try {
+                outputStream = connection.getOutputStream();
                 outputStream.write(body);
+            } finally {
+                closeQuietly(outputStream);
             }
 
             int responseCode = connection.getResponseCode();
@@ -179,19 +181,33 @@ public final class AuthApiClient {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static String readStream(InputStream stream) throws IOException {
         if (stream == null) {
             return "";
         }
         StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
             String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }
+        } finally {
+            closeQuietly(reader);
         }
         return builder.toString();
+    }
+
+    private static void closeQuietly(Closeable closeable) {
+        if (closeable == null) {
+            return;
+        }
+        try {
+            closeable.close();
+        } catch (IOException ignored) {
+            // Ignore close errors.
+        }
     }
 
     private interface ResponseHandler {
