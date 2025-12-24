@@ -50,6 +50,10 @@
         <activity
             android:name=".ui.order.OrderConfirmActivity"
             android:label="@string/title_order_confirm" />
+
+        <activity
+            android:name=".ui.order.CheckoutActivity"
+            android:label="@string/title_order_confirm" />
     </application>
 
 </manifest>
