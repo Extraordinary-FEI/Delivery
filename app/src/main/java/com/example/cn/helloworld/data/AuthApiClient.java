@@ -75,21 +75,34 @@ public final class AuthApiClient {
             callback.onError(context.getString(R.string.login_error_invalid));
             return;
         }
-        EXECUTOR.execute(() -> executeAuthRequest(context, endpoint, payload, (response) -> {
-            try {
-                String token = response.optString("token", "");
-                String userId = response.optString("userId", "");
-                String role = response.optString("role", "");
-                String displayName = response.optString("username", username);
-                if (token.isEmpty() || role.isEmpty()) {
-                    callback.onError(context.getString(R.string.login_error_invalid));
-                    return;
-                }
-                callback.onSuccess(new LoginResponse(token, userId, role, displayName));
-            } catch (Exception e) {
-                callback.onError(context.getString(R.string.login_error_invalid));
+        EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                executeAuthRequest(context, endpoint, payload, new ResponseHandler() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String token = response.optString("token", "");
+                            String userId = response.optString("userId", "");
+                            String role = response.optString("role", "");
+                            String displayName = response.optString("username", username);
+                            if (token.isEmpty() || role.isEmpty()) {
+                                callback.onError(context.getString(R.string.login_error_invalid));
+                                return;
+                            }
+                            callback.onSuccess(new LoginResponse(token, userId, role, displayName));
+                        } catch (Exception e) {
+                            callback.onError(context.getString(R.string.login_error_invalid));
+                        }
+                    }
+                }, new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onError(context.getString(R.string.login_error_network));
+                    }
+                });
             }
-        }, () -> callback.onError(context.getString(R.string.login_error_network))));
+        });
     }
 
     public static void register(Context context, String username, String password, Callback<Void> callback) {
@@ -103,8 +116,22 @@ public final class AuthApiClient {
             callback.onError(context.getString(R.string.register_error_failed));
             return;
         }
-        EXECUTOR.execute(() -> executeAuthRequest(context, endpoint, payload, (response) -> callback.onSuccess(null),
-                () -> callback.onError(context.getString(R.string.register_error_network))));
+        EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                executeAuthRequest(context, endpoint, payload, new ResponseHandler() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        callback.onSuccess(null);
+                    }
+                }, new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onError(context.getString(R.string.register_error_network));
+                    }
+                });
+            }
+        });
     }
 
     private static void executeAuthRequest(Context context, String endpoint, JSONObject payload,
@@ -132,7 +159,12 @@ public final class AuthApiClient {
             String responseText = readStream(stream);
             if (responseCode >= 200 && responseCode < 300) {
                 JSONObject responseJson = responseText.isEmpty() ? new JSONObject() : new JSONObject(responseText);
-                mainHandler.post(() -> handler.onResponse(responseJson));
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        handler.onResponse(responseJson);
+                    }
+                });
             } else {
                 mainHandler.post(onError);
             }
