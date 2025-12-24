@@ -64,10 +64,11 @@ public final class AuthApiClient {
         }
     }
 
-    public static void login(Context context, String username, String password, Callback<LoginResponse> callback) {
+    public static void login(final Context context, final String username, final String password,
+                             final Callback<LoginResponse> callback) {
         String baseUrl = context.getString(R.string.api_base_url);
-        String endpoint = baseUrl + "/api/auth/login";
-        JSONObject payload = new JSONObject();
+        final String endpoint = baseUrl + "/api/auth/login";
+        final JSONObject payload = new JSONObject();
         try {
             payload.put("username", username);
             payload.put("password", password);
@@ -105,10 +106,11 @@ public final class AuthApiClient {
         });
     }
 
-    public static void register(Context context, String username, String password, Callback<Void> callback) {
+    public static void register(final Context context, final String username, final String password,
+                                final Callback<Void> callback) {
         String baseUrl = context.getString(R.string.api_base_url);
-        String endpoint = baseUrl + "/api/auth/register";
-        JSONObject payload = new JSONObject();
+        final String endpoint = baseUrl + "/api/auth/register";
+        final JSONObject payload = new JSONObject();
         try {
             payload.put("username", username);
             payload.put("password", password);
@@ -135,8 +137,8 @@ public final class AuthApiClient {
     }
 
     private static void executeAuthRequest(Context context, String endpoint, JSONObject payload,
-                                           ResponseHandler handler, Runnable onError) {
-        Handler mainHandler = new Handler(Looper.getMainLooper());
+                                           final ResponseHandler handler, final Runnable onError) {
+        final Handler mainHandler = new Handler(Looper.getMainLooper());
         HttpURLConnection connection = null;
         try {
             URL url = new URL(endpoint);
@@ -158,7 +160,7 @@ public final class AuthApiClient {
                     : connection.getErrorStream();
             String responseText = readStream(stream);
             if (responseCode >= 200 && responseCode < 300) {
-                JSONObject responseJson = responseText.isEmpty() ? new JSONObject() : new JSONObject(responseText);
+                final JSONObject responseJson = responseText.isEmpty() ? new JSONObject() : new JSONObject(responseText);
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
