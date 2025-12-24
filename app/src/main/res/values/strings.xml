@@ -49,6 +49,7 @@
     <string name="checkout_address_eta">预计 30 分钟送达</string>
     <string name="checkout_order_summary">订单摘要</string>
     <string name="checkout_item_count_placeholder">共 0 件商品</string>
+    <string name="checkout_item_count_format">共 %1$d 件商品</string>
     <string name="checkout_payment_title">支付方式</string>
     <string name="checkout_payment_method">在线支付（支持支付宝 / 微信）</string>
     <string name="checkout_invoice">发票抬头：个人</string>
