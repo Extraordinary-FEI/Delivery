@@ -1,8 +1,10 @@
 package com.example.cn.helloworld.data;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.RequiresApi;
 
 import com.example.cn.helloworld.R;
 
@@ -143,6 +145,7 @@ public final class AuthApiClient {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static String readStream(InputStream stream) throws IOException {
         if (stream == null) {
             return "";
