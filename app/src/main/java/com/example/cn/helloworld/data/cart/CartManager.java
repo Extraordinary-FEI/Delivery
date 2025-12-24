@@ -67,31 +67,6 @@ public class CartManager {
         }
     }
 
-    public synchronized List<CartItem> getItems() {
-        return new ArrayList<CartItem>(items);
-    }
-
-    public synchronized void updateItemQuantity(String name, int quantity) {
-        CartItem existing = findItem(name);
-        if (existing == null) {
-            return;
-        }
-        if (quantity <= 0) {
-            items.remove(existing);
-        } else {
-            existing.setQuantity(quantity);
-        }
-        saveToPreferences();
-    }
-
-    public synchronized void removeItem(String name) {
-        CartItem existing = findItem(name);
-        if (existing != null) {
-            items.remove(existing);
-            saveToPreferences();
-        }
-    }
-
     public synchronized int getTotalCount() {
         int total = 0;
         for (CartItem item : items) {
