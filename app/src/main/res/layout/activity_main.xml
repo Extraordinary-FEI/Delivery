@@ -107,20 +107,33 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/button_admin_dashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_chip"
+            android:text="@string/home_admin_dashboard"
+            android:textColor="@color/primary_color"
+            android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_card"
-                android:orientation="vertical"
-                android:padding="12dp">
+        <LinearLayout
+            android:id="@+id/entry_flash_sale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_card"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:focusable="true">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -139,14 +152,17 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_card"
-                android:orientation="vertical"
-                android:padding="12dp">
+        <LinearLayout
+            android:id="@+id/entry_member_center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_card"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:focusable="true">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -172,14 +188,17 @@
             android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_card"
-                android:orientation="vertical"
-                android:padding="12dp">
+        <LinearLayout
+            android:id="@+id/entry_coupon_center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_card"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:focusable="true">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -198,14 +217,17 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_card"
-                android:orientation="vertical"
-                android:padding="12dp">
+        <LinearLayout
+            android:id="@+id/entry_service_help"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_card"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:focusable="true">
 
                 <TextView
                     android:layout_width="wrap_content"

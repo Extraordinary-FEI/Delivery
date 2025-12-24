@@ -4,27 +4,31 @@
     "name": "招牌牛肉面",
     "shopId": "shop_1",
     "description": "慢炖牛骨汤搭配手工拉面",
-    "price": 28.0
+    "price": 28.0,
+    "imageUrl": "https://example.com/images/beef_noodles.jpg"
   },
   {
     "id": "food_2",
     "name": "香辣鸡翅",
     "shopId": "shop_1",
     "description": "外酥里嫩，搭配秘制辣酱",
-    "price": 18.0
+    "price": 18.0,
+    "imageUrl": "https://example.com/images/spicy_wings.jpg"
   },
   {
     "id": "food_3",
     "name": "海鲜粥",
     "shopId": "shop_2",
     "description": "鲜虾贝类熬制的暖心粥",
-    "price": 25.0
+    "price": 25.0,
+    "imageUrl": "https://example.com/images/seafood_congee.jpg"
   },
   {
     "id": "food_4",
     "name": "清爽蔬果沙拉",
     "shopId": "shop_2",
     "description": "新鲜时蔬搭配低脂沙拉酱",
-    "price": 16.0
+    "price": 16.0,
+    "imageUrl": "https://example.com/images/salad.jpg"
   }
 ]

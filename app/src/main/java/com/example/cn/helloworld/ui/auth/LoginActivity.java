@@ -15,12 +15,16 @@ import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.main.MainActivity;
 import com.example.cn.helloworld.utils.LocaleManager;
+import com.example.cn.helloworld.utils.SessionManager;
 
 public class LoginActivity extends BaseActivity {
 
     private static final String PREFS_NAME = "auth_prefs";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_ROLE = "role";
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin123";
 
     private EditText usernameInput;
     private EditText passwordInput;
@@ -107,11 +111,18 @@ public class LoginActivity extends BaseActivity {
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String storedUsername = preferences.getString(KEY_USERNAME, "");
         String storedPassword = preferences.getString(KEY_PASSWORD, "");
+        String storedRole = preferences.getString(KEY_ROLE, SessionManager.ROLE_USER);
 
-        if (!username.equals(storedUsername) || !password.equals(storedPassword)) {
-            Toast.makeText(this, R.string.login_error_invalid, Toast.LENGTH_SHORT).show();
-            return;
+        boolean isAdmin = ADMIN_USERNAME.equals(username) && ADMIN_PASSWORD.equals(password);
+        if (!isAdmin) {
+            if (!username.equals(storedUsername) || !password.equals(storedPassword)) {
+                Toast.makeText(this, R.string.login_error_invalid, Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
+
+        String role = isAdmin ? SessionManager.ROLE_ADMIN : storedRole;
+        SessionManager.saveSession(this, username, role);
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

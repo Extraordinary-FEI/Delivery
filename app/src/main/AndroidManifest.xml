@@ -40,8 +40,36 @@
             android:label="@string/title_shop_list" />
 
         <activity
+            android:name=".ui.shop.admin.AdminDashboardActivity"
+            android:label="@string/admin_dashboard_title" />
+
+        <activity
+            android:name=".ui.shop.admin.ShopEditActivity"
+            android:label="@string/admin_edit_shop" />
+
+        <activity
+            android:name=".ui.shop.admin.FoodEditActivity"
+            android:label="@string/admin_edit_food" />
+
+        <activity
             android:name=".ui.food.FoodDetailActivity"
             android:label="@string/title_food_detail" />
+
+        <activity
+            android:name=".ui.entry.FlashSaleActivity"
+            android:label="@string/flash_sale_title" />
+
+        <activity
+            android:name=".ui.entry.MemberCenterActivity"
+            android:label="@string/member_center_title" />
+
+        <activity
+            android:name=".ui.entry.CouponCenterActivity"
+            android:label="@string/coupon_center_title" />
+
+        <activity
+            android:name=".ui.entry.ServiceHelpActivity"
+            android:label="@string/service_help_title" />
 
         <activity
             android:name=".ui.cart.CartActivity"

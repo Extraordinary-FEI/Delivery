@@ -9,12 +9,14 @@ import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.ui.common.BaseActivity;
+import com.example.cn.helloworld.utils.SessionManager;
 
 public class RegisterActivity extends BaseActivity {
 
     private static final String PREFS_NAME = "auth_prefs";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_ROLE = "role";
 
     private EditText usernameInput;
     private EditText passwordInput;
@@ -71,6 +73,7 @@ public class RegisterActivity extends BaseActivity {
         preferences.edit()
                 .putString(KEY_USERNAME, username)
                 .putString(KEY_PASSWORD, password)
+                .putString(KEY_ROLE, SessionManager.ROLE_USER)
                 .apply();
 
         Toast.makeText(this, R.string.register_success, Toast.LENGTH_SHORT).show();

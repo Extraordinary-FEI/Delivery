@@ -1,28 +1,27 @@
 package com.example.cn.helloworld.ui.shop;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Button;
+import android.view.View;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.data.FoodLocalRepository;
+import com.example.cn.helloworld.data.ShopLocalRepository;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.model.Food;
 import com.example.cn.helloworld.model.Shop;
 import com.example.cn.helloworld.ui.food.FoodDetailActivity;
+import com.example.cn.helloworld.ui.shop.admin.FoodEditActivity;
+import com.example.cn.helloworld.ui.shop.admin.ShopEditActivity;
+import com.example.cn.helloworld.utils.ImageLoader;
+import com.example.cn.helloworld.utils.SessionManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +32,19 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
     public static final String EXTRA_SHOP_RATING = "extra_shop_rating";
     public static final String EXTRA_SHOP_HOURS = "extra_shop_hours";
     public static final String EXTRA_SHOP = "extra_shop";
+    public static final String EXTRA_SHOP_IMAGE = "extra_shop_image";
 
     private String shopId;
     private String shopName;
+    private ImageView shopImage;
+    private TextView nameView;
+    private TextView addressView;
+    private TextView ratingView;
+    private TextView hoursView;
+    private FoodAdapter adapter;
+    private final List<Food> foods = new ArrayList<Food>();
+    private final FoodLocalRepository foodRepository = new FoodLocalRepository();
+    private final ShopLocalRepository shopRepository = new ShopLocalRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +52,14 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
         setContentView(R.layout.activity_shop_detail);
         setupBackButton();
 
-        TextView nameView = (TextView) findViewById(R.id.shop_detail_name);
-        TextView addressView = (TextView) findViewById(R.id.shop_detail_address);
-        TextView ratingView = (TextView) findViewById(R.id.shop_detail_rating);
-        TextView hoursView = (TextView) findViewById(R.id.shop_detail_hours);
+        shopImage = (ImageView) findViewById(R.id.shop_detail_image);
+        nameView = (TextView) findViewById(R.id.shop_detail_name);
+        addressView = (TextView) findViewById(R.id.shop_detail_address);
+        ratingView = (TextView) findViewById(R.id.shop_detail_rating);
+        hoursView = (TextView) findViewById(R.id.shop_detail_hours);
         RecyclerView foodsView = (RecyclerView) findViewById(R.id.shop_detail_foods);
+        Button editShopButton = (Button) findViewById(R.id.button_edit_shop);
+        Button addFoodButton = (Button) findViewById(R.id.button_add_food);
 
         Intent intent = getIntent();
         shopId = intent.getStringExtra(EXTRA_SHOP_ID);
@@ -55,6 +67,7 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
         String address = intent.getStringExtra(EXTRA_SHOP_ADDRESS);
         float rating = intent.getFloatExtra(EXTRA_SHOP_RATING, 0f);
         String hours = intent.getStringExtra(EXTRA_SHOP_HOURS);
+        String imageUrl = intent.getStringExtra(EXTRA_SHOP_IMAGE);
         Shop shop = (Shop) intent.getSerializableExtra(EXTRA_SHOP);
 
         if (shop != null) {
@@ -62,6 +75,7 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
             shopName = shop.getName();
             address = shop.getAddress();
             rating = (float) shop.getRating();
+            imageUrl = shop.getImageUrl();
         }
 
         if (TextUtils.isEmpty(shopId)) {
@@ -77,14 +91,55 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
             hours = getString(R.string.default_shop_hours);
         }
 
-        nameView.setText(shopName);
-        addressView.setText(address);
-        ratingView.setText(getString(R.string.shop_rating_format, rating));
-        hoursView.setText(hours);
+        bindShopInfo(shopName, address, rating, hours, imageUrl);
 
         foodsView.setLayoutManager(new LinearLayoutManager(this));
-        FoodAdapter adapter = new FoodAdapter(loadFoodsForShop(this, shopId), this);
+        if (SessionManager.isAdmin(this)) {
+            adapter = new FoodAdapter(foods, this, new FoodAdapter.OnFoodLongClickListener() {
+                @Override
+                public void onFoodLongClick(Food food) {
+                    Intent editIntent = new Intent(ShopDetailActivity.this, FoodEditActivity.class);
+                    editIntent.putExtra(FoodEditActivity.EXTRA_FOOD_ID, food.getId());
+                    editIntent.putExtra(FoodEditActivity.EXTRA_SHOP_ID, shopId);
+                    startActivity(editIntent);
+                }
+            });
+        } else {
+            adapter = new FoodAdapter(foods, this);
+        }
         foodsView.setAdapter(adapter);
+
+        if (SessionManager.isAdmin(this)) {
+            editShopButton.setVisibility(View.VISIBLE);
+            addFoodButton.setVisibility(View.VISIBLE);
+        }
+
+        editShopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editIntent = new Intent(ShopDetailActivity.this, ShopEditActivity.class);
+                editIntent.putExtra(ShopEditActivity.EXTRA_SHOP_ID, shopId);
+                startActivity(editIntent);
+            }
+        });
+
+        addFoodButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addIntent = new Intent(ShopDetailActivity.this, FoodEditActivity.class);
+                addIntent.putExtra(FoodEditActivity.EXTRA_SHOP_ID, shopId);
+                startActivity(addIntent);
+            }
+        });
+
+        loadFoods();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadShopInfo();
+        loadFoods();
     }
 
     @Override
@@ -93,68 +148,59 @@ public class ShopDetailActivity extends BaseActivity implements FoodAdapter.OnFo
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_NAME, food.getName());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_PRICE, food.getPrice());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_DESCRIPTION, food.getDescription());
+        intent.putExtra(FoodDetailActivity.EXTRA_FOOD_IMAGE_URL, food.getImageUrl());
         startActivity(intent);
     }
 
-    private List<Food> loadFoodsForShop(Context context, String targetShopId) {
-        List<Food> foods = new ArrayList<Food>();
-        String json = loadAssetText(context, "foods.json");
-        if (TextUtils.isEmpty(json)) {
-            return foods;
-        }
+    private void loadFoods() {
         try {
-            JSONArray array = new JSONArray(json);
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject item = array.getJSONObject(i);
-                String shopId = item.optString("shopId");
-                if (!TextUtils.equals(shopId, targetShopId)) {
-                    continue;
-                }
-                foods.add(new Food(
-                        item.optString("id"),
-                        item.optString("name"),
-                        shopId,
-                        item.optString("description"),
-                        item.optDouble("price", 0)
-                ));
-            }
-        } catch (JSONException e) {
+            foods.clear();
+            foods.addAll(foodRepository.getFoodsForShop(this, shopId));
+            adapter.notifyDataSetChanged();
+        } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-        return foods;
     }
 
-    private String loadAssetText(Context context, String fileName) {
-        AssetManager assetManager = context.getAssets();
-        InputStream inputStream = null;
-        BufferedReader reader = null;
+    private void loadShopInfo() {
+        if (TextUtils.isEmpty(shopId)) {
+            return;
+        }
         try {
-            inputStream = assetManager.open(fileName);
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder builder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
+            int id = parseShopId(shopId);
+            Shop shop = shopRepository.getShopById(this, id);
+            if (shop != null) {
+                bindShopInfo(shop.getName(), shop.getAddress(), (float) shop.getRating(),
+                        getString(R.string.default_shop_hours), shop.getImageUrl());
             }
-            return builder.toString();
-        } catch (IOException e) {
+        } catch (java.io.IOException e) {
             e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        }
+    }
+
+    private void bindShopInfo(String name, String address, float rating, String hours, String imageUrl) {
+        nameView.setText(name);
+        addressView.setText(address);
+        ratingView.setText(getString(R.string.shop_rating_format, rating));
+        hoursView.setText(hours);
+        ImageLoader.load(this, shopImage, imageUrl);
+    }
+
+    private int parseShopId(String raw) {
+        if (TextUtils.isEmpty(raw)) {
+            return 0;
+        }
+        if (raw.startsWith("shop_")) {
+            try {
+                return Integer.parseInt(raw.substring(5));
+            } catch (NumberFormatException e) {
+                return 0;
             }
         }
-        return null;
+        try {
+            return Integer.parseInt(raw);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

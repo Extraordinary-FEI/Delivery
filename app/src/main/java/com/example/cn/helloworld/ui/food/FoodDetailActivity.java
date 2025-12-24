@@ -9,6 +9,7 @@ import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.data.cart.CartManager;
 import com.example.cn.helloworld.data.cart.FoodItem;
+import com.example.cn.helloworld.utils.ImageLoader;
 
 import java.util.Locale;
 
@@ -17,6 +18,7 @@ public class FoodDetailActivity extends BaseActivity {
     public static final String EXTRA_FOOD_PRICE = "extra_food_price";
     public static final String EXTRA_FOOD_DESCRIPTION = "extra_food_description";
     public static final String EXTRA_FOOD_IMAGE_RES = "extra_food_image_res";
+    public static final String EXTRA_FOOD_IMAGE_URL = "extra_food_image_url";
     public static final String EXTRA_FOOD_DESC = EXTRA_FOOD_DESCRIPTION;
     public static final String EXTRA_SHOP_NAME = "extra_shop_name";
 
@@ -41,6 +43,7 @@ public class FoodDetailActivity extends BaseActivity {
         double price = getIntent().getDoubleExtra(EXTRA_FOOD_PRICE, 18.0);
         String description = getIntent().getStringExtra(EXTRA_FOOD_DESCRIPTION);
         int imageResId = getIntent().getIntExtra(EXTRA_FOOD_IMAGE_RES, R.mipmap.ic_launcher);
+        String imageUrl = getIntent().getStringExtra(EXTRA_FOOD_IMAGE_URL);
 
         if (name == null) {
             name = getString(R.string.default_food_name);
@@ -51,7 +54,7 @@ public class FoodDetailActivity extends BaseActivity {
 
         final FoodItem foodItem = new FoodItem(name, price, description, imageResId);
 
-        foodImage.setImageResource(foodItem.getImageResId());
+        ImageLoader.load(this, foodImage, imageUrl);
         foodName.setText(foodItem.getName());
         foodPrice.setText(getString(R.string.food_price_format, formatPrice(foodItem.getPrice())));
         foodDescription.setText(foodItem.getDescription());

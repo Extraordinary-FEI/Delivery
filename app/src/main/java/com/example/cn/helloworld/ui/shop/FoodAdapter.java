@@ -16,12 +16,22 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         void onFoodClick(Food food);
     }
 
+    public interface OnFoodLongClickListener {
+        void onFoodLongClick(Food food);
+    }
+
     private final List<Food> foods;
     private final OnFoodClickListener listener;
+    private final OnFoodLongClickListener longClickListener;
 
     public FoodAdapter(List<Food> foods, OnFoodClickListener listener) {
+        this(foods, listener, null);
+    }
+
+    public FoodAdapter(List<Food> foods, OnFoodClickListener listener, OnFoodLongClickListener longClickListener) {
         this.foods = foods;
         this.listener = listener;
+        this.longClickListener = longClickListener;
     }
 
     @Override
@@ -46,6 +56,16 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 }
             }
         });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (longClickListener != null) {
+                    longClickListener.onFoodLongClick(food);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -66,4 +86,3 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         }
     }
 }
-
