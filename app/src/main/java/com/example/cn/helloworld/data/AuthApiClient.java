@@ -23,12 +23,10 @@ import java.util.concurrent.Executors;
 public final class AuthApiClient {
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
-    private AuthApiClient() {
-    }
+    private AuthApiClient() { }
 
     public interface Callback<T> {
         void onSuccess(T result);
-
         void onError(String message);
     }
 
@@ -45,27 +43,29 @@ public final class AuthApiClient {
             this.username = username;
         }
 
-        public String getToken() {
-            return token;
-        }
+        public String getToken() { return token; }
+        public String getUserId() { return userId; }
+        public String getRole() { return role; }
+        public String getUsername() { return username; }
+    }
 
-        public String getUserId() {
-            return userId;
-        }
-
-        public String getRole() {
-            return role;
-        }
-
-        public String getUsername() {
-            return username;
-        }
+    // ✅ 拼接 URL：避免 baseUrl 末尾带 / 导致双斜杠
+    private static String joinUrl(String baseUrl, String path) {
+        if (baseUrl == null) baseUrl = "";
+        if (path == null) path = "";
+        if (baseUrl.endsWith("/")) baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+        if (!path.startsWith("/")) path = "/" + path;
+        return baseUrl + path;
     }
 
     public static void login(final Context context, final String username, final String password,
                              final Callback<LoginResponse> callback) {
+
         String baseUrl = context.getString(R.string.api_base_url);
-        final String endpoint = baseUrl + "/api/auth/login";
+
+        // ✅ 改成 .php
+        final String endpoint = joinUrl(baseUrl, "/api/auth/login.php");
+
         final JSONObject payload = new JSONObject();
         try {
             payload.put("username", username);
@@ -74,6 +74,7 @@ public final class AuthApiClient {
             callback.onError(context.getString(R.string.login_error_invalid));
             return;
         }
+
         EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
@@ -84,11 +85,19 @@ public final class AuthApiClient {
                             String token = response.optString("token", "");
                             String userId = response.optString("userId", "");
                             String role = response.optString("role", "");
+
+                            // ✅ 兼容你当前 PHP 没返回 role 的情况：给一个默认值
+                            if (role == null || role.trim().isEmpty()) {
+                                role = "user";
+                            }
+
                             String displayName = response.optString("username", username);
-                            if (token.isEmpty() || role.isEmpty()) {
+
+                            if (token == null || token.trim().isEmpty()) {
                                 callback.onError(context.getString(R.string.login_error_invalid));
                                 return;
                             }
+
                             callback.onSuccess(new LoginResponse(token, userId, role, displayName));
                         } catch (Exception e) {
                             callback.onError(context.getString(R.string.login_error_invalid));
@@ -106,8 +115,12 @@ public final class AuthApiClient {
 
     public static void register(final Context context, final String username, final String password,
                                 final Callback<Void> callback) {
+
         String baseUrl = context.getString(R.string.api_base_url);
-        final String endpoint = baseUrl + "/api/auth/register";
+
+        // ✅ 改成 .php
+        final String endpoint = joinUrl(baseUrl, "/api/auth/register.php");
+
         final JSONObject payload = new JSONObject();
         try {
             payload.put("username", username);
@@ -116,6 +129,7 @@ public final class AuthApiClient {
             callback.onError(context.getString(R.string.register_error_failed));
             return;
         }
+
         EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
@@ -138,12 +152,15 @@ public final class AuthApiClient {
                                            final ResponseHandler handler, final Runnable onError) {
         final Handler mainHandler = new Handler(Looper.getMainLooper());
         HttpURLConnection connection = null;
+
         try {
             URL url = new URL(endpoint);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+
+            connection.setConnectTimeout(15000);
+            connection.setReadTimeout(15000);
+
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
@@ -160,9 +177,14 @@ public final class AuthApiClient {
             InputStream stream = responseCode >= 200 && responseCode < 300
                     ? connection.getInputStream()
                     : connection.getErrorStream();
+
             String responseText = readStream(stream);
+
             if (responseCode >= 200 && responseCode < 300) {
-                final JSONObject responseJson = responseText.isEmpty() ? new JSONObject() : new JSONObject(responseText);
+                final JSONObject responseJson = responseText.isEmpty()
+                        ? new JSONObject()
+                        : new JSONObject(responseText);
+
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -182,9 +204,7 @@ public final class AuthApiClient {
     }
 
     private static String readStream(InputStream stream) throws IOException {
-        if (stream == null) {
-            return "";
-        }
+        if (stream == null) return "";
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = null;
         try {
@@ -200,14 +220,10 @@ public final class AuthApiClient {
     }
 
     private static void closeQuietly(Closeable closeable) {
-        if (closeable == null) {
-            return;
-        }
+        if (closeable == null) return;
         try {
             closeable.close();
-        } catch (IOException ignored) {
-            // Ignore close errors.
-        }
+        } catch (IOException ignored) { }
     }
 
     private interface ResponseHandler {
