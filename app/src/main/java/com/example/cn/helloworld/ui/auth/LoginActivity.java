@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class LoginActivity extends BaseActivity {
 
     private EditText usernameInput;
     private EditText passwordInput;
+    private RadioGroup roleGroup;
     private boolean isInitialLanguageSelection = true;
 
     @Override
@@ -32,6 +34,7 @@ public class LoginActivity extends BaseActivity {
         passwordInput = (EditText) findViewById(R.id.edit_password);
         Button loginButton = (Button) findViewById(R.id.button_login);
         Button registerButton = (Button) findViewById(R.id.button_register);
+        roleGroup = (RadioGroup) findViewById(R.id.radio_group_role);
 
         setupLanguageSelector();
 
@@ -95,13 +98,15 @@ public class LoginActivity extends BaseActivity {
     private void handleLogin() {
         String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
+        String role = resolveSelectedRole();
 
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, R.string.login_error_empty_fields, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        AuthApiClient.login(this, username, password, new AuthApiClient.Callback<AuthApiClient.LoginResponse>() {
+        AuthApiClient.login(this, username, password, role,
+                new AuthApiClient.Callback<AuthApiClient.LoginResponse>() {
             @Override
             public void onSuccess(AuthApiClient.LoginResponse result) {
                 SessionManager.saveSession(LoginActivity.this, result.getUsername(), result.getRole(),
@@ -116,5 +121,17 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private String resolveSelectedRole() {
+        if (roleGroup == null) {
+            return getString(R.string.role_user_value);
+        }
+        int checkedId = roleGroup.getCheckedRadioButtonId();
+        View checkedView = roleGroup.findViewById(checkedId);
+        if (checkedView != null && checkedView.getTag() != null) {
+            return checkedView.getTag().toString();
+        }
+        return getString(R.string.role_user_value);
     }
 }

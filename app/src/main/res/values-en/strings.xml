@@ -62,7 +62,13 @@
     <string name="food_image_description">Food image</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="login_title">Login</string>
-    <string name="language_label">Language</string>
+    <string name="login_subtitle">Select language and sign-in role</string>
+    <string name="language_label">National languages</string>
+    <string name="role_label">Sign-in role</string>
+    <string name="role_user">User</string>
+    <string name="role_admin">Administrator</string>
+    <string name="role_user_value">user</string>
+    <string name="role_admin_value">admin</string>
     <string name="label_username">Username</string>
     <string name="label_password">Password</string>
     <string name="action_login">Log in</string>

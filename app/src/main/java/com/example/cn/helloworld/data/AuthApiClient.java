@@ -59,6 +59,7 @@ public final class AuthApiClient {
     }
 
     public static void login(final Context context, final String username, final String password,
+                             final String role,
                              final Callback<LoginResponse> callback) {
 
         String baseUrl = context.getString(R.string.api_base_url);
@@ -70,6 +71,7 @@ public final class AuthApiClient {
         try {
             payload.put("username", username);
             payload.put("password", password);
+            payload.put("role", role);
         } catch (JSONException e) {
             callback.onError(context.getString(R.string.login_error_invalid));
             return;
