@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
-import android.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.example.cn.helloworld.R;
 
