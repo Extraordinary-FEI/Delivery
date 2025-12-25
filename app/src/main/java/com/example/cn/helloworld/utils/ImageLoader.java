@@ -8,6 +8,8 @@ import com.bumptech.glide.Glide;
 import com.example.cn.helloworld.R;
 
 public final class ImageLoader {
+    private static final String PEXELS_IMAGE_HOST = "https://images.pexels.com/photos/";
+
     private ImageLoader() {
     }
 
@@ -16,10 +18,52 @@ public final class ImageLoader {
             imageView.setImageResource(R.mipmap.ic_launcher);
             return;
         }
+        String normalizedPath = normalizePath(path);
         Glide.with(context)
-                .load(path)
+                .load(normalizedPath)
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imageView);
+    }
+
+    private static String normalizePath(String path) {
+        String trimmed = path.trim();
+        String pexelsId = extractPexelsId(trimmed);
+        if (!TextUtils.isEmpty(pexelsId)) {
+            return PEXELS_IMAGE_HOST + pexelsId + "/pexels-photo-" + pexelsId + ".jpeg";
+        }
+        return trimmed;
+    }
+
+    private static String extractPexelsId(String url) {
+        int photoIndex = url.indexOf("/photo/");
+        if (photoIndex == -1) {
+            return null;
+        }
+        int start = photoIndex + "/photo/".length();
+        int end = start;
+        while (end < url.length()) {
+            char ch = url.charAt(end);
+            if (ch < '0' || ch > '9') {
+                break;
+            }
+            end++;
+        }
+        if (end > start) {
+            return url.substring(start, end);
+        }
+        int lastDash = url.lastIndexOf('-', url.length() - 1);
+        if (lastDash == -1 || lastDash + 1 >= url.length()) {
+            return null;
+        }
+        int idEnd = url.indexOf('/', lastDash);
+        if (idEnd == -1) {
+            idEnd = url.length();
+        }
+        String candidate = url.substring(lastDash + 1, idEnd);
+        if (TextUtils.isDigitsOnly(candidate)) {
+            return candidate;
+        }
+        return null;
     }
 }
