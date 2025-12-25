@@ -1,5 +1,6 @@
 package com.example.cn.helloworld.ui.entry;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -170,11 +171,21 @@ public class SettingsActivity extends BaseActivity {
     private void setupAvatarLaunchers() {
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                this::handleGalleryResult
+                new androidx.activity.result.ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        handleGalleryResult(result);
+                    }
+                }
         );
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                this::handleCameraResult
+                new androidx.activity.result.ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        handleCameraResult(result);
+                    }
+                }
         );
     }
 
@@ -184,11 +195,14 @@ public class SettingsActivity extends BaseActivity {
                 .setItems(new CharSequence[]{
                         getString(R.string.avatar_picker_gallery),
                         getString(R.string.avatar_picker_camera)
-                }, (dialog, which) -> {
-                    if (which == 0) {
-                        openGallery();
-                    } else if (which == 1) {
-                        openCamera();
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            openGallery();
+                        } else if (which == 1) {
+                            openCamera();
+                        }
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
