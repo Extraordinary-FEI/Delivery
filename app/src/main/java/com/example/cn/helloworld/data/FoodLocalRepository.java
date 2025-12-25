@@ -216,12 +216,6 @@ public class FoodLocalRepository {
                         new String[] { meta.id });
             }
         }
-        String seedId = getSeedId(db, food.getId());
-        String source = getSource(db, food.getId());
-        if (TextUtils.isEmpty(source)) {
-            source = SOURCE_USER;
-        }
-        upsertFood(db, food, seedId, source, true);
     }
 
     private void upsertUserFood(SQLiteDatabase db, Food food) {
