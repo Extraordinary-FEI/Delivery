@@ -133,10 +133,15 @@ public class UserDao {
     public UserProfile getProfile(int userId) {
         SQLiteDatabase db = helper.getReadableDatabase();
         boolean hasNickname = columnExists(db, "users", "nickname");
+        boolean hasAvatarUrl = columnExists(db, "users", "avatar_url");
         Cursor cursor = db.rawQuery(
                 hasNickname
+                        ? (hasAvatarUrl
                         ? "SELECT id, username, nickname, phone, avatar_url FROM users WHERE id=? LIMIT 1"
-                        : "SELECT id, username, phone, avatar_url FROM users WHERE id=? LIMIT 1",
+                        : "SELECT id, username, nickname, phone FROM users WHERE id=? LIMIT 1")
+                        : (hasAvatarUrl
+                        ? "SELECT id, username, phone, avatar_url FROM users WHERE id=? LIMIT 1"
+                        : "SELECT id, username, phone FROM users WHERE id=? LIMIT 1"),
                 new String[]{String.valueOf(userId)}
         );
         try {
@@ -148,7 +153,9 @@ public class UserDao {
                     cursor.getString(1),
                     hasNickname ? cursor.getString(2) : cursor.getString(1),
                     hasNickname ? cursor.getString(3) : cursor.getString(2),
-                    hasNickname ? cursor.getString(4) : cursor.getString(3)
+                    hasAvatarUrl
+                            ? (hasNickname ? cursor.getString(4) : cursor.getString(3))
+                            : null
             );
         } finally {
             if (cursor != null) {
@@ -164,7 +171,9 @@ public class UserDao {
             values.put("nickname", nickname);
         }
         values.put("phone", phone);
-        values.put("avatar_url", avatarUrl);
+        if (columnExists(db, "users", "avatar_url")) {
+            values.put("avatar_url", avatarUrl);
+        }
         return db.update("users", values, "id=?", new String[]{String.valueOf(userId)}) > 0;
     }
 
