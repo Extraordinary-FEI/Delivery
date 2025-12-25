@@ -1,11 +1,14 @@
 package com.example.cn.helloworld.ui.market;
 
 import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
     private FoodAdapter foodAdapter;
     private CategoryAdapter categoryAdapter;
     private String selectedCategory;
+    private String searchQuery = "";
     private TextView cartBadgeView;
 
     @Override
@@ -76,7 +80,7 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
             allFoods.clear();
             allFoods.addAll(repository.getFoods(this));
             buildCategories();
-            applyCategoryFilter();
+            applyFilters();
         } catch (java.io.IOException e) {
             Toast.makeText(this, R.string.error_food_load_failed, Toast.LENGTH_SHORT).show();
         }
@@ -97,16 +101,35 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
         categoryAdapter.notifyDataSetChanged();
     }
 
-    private void applyCategoryFilter() {
+    private void applyFilters() {
         visibleFoods.clear();
         String allCategory = getString(R.string.market_category_all);
+        String query = searchQuery == null ? "" : searchQuery.trim().toLowerCase();
         for (Food food : allFoods) {
             String foodCategory = resolveCategory(food);
-            if (allCategory.equals(selectedCategory) || selectedCategory.equals(foodCategory)) {
+            boolean categoryMatch = allCategory.equals(selectedCategory) || selectedCategory.equals(foodCategory);
+            if (!categoryMatch) {
+                continue;
+            }
+            if (TextUtils.isEmpty(query) || matchesQuery(food, query)) {
                 visibleFoods.add(food);
             }
         }
         foodAdapter.notifyDataSetChanged();
+    }
+
+    private boolean matchesQuery(Food food, String query) {
+        if (food == null) {
+            return false;
+        }
+        if (!TextUtils.isEmpty(food.getName()) && food.getName().toLowerCase().contains(query)) {
+            return true;
+        }
+        if (!TextUtils.isEmpty(food.getDescription()) && food.getDescription().toLowerCase().contains(query)) {
+            return true;
+        }
+        String category = resolveCategory(food);
+        return !TextUtils.isEmpty(category) && category.toLowerCase().contains(query);
     }
 
     private String resolveCategory(Food food) {
@@ -131,28 +154,17 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
         selectedCategory = category;
         categoryAdapter.setSelectedCategory(category);
         categoryAdapter.notifyDataSetChanged();
-        applyCategoryFilter();
+        applyFilters();
     }
 
     private void setupDockActions() {
         cartBadgeView = (TextView) findViewById(R.id.text_cart_badge);
         View searchButton = findViewById(R.id.button_market_search);
-        View moreButton = findViewById(R.id.button_market_more);
         if (searchButton != null) {
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(FoodMarketActivity.this, R.string.market_action_search,
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        if (moreButton != null) {
-            moreButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(FoodMarketActivity.this, R.string.market_action_more,
-                            Toast.LENGTH_SHORT).show();
+                    showSearchDialog();
                 }
             });
         }
@@ -203,5 +215,24 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
             cartBadgeView.setVisibility(View.VISIBLE);
             cartBadgeView.setText(String.valueOf(count));
         }
+    }
+
+    private void showSearchDialog() {
+        final EditText input = new EditText(this);
+        input.setHint(R.string.home_search_hint);
+        input.setText(searchQuery);
+        input.setSelection(input.getText().length());
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.market_action_search)
+                .setView(input)
+                .setPositiveButton(R.string.market_action_search, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        searchQuery = input.getText().toString().trim();
+                        applyFilters();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 }

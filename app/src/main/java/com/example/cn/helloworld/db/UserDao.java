@@ -140,10 +140,13 @@ public class UserDao {
         String passwordHash = sha256(password);
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor c = db.rawQuery(
-                "SELECT id, role FROM users WHERE username=? AND password_hash=?",
-                new String[]{username, passwordHash}
-        );
+        boolean hasPasswordColumn = columnExists(db, "users", "password");
+        StringBuilder query = new StringBuilder("SELECT id, role, password_hash");
+        if (hasPasswordColumn) {
+            query.append(", password");
+        }
+        query.append(" FROM users WHERE username=?");
+        Cursor c = db.rawQuery(query.toString(), new String[]{username});
 
         try {
             if (c == null || !c.moveToFirst()) {
@@ -152,6 +155,23 @@ public class UserDao {
 
             int userId = c.getInt(0);
             String roleInDb = c.getString(1);
+            String storedHash = c.getString(2);
+            boolean hashMatches = storedHash != null && storedHash.equals(passwordHash);
+            boolean legacyMatches = false;
+            if (!hashMatches && hasPasswordColumn) {
+                String storedPassword = c.getString(3);
+                legacyMatches = storedPassword != null && storedPassword.equals(password);
+                if (legacyMatches) {
+                    SQLiteDatabase writeDb = helper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put("password_hash", passwordHash);
+                    writeDb.update("users", values, "id=?", new String[]{String.valueOf(userId)});
+                }
+            }
+
+            if (!hashMatches && !legacyMatches) {
+                return new LoginResult(false, "账号或密码错误", -1, "", "");
+            }
 
             // 普通用户入口：永远只能是 user
             if (!"admin".equals(loginType)) {

@@ -39,16 +39,7 @@
                 android:id="@+id/button_market_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
                 android:text="@string/market_action_search"
-                android:textColor="@color/primary_color"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/button_market_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/market_action_more"
                 android:textColor="@color/primary_color"
                 android:textSize="14sp" />
         </LinearLayout>
