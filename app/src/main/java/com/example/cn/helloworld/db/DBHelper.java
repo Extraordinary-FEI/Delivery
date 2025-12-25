@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "delivery.db";
-    public static final int DB_VERSION = 4;
+    public static final int DB_VERSION = 5;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -59,6 +59,16 @@ public class DBHelper extends SQLiteOpenHelper {
             if (!columnExists(db, "users", "password")) {
                 db.execSQL("ALTER TABLE users ADD COLUMN password TEXT");
             }
+        }
+
+        if (oldVersion < 5) {
+            if (!columnExists(db, "users", "username")) {
+                db.execSQL("ALTER TABLE users ADD COLUMN username TEXT");
+            }
+            if (columnExists(db, "users", "nickname")) {
+                db.execSQL("UPDATE users SET username = nickname WHERE username IS NULL OR username = ''");
+            }
+            db.execSQL("UPDATE users SET username = 'user_' || id WHERE username IS NULL OR username = ''");
         }
     }
 

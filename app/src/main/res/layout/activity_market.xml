@@ -40,12 +40,21 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/button_market_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/market_action_search"
-                android:textColor="@color/primary_color"
+            <EditText
+                android:id="@+id/edit_market_search"
+                android:layout_width="@dimen/market_search_collapsed_size"
+                android:layout_height="@dimen/market_search_height"
+                android:background="@drawable/bg_search_collapsed"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:hint="@string/market_action_search"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="@color/primary_text"
+                android:textColorHint="@color/secondary_text"
                 android:textSize="14sp" />
         </LinearLayout>
 
