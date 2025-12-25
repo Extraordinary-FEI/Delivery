@@ -55,8 +55,8 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_apple_textfield"
             android:hint="@string/label_username"
-            android:hintTextColor="#9AA0A6"
             android:inputType="textPersonName"
+            android:textColorHint="#9AA0A6"
             android:textColor="@color/primary_text" />
 
         <EditText
@@ -66,8 +66,8 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_apple_textfield"
             android:hint="@string/label_password"
-            android:hintTextColor="#9AA0A6"
             android:inputType="textPassword"
+            android:textColorHint="#9AA0A6"
             android:textColor="@color/primary_text" />
 
         <TextView
@@ -112,8 +112,8 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_apple_textfield"
                 android:hint="@string/label_admin_code"
-                android:hintTextColor="#9AA0A6"
                 android:inputType="numberPassword"
+                android:textColorHint="#9AA0A6"
                 android:textColor="@color/primary_text" />
         </LinearLayout>
 
