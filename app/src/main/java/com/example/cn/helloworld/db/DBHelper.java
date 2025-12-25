@@ -60,6 +60,12 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS users");
+        onCreate(db);
+    }
+
     private static boolean columnExists(SQLiteDatabase db, String tableName, String columnName) {
         Cursor cursor = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
         try {
