@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "delivery.db";
-    public static final int DB_VERSION = 7;
+    public static final int DB_VERSION = 8;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -151,6 +151,10 @@ public class DBHelper extends SQLiteOpenHelper {
             if (!columnExists(db, "users", "points")) {
                 db.execSQL("ALTER TABLE users ADD COLUMN points INTEGER DEFAULT 0");
             }
+            createTables(db);
+        }
+
+        if (oldVersion < 8) {
             createTables(db);
         }
     }

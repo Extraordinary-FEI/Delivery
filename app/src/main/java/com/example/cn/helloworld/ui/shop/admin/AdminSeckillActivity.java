@@ -3,7 +3,9 @@ package com.example.cn.helloworld.ui.shop.admin;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import android.support.v7.app.AlertDialog;
@@ -11,9 +13,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.data.FoodLocalRepository;
 import com.example.cn.helloworld.data.model.SeckillItem;
 import com.example.cn.helloworld.db.SeckillDao;
+import com.example.cn.helloworld.model.Food;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,7 @@ public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.Ba
     private final List<SeckillItem> items = new ArrayList<SeckillItem>();
     private AdminSeckillAdapter adapter;
     private SeckillDao seckillDao;
+    private final FoodLocalRepository foodRepository = new FoodLocalRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,19 +98,29 @@ public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.Ba
 
     private void showEditDialog(final SeckillItem item) {
         View view = getLayoutInflater().inflate(R.layout.dialog_edit_seckill, null);
-        final EditText productInput = (EditText) view.findViewById(R.id.input_seckill_product);
+        final Spinner productSpinner = (Spinner) view.findViewById(R.id.spinner_seckill_product);
         final EditText priceInput = (EditText) view.findViewById(R.id.input_seckill_price);
         final EditText stockInput = (EditText) view.findViewById(R.id.input_seckill_stock);
         final EditText startInput = (EditText) view.findViewById(R.id.input_seckill_start);
         final EditText endInput = (EditText) view.findViewById(R.id.input_seckill_end);
 
+        final List<Food> foods = loadFoods();
+        final List<String> displayNames = buildFoodDisplayNames(foods);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, displayNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        productSpinner.setAdapter(adapter);
+
         long now = System.currentTimeMillis();
         if (item != null) {
-            productInput.setText(item.productId);
             priceInput.setText(String.valueOf(item.seckillPrice));
             stockInput.setText(String.valueOf(item.stock));
             startInput.setText(String.valueOf(item.startTime));
             endInput.setText(String.valueOf(item.endTime));
+            int selection = resolveSelectionIndex(foods, item.productId);
+            if (selection >= 0) {
+                productSpinner.setSelection(selection);
+            }
         } else {
             startInput.setText(String.valueOf(now));
             endInput.setText(String.valueOf(now + 2 * 60 * 60 * 1000));
@@ -116,7 +132,7 @@ public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.Ba
                 .setPositiveButton(R.string.common_save, new android.content.DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(android.content.DialogInterface dialog, int which) {
-                        String productId = productInput.getText().toString().trim();
+                        String productId = resolveProductId(foods, productSpinner.getSelectedItemPosition());
                         String priceText = priceInput.getText().toString().trim();
                         String stockText = stockInput.getText().toString().trim();
                         String startText = startInput.getText().toString().trim();
@@ -136,7 +152,7 @@ public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.Ba
                                 Long.parseLong(startText),
                                 Long.parseLong(endText),
                                 item == null ? 1 : item.status,
-                                item == null ? null : item.food
+                                resolveFoodById(foods, productId)
                         );
                         seckillDao.insertOrUpdate(updated);
                         loadItems();
@@ -144,5 +160,56 @@ public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.Ba
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
+    }
+
+    private List<Food> loadFoods() {
+        try {
+            return foodRepository.getFoods(this);
+        } catch (IOException e) {
+            return new ArrayList<Food>();
+        }
+    }
+
+    private List<String> buildFoodDisplayNames(List<Food> foods) {
+        List<String> display = new ArrayList<String>();
+        if (foods == null || foods.isEmpty()) {
+            display.add(getString(R.string.admin_seckill_no_products));
+            return display;
+        }
+        for (Food food : foods) {
+            display.add(food.getName() + " (" + food.getId() + ")");
+        }
+        return display;
+    }
+
+    private int resolveSelectionIndex(List<Food> foods, String productId) {
+        if (foods == null || TextUtils.isEmpty(productId)) {
+            return -1;
+        }
+        for (int i = 0; i < foods.size(); i++) {
+            if (productId.equals(foods.get(i).getId())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private String resolveProductId(List<Food> foods, int position) {
+        if (foods == null || foods.isEmpty() || position < 0 || position >= foods.size()) {
+            return "";
+        }
+        return foods.get(position).getId();
+    }
+
+    private Food resolveFoodById(List<Food> foods, String productId) {
+        if (foods == null || TextUtils.isEmpty(productId)) {
+            return null;
+        }
+        for (Food food : foods) {
+            if (productId.equals(food.getId())) {
+                return food;
+            }
+        }
+        return null;
     }
 }

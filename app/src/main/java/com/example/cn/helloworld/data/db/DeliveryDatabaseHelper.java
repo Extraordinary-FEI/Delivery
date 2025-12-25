@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "delivery.db";
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
 
     public static final String TABLE_USERS = "users";
     public static final String TABLE_SHOPS = "shops";
@@ -77,15 +77,26 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
                 + "user_id TEXT,"
                 + "shop_id TEXT,"
                 + "total_amount REAL,"
-                + "status TEXT,"
-                + "created_at INTEGER"
+                + "pay_amount REAL,"
+                + "coupon_name TEXT,"
+                + "coupon_discount REAL,"
+                + "address_detail TEXT,"
+                + "contact_name TEXT,"
+                + "contact_phone TEXT,"
+                + "status INTEGER,"
+                + "created_at INTEGER,"
+                + "paid_at INTEGER,"
+                + "updated_at INTEGER"
                 + ")");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ORDER_ITEMS + " ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "order_id TEXT,"
                 + "product_id TEXT,"
+                + "product_name TEXT,"
+                + "product_image_url TEXT,"
                 + "quantity INTEGER,"
-                + "price REAL"
+                + "price REAL,"
+                + "subtotal REAL"
                 + ")");
         db.execSQL("CREATE TABLE IF NOT EXISTS addresses ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -149,6 +160,42 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
         createTables(db);
         if (!columnExists(db, TABLE_USERS, "points")) {
             db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN points INTEGER DEFAULT 0");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "pay_amount")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN pay_amount REAL");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "coupon_name")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN coupon_name TEXT");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "coupon_discount")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN coupon_discount REAL");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "address_detail")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN address_detail TEXT");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "contact_name")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN contact_name TEXT");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "contact_phone")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN contact_phone TEXT");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "status")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN status INTEGER");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "paid_at")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN paid_at INTEGER");
+        }
+        if (!columnExists(db, TABLE_ORDERS, "updated_at")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN updated_at INTEGER");
+        }
+        if (!columnExists(db, TABLE_ORDER_ITEMS, "product_name")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDER_ITEMS + " ADD COLUMN product_name TEXT");
+        }
+        if (!columnExists(db, TABLE_ORDER_ITEMS, "product_image_url")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDER_ITEMS + " ADD COLUMN product_image_url TEXT");
+        }
+        if (!columnExists(db, TABLE_ORDER_ITEMS, "subtotal")) {
+            db.execSQL("ALTER TABLE " + TABLE_ORDER_ITEMS + " ADD COLUMN subtotal REAL");
         }
     }
 

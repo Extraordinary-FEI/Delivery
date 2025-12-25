@@ -53,6 +53,10 @@
             android:label="@string/admin_manage_foods" />
 
         <activity
+            android:name=".ui.shop.admin.AdminCategoryActivity"
+            android:label="@string/admin_manage_categories" />
+
+        <activity
             android:name=".ui.shop.admin.AdminSeckillActivity"
             android:label="@string/admin_seckill_title" />
 
@@ -123,6 +127,10 @@
         <activity
             android:name=".ui.order.ReviewActivity"
             android:label="@string/review_title" />
+
+        <activity
+            android:name=".ui.order.OrderListActivity"
+            android:label="@string/title_order_list" />
 
         <activity
             android:name=".ui.order.CheckoutActivity"

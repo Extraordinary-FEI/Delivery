@@ -34,6 +34,15 @@ public class AdminDashboardActivity extends BaseActivity {
             }
         });
 
+        View categoryManage = findViewById(R.id.card_manage_categories);
+        categoryManage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminDashboardActivity.this, AdminCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
         View seckillManage = findViewById(R.id.card_manage_seckill);
         seckillManage.setOnClickListener(new View.OnClickListener() {
             @Override

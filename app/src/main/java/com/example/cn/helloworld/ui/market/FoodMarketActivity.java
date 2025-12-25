@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.data.FoodLocalRepository;
 import com.example.cn.helloworld.data.cart.CartManager;
+import com.example.cn.helloworld.db.CategoryDao;
 import com.example.cn.helloworld.model.Food;
 import com.example.cn.helloworld.ui.cart.CartActivity;
 import com.example.cn.helloworld.ui.common.BaseActivity;
@@ -47,6 +48,7 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
     private EditText searchInput;
     private int searchCollapsedSize;
     private int searchExpandedWidth;
+    private CategoryDao categoryDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
         setupBackButton();
         setupSearchBar();
         setupDockActions();
+        categoryDao = new CategoryDao(this);
 
         RecyclerView categoryList = (RecyclerView) findViewById(R.id.recycler_market_categories);
         categoryList.setLayoutManager(new LinearLayoutManager(this));
@@ -97,6 +100,10 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
     private void buildCategories() {
         Set<String> categorySet = new LinkedHashSet<String>();
         categorySet.add(getString(R.string.market_category_all));
+        List<String> storedCategories = categoryDao.getCategoryNames();
+        if (!storedCategories.isEmpty()) {
+            categorySet.addAll(storedCategories);
+        }
         for (Food food : allFoods) {
             categorySet.add(resolveCategory(food));
         }

@@ -13,6 +13,7 @@ import com.example.cn.helloworld.utils.ImageLoader;
 import com.example.cn.helloworld.utils.SessionManager;
 import com.example.cn.helloworld.ui.entry.FavoritesActivity;
 import com.example.cn.helloworld.ui.entry.HistoryActivity;
+import com.example.cn.helloworld.ui.order.OrderListActivity;
 
 public class MemberCenterActivity extends BaseActivity {
     @Override
@@ -75,6 +76,36 @@ public class MemberCenterActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MemberCenterActivity.this, SettingsActivity.class));
+            }
+        });
+        findViewById(R.id.text_all_orders).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openOrderList(OrderListActivity.FILTER_ALL);
+            }
+        });
+        findViewById(R.id.entry_order_all).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openOrderList(OrderListActivity.FILTER_ALL);
+            }
+        });
+        findViewById(R.id.entry_order_pending).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openOrderList(OrderListActivity.FILTER_PENDING);
+            }
+        });
+        findViewById(R.id.entry_order_review).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openOrderList(OrderListActivity.FILTER_COMPLETED);
+            }
+        });
+        findViewById(R.id.entry_order_refund).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openOrderList(OrderListActivity.FILTER_ALL);
             }
         });
 
@@ -160,5 +191,11 @@ public class MemberCenterActivity extends BaseActivity {
             return getString(R.string.member_profile_phone_unbound);
         }
         return phone.substring(0, 3) + "****" + phone.substring(phone.length() - 4);
+    }
+
+    private void openOrderList(int filter) {
+        Intent intent = new Intent(this, OrderListActivity.class);
+        intent.putExtra(OrderListActivity.EXTRA_FILTER, filter);
+        startActivity(intent);
     }
 }

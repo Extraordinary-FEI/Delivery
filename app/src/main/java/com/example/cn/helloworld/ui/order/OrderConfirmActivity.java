@@ -2,14 +2,13 @@ package com.example.cn.helloworld.ui.order;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
-import com.example.cn.helloworld.data.cart.CartManager;
 import com.example.cn.helloworld.db.OrderDao;
 import com.example.cn.helloworld.db.UserDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
@@ -17,8 +16,8 @@ import com.example.cn.helloworld.ui.common.BaseActivity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 public class OrderConfirmActivity extends BaseActivity {
     public static final String EXTRA_ORDER_ID = "extra_order_id";
@@ -30,8 +29,21 @@ public class OrderConfirmActivity extends BaseActivity {
     private TextView orderIdView;
     private TextView orderTimeView;
     private TextView orderTotalView;
+    private TextView orderCouponView;
+    private TextView orderPayAmountView;
+    private TextView orderStatusView;
+    private TextView orderAddressView;
+    private TextView orderContactView;
+    private TextView stepPendingView;
+    private TextView stepPackingView;
+    private TextView stepDeliveringView;
+    private TextView stepDeliveredView;
+    private View lineStepOne;
+    private View lineStepTwo;
+    private View lineStepThree;
     private LinearLayout itemsContainer;
     private Button payButton;
+    private Button confirmReceiveButton;
     private Button reviewButton;
     private ArrayList<String> orderItems;
     private String orderId;
@@ -39,6 +51,7 @@ public class OrderConfirmActivity extends BaseActivity {
     private int userId;
     private OrderDao orderDao;
     private UserDao userDao;
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +62,21 @@ public class OrderConfirmActivity extends BaseActivity {
         orderIdView = (TextView) findViewById(R.id.order_id);
         orderTimeView = (TextView) findViewById(R.id.order_time);
         orderTotalView = (TextView) findViewById(R.id.order_total);
+        orderCouponView = (TextView) findViewById(R.id.order_coupon);
+        orderPayAmountView = (TextView) findViewById(R.id.order_pay_amount);
+        orderStatusView = (TextView) findViewById(R.id.text_order_status);
+        orderAddressView = (TextView) findViewById(R.id.text_order_address);
+        orderContactView = (TextView) findViewById(R.id.text_order_contact);
+        stepPendingView = (TextView) findViewById(R.id.text_step_pending);
+        stepPackingView = (TextView) findViewById(R.id.text_step_packing);
+        stepDeliveringView = (TextView) findViewById(R.id.text_step_delivering);
+        stepDeliveredView = (TextView) findViewById(R.id.text_step_delivered);
+        lineStepOne = findViewById(R.id.line_step_one);
+        lineStepTwo = findViewById(R.id.line_step_two);
+        lineStepThree = findViewById(R.id.line_step_three);
         itemsContainer = (LinearLayout) findViewById(R.id.items_container);
         payButton = (Button) findViewById(R.id.pay_button);
+        confirmReceiveButton = (Button) findViewById(R.id.button_confirm_receive);
         reviewButton = (Button) findViewById(R.id.button_review);
         orderDao = new OrderDao(this);
         userDao = new UserDao(this);
@@ -60,7 +86,14 @@ public class OrderConfirmActivity extends BaseActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                simulatePayment();
+                payOrder();
+            }
+        });
+
+        confirmReceiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDelivery();
             }
         });
 
@@ -70,6 +103,12 @@ public class OrderConfirmActivity extends BaseActivity {
                 openReview();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bindOrderFromDatabase(orderId, null);
     }
 
     private void bindOrderData() {
@@ -89,18 +128,59 @@ public class OrderConfirmActivity extends BaseActivity {
         }
         if (orderItems == null || orderItems.isEmpty()) {
             orderItems = new ArrayList<String>();
-            orderItems.add("黑椒牛排套餐 x1");
-            orderItems.add("经典意面 x1");
-            orderItems.add("冰柠檬茶 x2");
         }
         if (orderTotal < 0) {
             orderTotal = orderItems.size() * 18.0;
         }
 
-        orderIdView.setText("订单号：" + orderId);
-        orderTimeView.setText("下单时间：" + orderTime);
-        orderTotalView.setText(String.format(Locale.getDefault(), "总价：¥%.2f", orderTotal));
+        bindOrderFromDatabase(orderId, orderTime);
+    }
 
+    private void bindOrderFromDatabase(String orderId, String fallbackTime) {
+        OrderDao.OrderDetail detail = orderDao.getOrderDetail(orderId);
+        if (detail != null) {
+            orderIdView.setText(getString(R.string.order_id_format, detail.orderId));
+            String orderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    .format(new Date(detail.createdAt));
+            orderTimeView.setText(getString(R.string.order_time_format, orderTime));
+            orderTotalView.setText(getString(R.string.order_total_format, detail.totalAmount));
+            orderTotal = detail.payAmount;
+            if (detail.couponName == null || detail.couponName.trim().isEmpty()) {
+                orderCouponView.setText(getString(R.string.order_coupon_none));
+            } else {
+                orderCouponView.setText(getString(R.string.order_coupon_format, detail.couponName,
+                        detail.couponDiscount));
+            }
+            orderPayAmountView.setText(getString(R.string.order_pay_amount_format, detail.payAmount));
+            orderAddressView.setText(getString(R.string.order_address_format,
+                    safeText(detail.addressDetail)));
+            orderContactView.setText(getString(R.string.order_contact_format,
+                    safeText(detail.contactName), maskPhone(detail.contactPhone)));
+            renderStatus(detail.status);
+            bindOrderItems(orderDao.getOrderItems(orderId));
+            return;
+        }
+        String orderTime = fallbackTime == null ? "" : fallbackTime;
+        orderIdView.setText(getString(R.string.order_id_format, orderId));
+        orderTimeView.setText(getString(R.string.order_time_format, orderTime));
+        orderTotalView.setText(String.format(Locale.getDefault(), "总价：¥%.2f", orderTotal));
+        bindOrderItemsFromExtras();
+        renderStatus(OrderDao.STATUS_PENDING_PAY);
+    }
+
+    private void bindOrderItems(List<OrderDao.OrderItemDetail> items) {
+        itemsContainer.removeAllViews();
+        if (items == null || items.isEmpty()) {
+            bindOrderItemsFromExtras();
+            return;
+        }
+        for (OrderDao.OrderItemDetail item : items) {
+            String label = item.productName + " x" + item.quantity;
+            itemsContainer.addView(createItemView(label));
+        }
+    }
+
+    private void bindOrderItemsFromExtras() {
         itemsContainer.removeAllViews();
         for (String item : orderItems) {
             itemsContainer.addView(createItemView(item));
@@ -117,73 +197,115 @@ public class OrderConfirmActivity extends BaseActivity {
         return textView;
     }
 
-    private void simulatePayment() {
-        final boolean success = new Random().nextBoolean();
-        String message = success ? "支付成功，感谢您的购买。" : "支付失败，请稍后重试。";
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("支付结果")
-                .setMessage(message)
-                .setCancelable(false);
-
-        if (success) {
-            builder.setPositiveButton("去评价", null);
-            builder.setNegativeButton("返回首页", null);
-        } else {
-            builder.setPositiveButton("知道了", null);
+    private void payOrder() {
+        if (orderDao.getOrderStatus(orderId) != OrderDao.STATUS_PENDING_PAY) {
+            return;
         }
+        orderDao.updateOrderStatus(orderId, OrderDao.STATUS_PAID);
+        scheduleStatusFlow();
+        renderStatus(OrderDao.STATUS_PAID);
+    }
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-        if (success) {
-            persistOrder();
-            reviewButton.setEnabled(true);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    openReview();
-                }
-            });
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    clearCart();
-                    returnToHome();
-                }
-            });
+    private void scheduleStatusFlow() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateStatusIfMatch(OrderDao.STATUS_PAID, OrderDao.STATUS_PACKING);
+            }
+        }, 8000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateStatusIfMatch(OrderDao.STATUS_PACKING, OrderDao.STATUS_DELIVERING);
+            }
+        }, 16000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateStatusIfMatch(OrderDao.STATUS_DELIVERING, OrderDao.STATUS_DELIVERED);
+            }
+        }, 24000);
+    }
+
+    private void updateStatusIfMatch(int expected, int next) {
+        int current = orderDao.getOrderStatus(orderId);
+        if (current == expected) {
+            orderDao.updateOrderStatus(orderId, next);
+            renderStatus(next);
+            if (next == OrderDao.STATUS_DELIVERED) {
+                grantPoints();
+            }
         }
     }
 
-    private void persistOrder() {
-        ArrayList<OrderDao.OrderItem> items = new ArrayList<OrderDao.OrderItem>();
-        for (String item : orderItems) {
-            OrderDao.OrderItem orderItem = parseOrderItem(item);
-            if (orderItem != null) {
-                items.add(orderItem);
-            }
+    private void confirmDelivery() {
+        int current = orderDao.getOrderStatus(orderId);
+        if (current == OrderDao.STATUS_DELIVERED) {
+            return;
         }
-        orderDao.insertOrder(userId, orderId, orderTotal, items);
+        orderDao.updateOrderStatus(orderId, OrderDao.STATUS_DELIVERED);
+        renderStatus(OrderDao.STATUS_DELIVERED);
+        grantPoints();
+    }
+
+    private void grantPoints() {
         int points = (int) Math.floor(orderTotal);
         userDao.addPoints(userId, points);
-        clearCart();
+        reviewButton.setEnabled(true);
     }
 
-    private OrderDao.OrderItem parseOrderItem(String item) {
-        if (item == null) {
-            return null;
+    private void renderStatus(int status) {
+        orderStatusView.setText(getStatusLabel(status));
+        highlightStep(status);
+        payButton.setVisibility(status == OrderDao.STATUS_PENDING_PAY ? View.VISIBLE : View.GONE);
+        confirmReceiveButton.setVisibility(status == OrderDao.STATUS_DELIVERING ? View.VISIBLE : View.GONE);
+        reviewButton.setEnabled(status == OrderDao.STATUS_DELIVERED);
+    }
+
+    private void highlightStep(int status) {
+        int activeColor = getResources().getColor(R.color.primary_color);
+        int inactiveColor = getResources().getColor(R.color.secondary_text);
+        int lineActive = getResources().getColor(R.color.primary_color);
+        int lineInactive = getResources().getColor(R.color.divider_color);
+
+        stepPendingView.setTextColor(activeColor);
+        stepPackingView.setTextColor(status >= OrderDao.STATUS_PACKING ? activeColor : inactiveColor);
+        stepDeliveringView.setTextColor(status >= OrderDao.STATUS_DELIVERING ? activeColor : inactiveColor);
+        stepDeliveredView.setTextColor(status >= OrderDao.STATUS_DELIVERED ? activeColor : inactiveColor);
+
+        lineStepOne.setBackgroundColor(status >= OrderDao.STATUS_PACKING ? lineActive : lineInactive);
+        lineStepTwo.setBackgroundColor(status >= OrderDao.STATUS_DELIVERING ? lineActive : lineInactive);
+        lineStepThree.setBackgroundColor(status >= OrderDao.STATUS_DELIVERED ? lineActive : lineInactive);
+    }
+
+    private String getStatusLabel(int status) {
+        switch (status) {
+            case OrderDao.STATUS_PENDING_PAY:
+                return getString(R.string.order_status_pending);
+            case OrderDao.STATUS_PAID:
+                return getString(R.string.order_status_paid);
+            case OrderDao.STATUS_PACKING:
+                return getString(R.string.order_status_packing);
+            case OrderDao.STATUS_DELIVERING:
+                return getString(R.string.order_status_delivering);
+            case OrderDao.STATUS_DELIVERED:
+                return getString(R.string.order_status_delivered);
+            case OrderDao.STATUS_CANCELLED:
+                return getString(R.string.order_status_cancelled);
+            default:
+                return getString(R.string.order_status_pending);
         }
-        String[] parts = item.split(" x");
-        String name = parts[0].trim();
-        int quantity = 1;
-        if (parts.length > 1) {
-            try {
-                quantity = Integer.parseInt(parts[1].trim());
-            } catch (NumberFormatException ignored) {
-                quantity = 1;
-            }
+    }
+
+    private String maskPhone(String phone) {
+        if (phone == null || phone.length() < 7) {
+            return getString(R.string.address_phone_placeholder);
         }
-        return new OrderDao.OrderItem(name, quantity, 0);
+        return phone.substring(0, 3) + "****" + phone.substring(phone.length() - 4);
+    }
+
+    private String safeText(String value) {
+        return value == null ? "" : value.trim();
     }
 
     private void openReview() {
@@ -194,27 +316,24 @@ public class OrderConfirmActivity extends BaseActivity {
 
     private ArrayList<String> buildReviewItems() {
         ArrayList<String> reviewItems = new ArrayList<String>();
-        if (orderItems == null) {
+        List<OrderDao.OrderItemDetail> items = orderDao.getOrderItems(orderId);
+        if (items != null && !items.isEmpty()) {
+            for (OrderDao.OrderItemDetail item : items) {
+                if (item != null && item.productName != null && !reviewItems.contains(item.productName)) {
+                    reviewItems.add(item.productName);
+                }
+            }
             return reviewItems;
         }
-        for (String item : orderItems) {
-            OrderDao.OrderItem parsed = parseOrderItem(item);
-            if (parsed != null && !reviewItems.contains(parsed.productId)) {
-                reviewItems.add(parsed.productId);
+        if (orderItems != null) {
+            for (String item : orderItems) {
+                String[] parts = item.split(" x");
+                String name = parts[0].trim();
+                if (!reviewItems.contains(name)) {
+                    reviewItems.add(name);
+                }
             }
         }
         return reviewItems;
-    }
-
-    private void clearCart() {
-        CartManager.getInstance(this).clear();
-    }
-
-    private void returnToHome() {
-        Intent intent = new Intent();
-        intent.setClassName(this, "com.example.cn.helloworld.ui.main.MainActivity");
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 }

@@ -23,6 +23,7 @@ public class FoodEditActivity extends BaseActivity {
     private EditText nameInput;
     private EditText priceInput;
     private EditText descriptionInput;
+    private EditText categoryInput;
     private EditText imageInput;
     private EditText shopIdInput;
     private ImageView previewImage;
@@ -39,6 +40,7 @@ public class FoodEditActivity extends BaseActivity {
         nameInput = (EditText) findViewById(R.id.input_food_name);
         priceInput = (EditText) findViewById(R.id.input_food_price);
         descriptionInput = (EditText) findViewById(R.id.input_food_description);
+        categoryInput = (EditText) findViewById(R.id.input_food_category);
         imageInput = (EditText) findViewById(R.id.input_food_image);
         previewImage = (ImageView) findViewById(R.id.image_food_preview);
         imageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -82,6 +84,7 @@ public class FoodEditActivity extends BaseActivity {
             nameInput.setText(food.getName());
             priceInput.setText(String.valueOf(food.getPrice()));
             descriptionInput.setText(food.getDescription());
+            categoryInput.setText(food.getCategory());
             imageInput.setText(food.getImageUrl());
             ImageLoader.load(this, previewImage, food.getImageUrl());
             shopId = food.getShopId();
@@ -97,6 +100,7 @@ public class FoodEditActivity extends BaseActivity {
         String name = nameInput.getText().toString().trim();
         String priceValue = priceInput.getText().toString().trim();
         String description = descriptionInput.getText().toString().trim();
+        String category = categoryInput.getText().toString().trim();
         String imageUrl = imageInput.getText().toString().trim();
 
         if (TextUtils.isEmpty(resolvedShopId)) {
@@ -120,7 +124,7 @@ public class FoodEditActivity extends BaseActivity {
             foodId = "food_" + System.currentTimeMillis();
         }
 
-        Food food = new Food(foodId, name, resolvedShopId, description, price, imageUrl);
+        Food food = new Food(foodId, name, resolvedShopId, description, price, imageUrl, category);
         try {
             repository.updateFood(this, food);
             Toast.makeText(this, R.string.action_saved, Toast.LENGTH_SHORT).show();
