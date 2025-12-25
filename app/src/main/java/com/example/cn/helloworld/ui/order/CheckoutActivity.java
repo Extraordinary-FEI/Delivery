@@ -14,6 +14,7 @@ import com.example.cn.helloworld.db.CouponDao;
 import com.example.cn.helloworld.db.OrderDao;
 import com.example.cn.helloworld.ui.address.AddressListActivity;
 import com.example.cn.helloworld.ui.common.BaseActivity;
+import com.example.cn.helloworld.utils.AddressUtils;
 import com.example.cn.helloworld.utils.SessionManager;
 
 import java.math.BigDecimal;
@@ -126,7 +127,7 @@ public class CheckoutActivity extends BaseActivity {
             return;
         }
         String detail = getString(R.string.address_detail_format,
-                safeText(selectedAddress.getDetail()),
+                AddressUtils.buildFullAddress(selectedAddress),
                 safeText(selectedAddress.getContactName()),
                 maskPhone(selectedAddress.getContactPhone()));
         addressDetailView.setText(detail);
@@ -174,7 +175,7 @@ public class CheckoutActivity extends BaseActivity {
         boolean canUse = offer.canUse(totalAmount);
         double discount = canUse ? offer.discount : 0;
         double payAmount = Math.max(0, totalAmount - discount);
-        String addressDetail = safeText(selectedAddress.getDetail());
+        String addressDetail = AddressUtils.buildFullAddress(selectedAddress);
         String contactName = safeText(selectedAddress.getContactName());
         String contactPhone = safeText(selectedAddress.getContactPhone());
         orderDao.insertOrder(userId, orderId, totalAmount, payAmount, canUse ? offer.name : "",

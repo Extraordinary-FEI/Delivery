@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.data.model.Address;
+import com.example.cn.helloworld.utils.AddressUtils;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         final Address address = addresses.get(position);
         holder.nameView.setText(safeText(address.getContactName()));
         holder.phoneView.setText(safeText(address.getContactPhone()));
-        holder.detailView.setText(safeText(address.getDetail()));
+        holder.detailView.setText(AddressUtils.buildFullAddress(address));
         holder.defaultView.setVisibility(address.isDefault() ? View.VISIBLE : View.GONE);
         holder.setDefaultButton.setVisibility(address.isDefault() ? View.GONE : View.VISIBLE);
 

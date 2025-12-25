@@ -29,6 +29,7 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
         createTables(db);
+        ensureColumns(db);
     }
 
     private void createTables(SQLiteDatabase db) {
@@ -158,6 +159,10 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         createTables(db);
+        ensureColumns(db);
+    }
+
+    private void ensureColumns(SQLiteDatabase db) {
         if (!columnExists(db, TABLE_USERS, "points")) {
             db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN points INTEGER DEFAULT 0");
         }

@@ -21,7 +21,7 @@ public class AddressDao {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(
                 "addresses",
-                new String[]{"id", "user_id", "contact_name", "contact_phone", "detail", "is_default", "created_at"},
+                new String[]{"id", "user_id", "contact_name", "contact_phone", "province", "city", "district", "detail", "is_default", "created_at"},
                 "user_id = ?",
                 new String[]{String.valueOf(userId)},
                 null,
@@ -43,7 +43,7 @@ public class AddressDao {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(
                 "addresses",
-                new String[]{"id", "user_id", "contact_name", "contact_phone", "detail", "is_default", "created_at"},
+                new String[]{"id", "user_id", "contact_name", "contact_phone", "province", "city", "district", "detail", "is_default", "created_at"},
                 "user_id = ? AND id = ?",
                 new String[]{String.valueOf(userId), String.valueOf(addressId)},
                 null,
@@ -64,7 +64,7 @@ public class AddressDao {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(
                 "addresses",
-                new String[]{"id", "user_id", "contact_name", "contact_phone", "detail", "is_default", "created_at"},
+                new String[]{"id", "user_id", "contact_name", "contact_phone", "province", "city", "district", "detail", "is_default", "created_at"},
                 "user_id = ? AND is_default = 1",
                 new String[]{String.valueOf(userId)},
                 null,
@@ -91,6 +91,9 @@ public class AddressDao {
         values.put("user_id", address.getUserId());
         values.put("contact_name", address.getContactName());
         values.put("contact_phone", address.getContactPhone());
+        values.put("province", address.getProvince());
+        values.put("city", address.getCity());
+        values.put("district", address.getDistrict());
         values.put("detail", address.getDetail());
         values.put("is_default", address.isDefault() ? 1 : 0);
         values.put("created_at", address.getCreatedAt());
@@ -135,8 +138,11 @@ public class AddressDao {
                 cursor.getString(2),
                 cursor.getString(3),
                 cursor.getString(4),
-                cursor.getInt(5) == 1,
-                cursor.getLong(6)
+                cursor.getString(5),
+                cursor.getString(6),
+                cursor.getString(7),
+                cursor.getInt(8) == 1,
+                cursor.getLong(9)
         );
     }
 
@@ -153,4 +159,3 @@ public class AddressDao {
         }
     }
 }
-

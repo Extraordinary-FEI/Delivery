@@ -321,15 +321,19 @@
     <string name="address_set_default">设为默认</string>
     <string name="address_field_name">联系人</string>
     <string name="address_field_phone">联系电话</string>
+    <string name="address_field_region">省市区</string>
     <string name="address_field_detail">详细地址</string>
     <string name="address_hint_name">请输入联系人</string>
     <string name="address_hint_phone">请输入手机号</string>
+    <string name="address_hint_region">请选择省市区</string>
     <string name="address_hint_detail">请输入详细地址</string>
     <string name="address_empty">暂无地址</string>
     <string name="address_error_name">请输入联系人</string>
+    <string name="address_error_region">请选择省市区</string>
     <string name="address_error_detail">请输入详细地址</string>
     <string name="address_save_success">地址已保存</string>
     <string name="address_save_failed">保存地址失败</string>
+    <string name="address_region_load_failed">加载省市区失败</string>
     <string name="address_delete_success">地址已删除</string>
     <string name="address_delete_failed">删除地址失败</string>
     <string name="address_default_set">默认地址已更新</string>
@@ -376,6 +380,7 @@
     <string name="order_coupon_format">优惠券：%1$s（-¥%2$.2f）</string>
     <string name="order_pay_amount_format">实付：¥%1$.2f</string>
     <string name="order_address_format">收货地址：%1$s</string>
+    <string name="address_picker_title">选择省市区</string>
     <string name="order_contact_format">收货人：%1$s %2$s</string>
     <string name="order_filter_all">全部</string>
     <string name="order_filter_pending">待支付</string>

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "delivery.db";
-    public static final int DB_VERSION = 8;
+    public static final int DB_VERSION = 9;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -43,6 +43,9 @@ public class DBHelper extends SQLiteOpenHelper {
                         "user_id INTEGER NOT NULL," +
                         "contact_name TEXT," +
                         "contact_phone TEXT," +
+                        "province TEXT," +
+                        "city TEXT," +
+                        "district TEXT," +
                         "detail TEXT," +
                         "is_default INTEGER DEFAULT 0," +
                         "created_at INTEGER" +
@@ -155,6 +158,19 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         if (oldVersion < 8) {
+            createTables(db);
+        }
+
+        if (oldVersion < 9) {
+            if (!columnExists(db, "addresses", "province")) {
+                db.execSQL("ALTER TABLE addresses ADD COLUMN province TEXT");
+            }
+            if (!columnExists(db, "addresses", "city")) {
+                db.execSQL("ALTER TABLE addresses ADD COLUMN city TEXT");
+            }
+            if (!columnExists(db, "addresses", "district")) {
+                db.execSQL("ALTER TABLE addresses ADD COLUMN district TEXT");
+            }
             createTables(db);
         }
     }
