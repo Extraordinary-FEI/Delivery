@@ -93,8 +93,28 @@
             android:label="@string/points_center_title" />
 
         <activity
+            android:name=".ui.entry.PointsRuleActivity"
+            android:label="@string/points_rule_title" />
+
+        <activity
             android:name=".ui.entry.ServiceHelpActivity"
             android:label="@string/service_help_title" />
+
+        <activity
+            android:name=".ui.entry.FaqActivity"
+            android:label="@string/service_faq_title" />
+
+        <activity
+            android:name=".ui.entry.FeedbackSubmitActivity"
+            android:label="@string/feedback_submit_title" />
+
+        <activity
+            android:name=".ui.entry.AfterSaleActivity"
+            android:label="@string/member_profile_order_refund" />
+
+        <activity
+            android:name=".ui.entry.FeedbackDetailActivity"
+            android:label="@string/feedback_detail_title" />
 
         <activity
             android:name=".ui.entry.SettingsActivity"

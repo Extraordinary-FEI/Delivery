@@ -25,95 +25,95 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/service_help_title"
+            android:text="@string/feedback_detail_title"
             android:textColor="@color/primary_text"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/card_faq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_card"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
             android:orientation="vertical"
             android:padding="14dp">
 
             <TextView
+                android:id="@+id/text_feedback_detail_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/service_faq_title"
+                android:text="@string/feedback_type_complaint"
                 android:textColor="@color/primary_text"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/text_feedback_detail_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/service_faq_desc"
-                android:textColor="@color/secondary_text" />
+                android:text="@string/feedback_status_pending"
+                android:textColor="@color/primary_color"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/text_feedback_detail_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/points_log_time_placeholder"
+                android:textColor="@color/profile_muted_text"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/card_service_chat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_card"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="14dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/service_chat_title"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/service_chat_desc"
-                android:textColor="@color/secondary_text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/card_feedback"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_card"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="14dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/service_feedback_title"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/service_feedback_desc"
-                android:textColor="@color/secondary_text" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/text_service_admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/service_user_hint"
-            android:textColor="@color/secondary_text" />
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/feedback_content_title"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_feedback_detail_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/feedback_content_hint"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/feedback_reply_title"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_feedback_detail_reply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/feedback_reply_placeholder"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
+

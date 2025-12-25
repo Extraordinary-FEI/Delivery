@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "delivery.db";
-    public static final int DB_VERSION = 9;
+    public static final int DB_VERSION = 10;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -34,7 +34,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         "nickname TEXT," +
                         "avatar_url TEXT," +
                         "created_at INTEGER NOT NULL," +
-                        "points INTEGER DEFAULT 0" +
+                        "points INTEGER DEFAULT 0," +
+                        "birthday TEXT" +
                         ");"
         );
         db.execSQL(
@@ -107,6 +108,29 @@ public class DBHelper extends SQLiteOpenHelper {
                         "created_at INTEGER" +
                         ");"
         );
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS points_log (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "user_id INTEGER NOT NULL," +
+                        "change INTEGER NOT NULL," +
+                        "type TEXT NOT NULL," +
+                        "ref_id TEXT," +
+                        "remark TEXT," +
+                        "created_at INTEGER NOT NULL" +
+                        ");"
+        );
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS feedback (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "user_id INTEGER NOT NULL," +
+                        "type TEXT NOT NULL," +
+                        "content TEXT NOT NULL," +
+                        "status INTEGER DEFAULT 0," +
+                        "created_at INTEGER NOT NULL," +
+                        "updated_at INTEGER," +
+                        "reply TEXT" +
+                        ");"
+        );
     }
 
     @Override
@@ -170,6 +194,12 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             if (!columnExists(db, "addresses", "district")) {
                 db.execSQL("ALTER TABLE addresses ADD COLUMN district TEXT");
+            }
+            createTables(db);
+        }
+        if (oldVersion < 10) {
+            if (!columnExists(db, "users", "birthday")) {
+                db.execSQL("ALTER TABLE users ADD COLUMN birthday TEXT");
             }
             createTables(db);
         }

@@ -54,14 +54,17 @@ public class UserDao {
         public String phone;
         public String avatarUrl;
         public int points;
+        public String birthday;
 
-        public UserProfile(int userId, String username, String nickname, String phone, String avatarUrl, int points) {
+        public UserProfile(int userId, String username, String nickname, String phone, String avatarUrl, int points,
+                           String birthday) {
             this.userId = userId;
             this.username = username;
             this.nickname = nickname;
             this.phone = phone;
             this.avatarUrl = avatarUrl;
             this.points = points;
+            this.birthday = birthday;
         }
     }
 
@@ -134,44 +137,33 @@ public class UserDao {
 
     public UserProfile getProfile(int userId) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        boolean hasNickname = columnExists(db, "users", "nickname");
-        boolean hasAvatarUrl = columnExists(db, "users", "avatar_url");
-        boolean hasPoints = columnExists(db, "users", "points");
-        Cursor cursor = db.rawQuery(
-                hasNickname
-                        ? (hasAvatarUrl
-                        ? (hasPoints
-                        ? "SELECT id, username, nickname, phone, avatar_url, points FROM users WHERE id=? LIMIT 1"
-                        : "SELECT id, username, nickname, phone, avatar_url FROM users WHERE id=? LIMIT 1")
-                        : (hasPoints
-                        ? "SELECT id, username, nickname, phone, points FROM users WHERE id=? LIMIT 1"
-                        : "SELECT id, username, nickname, phone FROM users WHERE id=? LIMIT 1"))
-                        : (hasAvatarUrl
-                        ? (hasPoints
-                        ? "SELECT id, username, phone, avatar_url, points FROM users WHERE id=? LIMIT 1"
-                        : "SELECT id, username, phone, avatar_url FROM users WHERE id=? LIMIT 1")
-                        : (hasPoints
-                        ? "SELECT id, username, phone, points FROM users WHERE id=? LIMIT 1"
-                        : "SELECT id, username, phone FROM users WHERE id=? LIMIT 1")),
-                new String[]{String.valueOf(userId)}
-        );
+        Cursor cursor = db.query("users", null, "id=?", new String[]{String.valueOf(userId)},
+                null, null, null, "1");
         try {
             if (cursor == null || !cursor.moveToFirst()) {
                 return null;
             }
-            int points = 0;
-            if (hasPoints) {
-                points = cursor.getInt(cursor.getColumnIndex("points"));
-            }
+            int idIndex = cursor.getColumnIndex("id");
+            int usernameIndex = cursor.getColumnIndex("username");
+            int nicknameIndex = cursor.getColumnIndex("nickname");
+            int phoneIndex = cursor.getColumnIndex("phone");
+            int avatarIndex = cursor.getColumnIndex("avatar_url");
+            int pointsIndex = cursor.getColumnIndex("points");
+            int birthdayIndex = cursor.getColumnIndex("birthday");
+            int points = pointsIndex >= 0 ? cursor.getInt(pointsIndex) : 0;
+            String username = usernameIndex >= 0 ? cursor.getString(usernameIndex) : "";
+            String nickname = nicknameIndex >= 0 ? cursor.getString(nicknameIndex) : username;
+            String phone = phoneIndex >= 0 ? cursor.getString(phoneIndex) : "";
+            String avatarUrl = avatarIndex >= 0 ? cursor.getString(avatarIndex) : null;
+            String birthday = birthdayIndex >= 0 ? cursor.getString(birthdayIndex) : null;
             return new UserProfile(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    hasNickname ? cursor.getString(2) : cursor.getString(1),
-                    hasNickname ? cursor.getString(3) : cursor.getString(2),
-                    hasAvatarUrl
-                            ? (hasNickname ? cursor.getString(4) : cursor.getString(3))
-                            : null,
-                    points
+                    idIndex >= 0 ? cursor.getInt(idIndex) : userId,
+                    username,
+                    nickname,
+                    phone,
+                    avatarUrl,
+                    points,
+                    birthday
             );
         } finally {
             if (cursor != null) {
@@ -233,6 +225,33 @@ public class UserDao {
         if (columnExists(db, "users", "avatar_url")) {
             values.put("avatar_url", avatarUrl);
         }
+        return db.update("users", values, "id=?", new String[]{String.valueOf(userId)}) > 0;
+    }
+
+    public String getBirthday(int userId) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        if (!columnExists(db, "users", "birthday")) {
+            return null;
+        }
+        Cursor cursor = db.rawQuery("SELECT birthday FROM users WHERE id=? LIMIT 1",
+                new String[]{String.valueOf(userId)});
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    public boolean updateBirthday(int userId, String birthday) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        if (!columnExists(db, "users", "birthday")) {
+            return false;
+        }
+        ContentValues values = new ContentValues();
+        values.put("birthday", birthday);
         return db.update("users", values, "id=?", new String[]{String.valueOf(userId)}) > 0;
     }
 

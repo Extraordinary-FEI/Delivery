@@ -25,6 +25,18 @@ public class CouponDao {
         db.insert("user_coupons", null, values);
     }
 
+    public boolean hasCouponSince(int userId, String couponName, long sinceTime) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT 1 FROM user_coupons WHERE user_id=? AND coupon_name=? AND created_at>=? LIMIT 1",
+                new String[]{String.valueOf(userId), couponName, String.valueOf(sinceTime)});
+        try {
+            return cursor.moveToFirst();
+        } finally {
+            cursor.close();
+        }
+    }
+
     public int getCouponCount(int userId) {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM user_coupons WHERE user_id=?",

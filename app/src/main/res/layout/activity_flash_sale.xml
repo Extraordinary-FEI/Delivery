@@ -56,6 +56,15 @@
             android:layout_marginTop="12dp" />
 
         <TextView
+            android:id="@+id/text_flash_sale_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/flash_sale_status_empty"
+            android:textColor="@color/secondary_text"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/text_flash_sale_admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

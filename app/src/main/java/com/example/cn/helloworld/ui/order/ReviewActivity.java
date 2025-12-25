@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.ReviewDao;
-import com.example.cn.helloworld.db.UserDao;
+import com.example.cn.helloworld.db.PointsDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.utils.SessionManager;
 
@@ -25,7 +25,7 @@ public class ReviewActivity extends BaseActivity {
     private Spinner foodSpinner;
     private EditText reviewInput;
     private ReviewDao reviewDao;
-    private UserDao userDao;
+    private PointsDao pointsDao;
     private int userId;
     private ArrayList<String> items;
 
@@ -37,7 +37,7 @@ public class ReviewActivity extends BaseActivity {
 
         userId = parseUserId(SessionManager.getUserId(this));
         reviewDao = new ReviewDao(this);
-        userDao = new UserDao(this);
+        pointsDao = new PointsDao(this);
 
         foodSpinner = (Spinner) findViewById(R.id.spinner_review_food);
         reviewInput = (EditText) findViewById(R.id.input_review_content);
@@ -80,7 +80,8 @@ public class ReviewActivity extends BaseActivity {
             return;
         }
         reviewDao.addReview(userId, selected, selected, content);
-        userDao.addPoints(userId, 30);
+        pointsDao.addPoints(userId, 30, PointsDao.TYPE_REVIEW, selected,
+                getString(R.string.points_log_review));
         Toast.makeText(this, R.string.review_submit_success, Toast.LENGTH_SHORT).show();
         finish();
     }

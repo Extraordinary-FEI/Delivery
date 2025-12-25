@@ -1,12 +1,15 @@
 package com.example.cn.helloworld.ui.cart;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.utils.ImageLoader;
@@ -15,6 +18,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
+
+    private static final int MAX_QUANTITY = 99;
 
     interface CartActionListener {
         void onQuantityChanged(CartItem item);
@@ -48,6 +53,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.quantityView.setText(String.valueOf(item.getQuantity()));
         updateLineTotal(holder, item);
 
+        holder.quantityView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showQuantityDialog(holder, item);
+            }
+        });
         holder.plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +108,50 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.totalView.setText(holder.itemView.getContext().getString(
                 R.string.cart_item_total_format,
                 lineTotal.toPlainString()));
+    }
+
+    private void showQuantityDialog(final CartViewHolder holder, final CartItem item) {
+        final TextView quantityView = holder.quantityView;
+        final android.widget.EditText input = new android.widget.EditText(holder.itemView.getContext());
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setText(String.valueOf(item.getQuantity()));
+        input.setSelection(input.getText().length());
+        new AlertDialog.Builder(holder.itemView.getContext())
+                .setTitle(R.string.cart_quantity_quick_edit)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface dialog, int which) {
+                        String value = input.getText().toString().trim();
+                        int quantity = parseQuantity(value);
+                    if (quantity < 1) {
+                        Toast.makeText(holder.itemView.getContext(),
+                                R.string.cart_quantity_min_hint, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (quantity > MAX_QUANTITY) {
+                        Toast.makeText(holder.itemView.getContext(),
+                                R.string.cart_quantity_max_hint, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                        item.setQuantity(quantity);
+                        quantityView.setText(String.valueOf(quantity));
+                        updateLineTotal(holder, item);
+                        if (actionListener != null) {
+                            actionListener.onQuantityChanged(item);
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private int parseQuantity(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     static class CartViewHolder extends RecyclerView.ViewHolder {

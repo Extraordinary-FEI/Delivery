@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.UserDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
-import com.example.cn.helloworld.utils.ImageLoader;
+import com.example.cn.helloworld.utils.AvatarLoader;
 import com.example.cn.helloworld.utils.SessionManager;
 import com.example.cn.helloworld.ui.entry.FavoritesActivity;
 import com.example.cn.helloworld.ui.entry.HistoryActivity;
@@ -105,7 +105,7 @@ public class MemberCenterActivity extends BaseActivity {
         findViewById(R.id.entry_order_refund).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openOrderList(OrderListActivity.FILTER_ALL);
+                startActivity(new Intent(MemberCenterActivity.this, AfterSaleActivity.class));
             }
         });
 
@@ -139,7 +139,7 @@ public class MemberCenterActivity extends BaseActivity {
                 : profile.nickname;
         usernameView.setText(displayName);
         phoneView.setText(maskPhone(profile.phone));
-        ImageLoader.loadAvatar(this, avatarView, profile.avatarUrl);
+        AvatarLoader.load(this, avatarView, profile.avatarUrl);
 
         TextView levelBadge = (TextView) findViewById(R.id.text_member_level_badge);
         TextView levelTitle = (TextView) findViewById(R.id.text_member_level_title);

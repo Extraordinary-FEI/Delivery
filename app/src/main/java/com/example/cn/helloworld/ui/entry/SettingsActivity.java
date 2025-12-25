@@ -21,7 +21,7 @@ import com.example.cn.helloworld.db.UserDao;
 import com.example.cn.helloworld.ui.address.AddressListActivity;
 import com.example.cn.helloworld.ui.auth.LoginActivity;
 import com.example.cn.helloworld.ui.common.BaseActivity;
-import com.example.cn.helloworld.utils.ImageLoader;
+import com.example.cn.helloworld.utils.AvatarLoader;
 import com.example.cn.helloworld.utils.SessionManager;
 
 import java.io.File;
@@ -95,6 +95,12 @@ public class SettingsActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadProfile();
+    }
+
     private void loadProfile() {
         currentProfile = userDao.getProfile(userId);
         if (currentProfile == null) {
@@ -104,7 +110,7 @@ public class SettingsActivity extends BaseActivity {
         nicknameInput.setText(currentProfile.nickname);
         phoneInput.setText(currentProfile.phone);
         phoneSummaryView.setText(maskPhone(currentProfile.phone));
-        ImageLoader.loadAvatar(this, avatarView, currentProfile.avatarUrl);
+        AvatarLoader.load(this, avatarView, currentProfile.avatarUrl);
     }
 
     private void saveProfile() {
@@ -129,7 +135,7 @@ public class SettingsActivity extends BaseActivity {
         boolean updated = userDao.updateProfile(userId, nickname, phone, currentProfile.avatarUrl);
         if (updated) {
             phoneSummaryView.setText(maskPhone(phone));
-            ImageLoader.loadAvatar(this, avatarView, currentProfile.avatarUrl);
+            AvatarLoader.load(this, avatarView, currentProfile.avatarUrl);
             Toast.makeText(this, R.string.settings_save_success, Toast.LENGTH_SHORT).show();
             loadProfile();
         } else {
@@ -247,7 +253,7 @@ public class SettingsActivity extends BaseActivity {
                 avatarUri
         );
         if (updated) {
-            ImageLoader.loadAvatar(this, avatarView, avatarUri);
+            AvatarLoader.load(this, avatarView, avatarUri);
             currentProfile.avatarUrl = avatarUri;
             Toast.makeText(this, R.string.settings_save_success, Toast.LENGTH_SHORT).show();
         } else {

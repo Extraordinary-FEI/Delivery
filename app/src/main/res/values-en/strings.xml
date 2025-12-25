@@ -63,6 +63,9 @@
     <string name="admin_category_name_duplicate">Category already exists</string>
     <string name="admin_seckill_product_label">Select product</string>
     <string name="admin_seckill_no_products">No products available</string>
+    <string name="flash_sale_status_empty">No flash sales yet. Stay tuned.</string>
+    <string name="flash_sale_status_upcoming_format">Next flash sale starts at %1$s</string>
+    <string name="flash_sale_status_ended">Flash sale ended. Check back for the next one.</string>
     <string name="hint_food_category">Market category (optional)</string>
     <string name="order_status_pending">Pending payment</string>
     <string name="order_status_paid">Awaiting acceptance</string>

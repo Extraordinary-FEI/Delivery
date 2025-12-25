@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "delivery.db";
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 9;
 
     public static final String TABLE_USERS = "users";
     public static final String TABLE_SHOPS = "shops";
@@ -42,7 +42,8 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
                 + "nickname TEXT,"
                 + "avatar_url TEXT,"
                 + "created_at INTEGER NOT NULL,"
-                + "points INTEGER DEFAULT 0"
+                + "points INTEGER DEFAULT 0,"
+                + "birthday TEXT"
                 + ")");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SHOPS + " ("
                 + "id TEXT PRIMARY KEY,"
@@ -154,6 +155,25 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
                 + "content TEXT,"
                 + "created_at INTEGER"
                 + ")");
+        db.execSQL("CREATE TABLE IF NOT EXISTS points_log ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "user_id INTEGER NOT NULL,"
+                + "change INTEGER NOT NULL,"
+                + "type TEXT NOT NULL,"
+                + "ref_id TEXT,"
+                + "remark TEXT,"
+                + "created_at INTEGER NOT NULL"
+                + ")");
+        db.execSQL("CREATE TABLE IF NOT EXISTS feedback ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "user_id INTEGER NOT NULL,"
+                + "type TEXT NOT NULL,"
+                + "content TEXT NOT NULL,"
+                + "status INTEGER DEFAULT 0,"
+                + "created_at INTEGER NOT NULL,"
+                + "updated_at INTEGER,"
+                + "reply TEXT"
+                + ")");
     }
 
     @Override
@@ -165,6 +185,9 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
     private void ensureColumns(SQLiteDatabase db) {
         if (!columnExists(db, TABLE_USERS, "points")) {
             db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN points INTEGER DEFAULT 0");
+        }
+        if (!columnExists(db, TABLE_USERS, "birthday")) {
+            db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN birthday TEXT");
         }
         if (!columnExists(db, TABLE_ORDERS, "pay_amount")) {
             db.execSQL("ALTER TABLE " + TABLE_ORDERS + " ADD COLUMN pay_amount REAL");

@@ -2,12 +2,15 @@ package com.example.cn.helloworld.ui.shop;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.data.cart.CartManager;
@@ -20,6 +23,7 @@ import com.example.cn.helloworld.utils.SessionManager;
 import java.util.List;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
+    private static final int MAX_QUANTITY = 99;
     public interface OnFoodClickListener {
         void onFoodClick(Food food);
     }
@@ -142,6 +146,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             }
         });
 
+        viewHolder.quantityText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showQuantityDialog(viewHolder, cartManager, food);
+            }
+        });
+
         viewHolder.favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,6 +226,39 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         userId = parseUserId(SessionManager.getUserId(view.getContext()));
     }
 
+    private void showQuantityDialog(final FoodViewHolder holder, final CartManager cartManager, final Food food) {
+        final android.widget.EditText input = new android.widget.EditText(holder.itemView.getContext());
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        int current = cartManager.getItemQuantity(food.getName());
+        input.setText(String.valueOf(current));
+        input.setSelection(input.getText().length());
+        new AlertDialog.Builder(holder.itemView.getContext())
+                .setTitle(R.string.cart_quantity_quick_edit)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface dialog, int which) {
+                        String value = input.getText().toString().trim();
+                        int quantity = parseQuantity(value);
+                        if (quantity < 1) {
+                            Toast.makeText(holder.itemView.getContext(),
+                                    R.string.cart_quantity_min_hint, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (quantity > MAX_QUANTITY) {
+                            Toast.makeText(holder.itemView.getContext(),
+                                    R.string.cart_quantity_max_hint, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        cartManager.updateItemQuantity(food.getName(), quantity);
+                        holder.bindQuantity(quantity);
+                        notifyQuantityChanged(cartManager);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
     private String resolveFoodId(Food food) {
         if (food == null) {
             return "";
@@ -228,6 +272,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     private int parseUserId(String userIdText) {
         try {
             return Integer.parseInt(userIdText);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    private int parseQuantity(String value) {
+        try {
+            return Integer.parseInt(value);
         } catch (NumberFormatException e) {
             return -1;
         }

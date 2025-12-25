@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.OrderDao;
-import com.example.cn.helloworld.db.UserDao;
+import com.example.cn.helloworld.db.PointsDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 
 import java.text.SimpleDateFormat;
@@ -50,7 +50,7 @@ public class OrderConfirmActivity extends BaseActivity {
     private double orderTotal;
     private int userId;
     private OrderDao orderDao;
-    private UserDao userDao;
+    private PointsDao pointsDao;
     private final Handler handler = new Handler();
 
     @Override
@@ -79,7 +79,7 @@ public class OrderConfirmActivity extends BaseActivity {
         confirmReceiveButton = (Button) findViewById(R.id.button_confirm_receive);
         reviewButton = (Button) findViewById(R.id.button_review);
         orderDao = new OrderDao(this);
-        userDao = new UserDao(this);
+        pointsDao = new PointsDao(this);
 
         bindOrderData();
 
@@ -250,7 +250,8 @@ public class OrderConfirmActivity extends BaseActivity {
 
     private void grantPoints() {
         int points = (int) Math.floor(orderTotal);
-        userDao.addPoints(userId, points);
+        pointsDao.addPoints(userId, points, PointsDao.TYPE_ORDER, orderId,
+                getString(R.string.points_log_order, points));
         reviewButton.setEnabled(true);
     }
 

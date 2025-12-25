@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.data.ShopLocalRepository;
 import com.example.cn.helloworld.model.Shop;
+import com.example.cn.helloworld.ui.address.AddressPickerDialog;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.utils.ImageLoader;
 
@@ -28,6 +29,9 @@ public class ShopEditActivity extends BaseActivity {
     private ImageView previewImage;
 
     private int shopId;
+    private String selectedProvince = "";
+    private String selectedCity = "";
+    private String selectedDistrict = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,20 @@ public class ShopEditActivity extends BaseActivity {
         descriptionInput = (EditText) findViewById(R.id.input_shop_description);
         imageInput = (EditText) findViewById(R.id.input_shop_image);
         previewImage = (ImageView) findViewById(R.id.image_shop_preview);
+        addressInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddressPickerDialog.show(ShopEditActivity.this, new AddressPickerDialog.OnPickedListener() {
+                    @Override
+                    public void onPicked(String province, String city, String district) {
+                        selectedProvince = province;
+                        selectedCity = city;
+                        selectedDistrict = district;
+                        updateAddressText();
+                    }
+                });
+            }
+        });
         imageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -133,6 +151,23 @@ public class ShopEditActivity extends BaseActivity {
             return Integer.parseInt(raw);
         } catch (NumberFormatException e) {
             return 0;
+        }
+    }
+
+    private void updateAddressText() {
+        StringBuilder builder = new StringBuilder();
+        if (!TextUtils.isEmpty(selectedProvince)) {
+            builder.append(selectedProvince);
+        }
+        if (!TextUtils.isEmpty(selectedCity)) {
+            builder.append(" ").append(selectedCity);
+        }
+        if (!TextUtils.isEmpty(selectedDistrict)) {
+            builder.append(" ").append(selectedDistrict);
+        }
+        String addressText = builder.toString().trim();
+        if (!TextUtils.isEmpty(addressText)) {
+            addressInput.setText(addressText);
         }
     }
 }

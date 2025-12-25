@@ -25,41 +25,34 @@ public class SeckillDao {
     }
 
     public List<SeckillItem> getSeckillItems(Context context) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(
-                "seckill",
-                new String[]{"id", "product_id", "seckill_price", "stock", "start_time", "end_time", "status"},
-                null,
-                null,
-                null,
-                null,
+        return querySeckillItems(context, null, null, "start_time ASC");
+    }
+
+    public List<SeckillItem> getActiveSeckillItems(Context context, long now) {
+        return querySeckillItems(
+                context,
+                "status = 1 AND stock > 0 AND start_time <= ? AND end_time > ?",
+                new String[]{String.valueOf(now), String.valueOf(now)},
+                "end_time ASC"
+        );
+    }
+
+    public List<SeckillItem> getUpcomingSeckillItems(Context context, long now) {
+        return querySeckillItems(
+                context,
+                "status = 1 AND start_time > ?",
+                new String[]{String.valueOf(now)},
                 "start_time ASC"
         );
-        List<SeckillItem> items = new ArrayList<SeckillItem>();
-        try {
-            while (cursor.moveToNext()) {
-                String productId = cursor.getString(1);
-                Food food = null;
-                try {
-                    food = foodRepository.getFoodById(context, productId);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                items.add(new SeckillItem(
-                        cursor.getLong(0),
-                        productId,
-                        cursor.getDouble(2),
-                        cursor.getInt(3),
-                        cursor.getLong(4),
-                        cursor.getLong(5),
-                        cursor.getInt(6),
-                        food
-                ));
-            }
-        } finally {
-            cursor.close();
-        }
-        return items;
+    }
+
+    public List<SeckillItem> getEndedSeckillItems(Context context, long now) {
+        return querySeckillItems(
+                context,
+                "status = 1 AND end_time <= ?",
+                new String[]{String.valueOf(now)},
+                "end_time DESC"
+        );
     }
 
     public void insertOrUpdate(SeckillItem item) {
@@ -144,5 +137,43 @@ public class SeckillDao {
             e.printStackTrace();
         }
     }
-}
 
+    private List<SeckillItem> querySeckillItems(Context context, String selection, String[] selectionArgs,
+                                                String orderBy) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(
+                "seckill",
+                new String[]{"id", "product_id", "seckill_price", "stock", "start_time", "end_time", "status"},
+                selection,
+                selectionArgs,
+                null,
+                null,
+                orderBy
+        );
+        List<SeckillItem> items = new ArrayList<SeckillItem>();
+        try {
+            while (cursor.moveToNext()) {
+                String productId = cursor.getString(1);
+                Food food = null;
+                try {
+                    food = foodRepository.getFoodById(context, productId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                items.add(new SeckillItem(
+                        cursor.getLong(0),
+                        productId,
+                        cursor.getDouble(2),
+                        cursor.getInt(3),
+                        cursor.getLong(4),
+                        cursor.getLong(5),
+                        cursor.getInt(6),
+                        food
+                ));
+            }
+        } finally {
+            cursor.close();
+        }
+        return items;
+    }
+}

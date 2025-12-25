@@ -7,13 +7,13 @@ import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.CouponDao;
-import com.example.cn.helloworld.db.UserDao;
+import com.example.cn.helloworld.db.PointsDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.utils.SessionManager;
 
 public class PointsCenterActivity extends BaseActivity {
     private TextView pointsView;
-    private UserDao userDao;
+    private PointsDao pointsDao;
     private CouponDao couponDao;
     private int userId;
 
@@ -24,10 +24,16 @@ public class PointsCenterActivity extends BaseActivity {
         setupBackButton();
 
         userId = parseUserId(SessionManager.getUserId(this));
-        userDao = new UserDao(this);
+        pointsDao = new PointsDao(this);
         couponDao = new CouponDao(this);
         pointsView = (TextView) findViewById(R.id.text_points_value);
 
+        findViewById(R.id.text_points_rule_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new android.content.Intent(PointsCenterActivity.this, PointsRuleActivity.class));
+            }
+        });
         findViewById(R.id.button_exchange_coupon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,17 +62,18 @@ public class PointsCenterActivity extends BaseActivity {
     }
 
     private void refreshPoints() {
-        int points = userDao.getPoints(userId);
+        int points = pointsDao.getPoints(userId);
         pointsView.setText(String.valueOf(points));
     }
 
     private void exchangeCoupon(String name, int cost) {
-        int points = userDao.getPoints(userId);
+        int points = pointsDao.getPoints(userId);
         if (points < cost) {
             Toast.makeText(this, R.string.points_exchange_insufficient, Toast.LENGTH_SHORT).show();
             return;
         }
-        userDao.deductPoints(userId, cost);
+        pointsDao.deductPoints(userId, cost, PointsDao.TYPE_REDEEM, name,
+                getString(R.string.points_log_redeem, name, cost));
         couponDao.insertCoupon(userId, name, cost);
         Toast.makeText(this, R.string.points_exchange_success, Toast.LENGTH_SHORT).show();
         refreshPoints();
