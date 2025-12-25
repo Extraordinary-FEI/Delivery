@@ -164,7 +164,7 @@ public class UserDao {
             }
 
             if (!"admin".equals(roleInDb)) {
-                return new LoginResult(false, "该账号不是管理员", -1, "", "");
+                return new LoginResult(false, "管理员登录信息有误", -1, "", "");
             }
 
             return new LoginResult(true, "登录成功", userId, "admin", username);

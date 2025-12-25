@@ -42,38 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" />
 
-        <TextView
-            android:id="@+id/text_role_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/role_label"
-            android:textStyle="bold" />
-
-        <RadioGroup
-            android:id="@+id/radio_group_role"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radio_role_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:tag="@string/role_user_value"
-                android:text="@string/role_user" />
-
-            <RadioButton
-                android:id="@+id/radio_role_admin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:tag="@string/role_admin_value"
-                android:text="@string/role_admin" />
-        </RadioGroup>
-
         <EditText
             android:id="@+id/edit_username"
             android:layout_width="match_parent"
@@ -90,14 +58,49 @@
             android:hint="@string/label_password"
             android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/edit_admin_code"
+        <TextView
+            android:id="@+id/text_login_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#E53935"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/text_admin_toggle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="@string/label_admin_code"
-            android:inputType="numberPassword"
-            android:visibility="gone" />
+            android:gravity="center"
+            android:text="@string/action_admin_login"
+            android:textColor="#666666"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:id="@+id/layout_admin_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/text_admin_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/admin_login_hint"
+                android:textColor="#888888"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/edit_admin_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/label_admin_code"
+                android:inputType="numberPassword" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/button_login"

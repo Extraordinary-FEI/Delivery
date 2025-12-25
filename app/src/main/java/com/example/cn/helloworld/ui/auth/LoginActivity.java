@@ -7,8 +7,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
@@ -23,8 +23,11 @@ public class LoginActivity extends BaseActivity {
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText adminCodeInput;
-    private RadioGroup roleGroup;
+    private TextView errorText;
+    private TextView adminToggle;
+    private View adminPanel;
     private boolean isInitialLanguageSelection = true;
+    private boolean isAdminMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +37,15 @@ public class LoginActivity extends BaseActivity {
         usernameInput = (EditText) findViewById(R.id.edit_username);
         passwordInput = (EditText) findViewById(R.id.edit_password);
         adminCodeInput = (EditText) findViewById(R.id.edit_admin_code);
+        errorText = (TextView) findViewById(R.id.text_login_error);
+        adminToggle = (TextView) findViewById(R.id.text_admin_toggle);
+        adminPanel = findViewById(R.id.layout_admin_panel);
         Button loginButton = (Button) findViewById(R.id.button_login);
         Button registerButton = (Button) findViewById(R.id.button_register);
-        roleGroup = (RadioGroup) findViewById(R.id.radio_group_role);
 
         setupLanguageSelector();
-        setupRoleToggle();
+        setupAdminToggle();
+        setupInlineFeedback();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,25 +105,26 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void handleLogin() {
+        clearError();
         String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
-        String role = resolveSelectedRole();
+        String role = isAdminMode ? SessionManager.ROLE_ADMIN : SessionManager.ROLE_USER;
         String adminCode = adminCodeInput == null ? "" : adminCodeInput.getText().toString().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, R.string.login_error_empty_fields, Toast.LENGTH_SHORT).show();
+            showError(getString(R.string.login_error_empty_fields));
             return;
         }
 
         if (SessionManager.ROLE_ADMIN.equals(role) && adminCode.isEmpty()) {
-            Toast.makeText(this, R.string.login_error_admin_code_required, Toast.LENGTH_SHORT).show();
+            showError(getString(R.string.login_error_admin_code_required));
             return;
         }
 
         UserDao userDao = new UserDao(this);
         UserDao.LoginResult result = userDao.login(username, password, role, adminCode);
         if (!result.ok) {
-            Toast.makeText(this, result.msg, Toast.LENGTH_SHORT).show();
+            showError(result.msg);
             return;
         }
 
@@ -127,34 +134,56 @@ public class LoginActivity extends BaseActivity {
         finish();
     }
 
-    private String resolveSelectedRole() {
-        if (roleGroup == null) {
-            return getString(R.string.role_user_value);
-        }
-        int checkedId = roleGroup.getCheckedRadioButtonId();
-        View checkedView = roleGroup.findViewById(checkedId);
-        if (checkedView != null && checkedView.getTag() != null) {
-            return checkedView.getTag().toString();
-        }
-        return getString(R.string.role_user_value);
-    }
-
-    private void setupRoleToggle() {
-        if (roleGroup == null || adminCodeInput == null) {
+    private void setupAdminToggle() {
+        if (adminToggle == null || adminPanel == null || adminCodeInput == null) {
             return;
         }
-        roleGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        adminToggle.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                String role = resolveSelectedRole();
-                boolean showAdminCode = SessionManager.ROLE_ADMIN.equals(role);
-                adminCodeInput.setVisibility(showAdminCode ? View.VISIBLE : View.GONE);
-                if (!showAdminCode) {
+            public void onClick(View view) {
+                isAdminMode = !isAdminMode;
+                adminPanel.setVisibility(isAdminMode ? View.VISIBLE : View.GONE);
+                adminToggle.setText(isAdminMode
+                        ? R.string.action_back_to_user_login
+                        : R.string.action_admin_login);
+                if (!isAdminMode) {
                     adminCodeInput.setText("");
                 }
+                clearError();
             }
         });
-        String role = resolveSelectedRole();
-        adminCodeInput.setVisibility(SessionManager.ROLE_ADMIN.equals(role) ? View.VISIBLE : View.GONE);
+        adminPanel.setVisibility(View.GONE);
+    }
+
+    private void setupInlineFeedback() {
+        View.OnFocusChangeListener focusListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    clearError();
+                }
+            }
+        };
+        usernameInput.setOnFocusChangeListener(focusListener);
+        passwordInput.setOnFocusChangeListener(focusListener);
+        if (adminCodeInput != null) {
+            adminCodeInput.setOnFocusChangeListener(focusListener);
+        }
+    }
+
+    private void showError(String message) {
+        if (errorText != null) {
+            errorText.setText(message);
+            errorText.setVisibility(View.VISIBLE);
+        } else {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void clearError() {
+        if (errorText != null) {
+            errorText.setText("");
+            errorText.setVisibility(View.GONE);
+        }
     }
 }

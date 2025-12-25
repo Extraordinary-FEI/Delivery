@@ -102,7 +102,7 @@
     <string name="food_image_description">食品图片</string>
     <string name="add_to_cart">加入购物车</string>
     <string name="login_title">登录</string>
-    <string name="login_subtitle">请选择语言与登录身份</string>
+    <string name="login_subtitle">请选择语言并登录</string>
     <string name="language_label">全国语言</string>
     <string name="role_label">登录身份</string>
     <string name="role_user">普通用户</string>
@@ -114,6 +114,9 @@
     <string name="label_admin_code">管理员验证码</string>
     <string name="action_login">登录</string>
     <string name="action_register">注册</string>
+    <string name="action_admin_login">切换身份 / 管理员登录</string>
+    <string name="action_back_to_user_login">返回普通用户登录</string>
+    <string name="admin_login_hint">管理员登录需要验证码</string>
     <string name="action_back">返回</string>
     <string name="register_title">注册</string>
     <string name="label_confirm_password">确认密码</string>

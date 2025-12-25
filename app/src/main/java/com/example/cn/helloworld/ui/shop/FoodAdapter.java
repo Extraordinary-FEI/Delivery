@@ -1,5 +1,7 @@
 package com.example.cn.helloworld.ui.shop;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +87,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         });
 
         viewHolder.addSingleButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 cartManager.addItem(new FoodItem(food.getName(), food.getPrice(), food.getDescription(), 0));
@@ -96,6 +99,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         });
 
         viewHolder.increaseButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 cartManager.addItem(new FoodItem(food.getName(), food.getPrice(), food.getDescription(), 0));
@@ -107,6 +111,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         });
 
         viewHolder.decreaseButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 int current = cartManager.getItemQuantity(food.getName());
@@ -164,15 +169,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         }
     }
 
-    private void animateCartAction(View view) {
-        view.animate()
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void animateCartAction(final View view) {
+        final View targetView = view;
+        targetView.animate()
                 .scaleX(1.12f)
                 .scaleY(1.12f)
                 .setDuration(120)
                 .withEndAction(new Runnable() {
                     @Override
                     public void run() {
-                        view.animate()
+                        targetView.animate()
                                 .scaleX(1f)
                                 .scaleY(1f)
                                 .setDuration(120)
