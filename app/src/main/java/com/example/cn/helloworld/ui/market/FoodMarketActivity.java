@@ -1,13 +1,17 @@
 package com.example.cn.helloworld.ui.market;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,12 +44,16 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
     private String selectedCategory;
     private String searchQuery = "";
     private TextView cartBadgeView;
+    private EditText searchInput;
+    private int searchCollapsedSize;
+    private int searchExpandedWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market);
         setupBackButton();
+        setupSearchBar();
         setupDockActions();
 
         RecyclerView categoryList = (RecyclerView) findViewById(R.id.recycler_market_categories);
@@ -159,15 +167,6 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
 
     private void setupDockActions() {
         cartBadgeView = (TextView) findViewById(R.id.text_cart_badge);
-        View searchButton = findViewById(R.id.button_market_search);
-        if (searchButton != null) {
-            searchButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showSearchDialog();
-                }
-            });
-        }
 
         findViewById(R.id.dock_home).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,6 +204,117 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
         });
     }
 
+    private void setupSearchBar() {
+        searchInput = (EditText) findViewById(R.id.edit_market_search);
+        if (searchInput == null) {
+            return;
+        }
+        searchCollapsedSize = getResources().getDimensionPixelSize(R.dimen.market_search_collapsed_size);
+        searchInput.setText(searchQuery);
+        searchInput.setSelection(searchInput.getText().length());
+        searchInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    expandSearch(true);
+                } else if (TextUtils.isEmpty(searchInput.getText().toString().trim())) {
+                    collapseSearch(true);
+                }
+            }
+        });
+        searchInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandSearch(true);
+            }
+        });
+        searchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, android.view.KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    v.clearFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                searchQuery = s == null ? "" : s.toString().trim();
+                applyFilters();
+            }
+        });
+        searchInput.post(new Runnable() {
+            @Override
+            public void run() {
+                View parent = (View) searchInput.getParent();
+                searchExpandedWidth = parent.getWidth();
+                if (TextUtils.isEmpty(searchQuery)) {
+                    collapseSearch(false);
+                } else {
+                    expandSearch(false);
+                }
+            }
+        });
+    }
+
+    private void expandSearch(boolean animate) {
+        if (searchInput == null) {
+            return;
+        }
+        updateSearchBackground(true);
+        updateSearchWidth(searchExpandedWidth, animate);
+    }
+
+    private void collapseSearch(boolean animate) {
+        if (searchInput == null) {
+            return;
+        }
+        updateSearchBackground(false);
+        updateSearchWidth(searchCollapsedSize, animate);
+    }
+
+    private void updateSearchWidth(int targetWidth, boolean animate) {
+        ViewGroup.LayoutParams params = searchInput.getLayoutParams();
+        if (params == null) {
+            return;
+        }
+        int startWidth = params.width > 0 ? params.width : searchCollapsedSize;
+        if (!animate) {
+            params.width = targetWidth;
+            searchInput.setLayoutParams(params);
+            return;
+        }
+        ValueAnimator animator = ValueAnimator.ofInt(startWidth, targetWidth);
+        animator.setDuration(180);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                ViewGroup.LayoutParams layoutParams = searchInput.getLayoutParams();
+                layoutParams.width = (Integer) animation.getAnimatedValue();
+                searchInput.setLayoutParams(layoutParams);
+            }
+        });
+        animator.start();
+    }
+
+    private void updateSearchBackground(boolean expanded) {
+        if (searchInput == null) {
+            return;
+        }
+        searchInput.setBackgroundResource(expanded ? R.drawable.bg_search_expanded : R.drawable.bg_search_collapsed);
+    }
+
     private void updateCartBadge(int count) {
         if (cartBadgeView == null) {
             return;
@@ -217,22 +327,4 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
         }
     }
 
-    private void showSearchDialog() {
-        final EditText input = new EditText(this);
-        input.setHint(R.string.home_search_hint);
-        input.setText(searchQuery);
-        input.setSelection(input.getText().length());
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.market_action_search)
-                .setView(input)
-                .setPositiveButton(R.string.market_action_search, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        searchQuery = input.getText().toString().trim();
-                        applyFilters();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
-    }
 }

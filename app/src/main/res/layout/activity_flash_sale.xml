@@ -10,11 +10,16 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_back" />
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_back_circle"
+            android:contentDescription="@string/action_back"
+            android:padding="8dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_back_arrow"
+            android:tint="@color/secondary_text" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,4 +108,3 @@
             android:textColor="@color/secondary_text" />
     </LinearLayout>
 </ScrollView>
-

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.security.MessageDigest;
-
 public class UserDao {
 
     public static final String ADMIN_CODE = "8888";
@@ -65,22 +63,6 @@ public class UserDao {
         }
     }
 
-    /* ================= 工具：SHA-256 ================= */
-
-    private String sha256(String input) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] bytes = md.digest(input.getBytes("UTF-8"));
-            StringBuilder sb = new StringBuilder();
-            for (byte b : bytes) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
     /* ================= 用户名查重 ================= */
 
     public boolean isUsernameTaken(String username) {
@@ -112,19 +94,11 @@ public class UserDao {
             role = "user"; // 强制兜底
         }
 
-        String passwordHash = sha256(password);
-        if (passwordHash.length() == 0) {
-            return new RegisterResult(false, "密码处理失败");
-        }
-
         SQLiteDatabase db = helper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put("username", username);
-        if (columnExists(db, "users", "password")) {
-            cv.put("password", password);
-        }
-        cv.put("password_hash", passwordHash);
+        cv.put("password", password);
         cv.put("role", role);
         if (columnExists(db, "users", "nickname")) {
             cv.put("nickname", username);
@@ -192,17 +166,11 @@ public class UserDao {
     /* ================= 登录 ================= */
 
     public LoginResult login(String username, String password, String loginType, String adminCode) {
-
-        String passwordHash = sha256(password);
-
         SQLiteDatabase db = helper.getReadableDatabase();
-        boolean hasPasswordColumn = columnExists(db, "users", "password");
-        StringBuilder query = new StringBuilder("SELECT id, role, password_hash");
-        if (hasPasswordColumn) {
-            query.append(", password");
-        }
-        query.append(" FROM users WHERE username=?");
-        Cursor c = db.rawQuery(query.toString(), new String[]{username});
+        Cursor c = db.rawQuery(
+                "SELECT id, role FROM users WHERE username=? AND password=?",
+                new String[]{username, password}
+        );
 
         try {
             if (c == null || !c.moveToFirst()) {
@@ -211,26 +179,12 @@ public class UserDao {
 
             int userId = c.getInt(0);
             String roleInDb = c.getString(1);
-            String storedHash = c.getString(2);
-            boolean hashMatches = storedHash != null && storedHash.equals(passwordHash);
-            boolean legacyMatches = false;
-            if (!hashMatches && hasPasswordColumn) {
-                String storedPassword = c.getString(3);
-                legacyMatches = storedPassword != null && storedPassword.equals(password);
-                if (legacyMatches) {
-                    SQLiteDatabase writeDb = helper.getWritableDatabase();
-                    ContentValues values = new ContentValues();
-                    values.put("password_hash", passwordHash);
-                    writeDb.update("users", values, "id=?", new String[]{String.valueOf(userId)});
-                }
-            }
-
-            if (!hashMatches && !legacyMatches) {
-                return new LoginResult(false, "账号或密码错误", -1, "", "");
-            }
 
             // 普通用户入口：永远只能是 user
             if (!"admin".equals(loginType)) {
+                if (!"user".equals(roleInDb)) {
+                    return new LoginResult(false, "该账号不是普通用户", -1, "", "");
+                }
                 return new LoginResult(true, "登录成功", userId, "user", username);
             }
 
@@ -240,7 +194,7 @@ public class UserDao {
             }
 
             if (!"admin".equals(roleInDb)) {
-                return new LoginResult(false, "管理员登录信息有误", -1, "", "");
+                return new LoginResult(false, "该账号不是管理员", -1, "", "");
             }
 
             return new LoginResult(true, "登录成功", userId, "admin", username);

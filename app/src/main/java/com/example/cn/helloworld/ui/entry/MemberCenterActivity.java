@@ -45,8 +45,8 @@ public class MemberCenterActivity extends BaseActivity {
         if (profile == null) {
             return;
         }
-        TextView usernameView = findViewById(R.id.text_username);
-        ImageView avatarView = findViewById(R.id.image_avatar);
+        TextView usernameView = (TextView) findViewById(R.id.text_username);
+        ImageView avatarView = (ImageView) findViewById(R.id.image_avatar);
         String displayName = profile.nickname == null || profile.nickname.trim().isEmpty()
                 ? profile.username
                 : profile.nickname;
