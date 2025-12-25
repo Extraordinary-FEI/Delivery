@@ -48,6 +48,10 @@
             android:label="@string/admin_dashboard_title" />
 
         <activity
+            android:name=".ui.shop.admin.AdminFoodListActivity"
+            android:label="@string/admin_manage_foods" />
+
+        <activity
             android:name=".ui.shop.admin.ShopEditActivity"
             android:label="@string/admin_edit_shop" />
 

@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.ui.common.BaseActivity;
-import com.example.cn.helloworld.ui.shop.ShopListActivity;
 
 public class AdminDashboardActivity extends BaseActivity {
     @Override
@@ -29,8 +28,7 @@ public class AdminDashboardActivity extends BaseActivity {
         foodManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminDashboardActivity.this, ShopListActivity.class);
-                intent.putExtra(ShopListActivity.EXTRA_ALLOW_ADD_SHOP, false);
+                Intent intent = new Intent(AdminDashboardActivity.this, AdminFoodListActivity.class);
                 startActivity(intent);
             }
         });

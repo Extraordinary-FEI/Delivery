@@ -5,10 +5,13 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cn.helloworld.R;
 
 public final class ImageLoader {
     private static final String PEXELS_IMAGE_HOST = "https://images.pexels.com/photos/";
+    private static final String PEXELS_IMAGE_QUERY = "?auto=compress&cs=tinysrgb&dpr=1&w=800";
 
     private ImageLoader() {
     }
@@ -18,21 +21,27 @@ public final class ImageLoader {
             imageView.setImageResource(R.mipmap.ic_launcher);
             return;
         }
-        String normalizedPath = normalizePath(path);
-        Glide.with(context)
-                .load(normalizedPath)
+        String trimmed = path.trim();
+        String pexelsId = extractPexelsId(trimmed);
+        RequestBuilder<?> requestBuilder;
+        if (!TextUtils.isEmpty(pexelsId)) {
+            String primaryUrl = buildPexelsUrl(pexelsId, "jpeg");
+            String fallbackUrl = buildPexelsUrl(pexelsId, "jpg");
+            requestBuilder = Glide.with(context)
+                    .load(primaryUrl)
+                    .error(Glide.with(context).load(fallbackUrl));
+        } else {
+            requestBuilder = Glide.with(context).load(trimmed);
+        }
+        requestBuilder
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imageView);
     }
 
-    private static String normalizePath(String path) {
-        String trimmed = path.trim();
-        String pexelsId = extractPexelsId(trimmed);
-        if (!TextUtils.isEmpty(pexelsId)) {
-            return PEXELS_IMAGE_HOST + pexelsId + "/pexels-photo-" + pexelsId + ".jpeg";
-        }
-        return trimmed;
+    private static String buildPexelsUrl(String pexelsId, String extension) {
+        return PEXELS_IMAGE_HOST + pexelsId + "/pexels-photo-" + pexelsId + "." + extension + PEXELS_IMAGE_QUERY;
     }
 
     private static String extractPexelsId(String url) {

@@ -26,10 +26,17 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/input_food_name"
+            android:id="@+id/input_food_shop_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:hint="@string/hint_food_shop_id" />
+
+        <EditText
+            android:id="@+id/input_food_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="@string/hint_food_name" />
 
         <EditText
@@ -82,4 +89,3 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>
-

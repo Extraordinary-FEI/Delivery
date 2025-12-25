@@ -158,9 +158,12 @@
     <string name="action_add_shop">新增店铺</string>
     <string name="action_edit_shop">编辑店铺</string>
     <string name="action_add_food">新增菜品</string>
+    <string name="action_edit">编辑</string>
+    <string name="action_delete">删除</string>
     <string name="action_pick_image">选择本地图片</string>
     <string name="action_save">保存</string>
     <string name="action_saved">已保存</string>
+    <string name="action_deleted">已删除</string>
     <string name="admin_edit_shop">编辑店铺信息</string>
     <string name="admin_edit_food">编辑菜品信息</string>
     <string name="shop_image_description">店铺图片</string>
@@ -171,6 +174,7 @@
     <string name="hint_shop_description">店铺介绍</string>
     <string name="hint_shop_image">图片地址或本地 Uri</string>
     <string name="hint_food_name">菜品名称</string>
+    <string name="hint_food_shop_id">所属店铺 ID</string>
     <string name="hint_food_price">价格</string>
     <string name="hint_food_description">菜品描述</string>
     <string name="hint_food_image">图片地址或本地 Uri</string>
@@ -180,6 +184,9 @@
     <string name="error_shop_save_failed">保存店铺失败。</string>
     <string name="error_food_save_failed">保存菜品失败。</string>
     <string name="error_food_load_failed">读取菜品失败。</string>
+    <string name="error_food_delete_failed">删除菜品失败。</string>
+    <string name="confirm_delete_food">确定要删除该菜品吗？</string>
+    <string name="food_shop_format">所属店铺：%1$s</string>
     <string name="flash_sale_title">限时秒杀</string>
     <string name="flash_sale_countdown">距离结束 01:25:30</string>
     <string name="flash_sale_item_one">爆款小龙虾套餐</string>

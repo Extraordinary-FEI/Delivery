@@ -74,6 +74,15 @@ public class FoodLocalRepository {
         upsertFood(db, updated);
     }
 
+    public void deleteFood(Context context, String foodId) throws IOException {
+        if (TextUtils.isEmpty(foodId)) {
+            return;
+        }
+        DeliveryDatabaseHelper dbHelper = new DeliveryDatabaseHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(DeliveryDatabaseHelper.TABLE_PRODUCTS, "id = ?", new String[] { foodId });
+    }
+
     private List<Food> readFoodsFromAssets(Context context) throws IOException {
         String json = LocalJsonStore.readJson(context, FOOD_FILE);
         List<Food> foods = new Gson().fromJson(json, FOOD_LIST_TYPE);

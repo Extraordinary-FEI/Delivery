@@ -28,6 +28,7 @@ public class FoodEditActivity extends BaseActivity {
     private EditText priceInput;
     private EditText descriptionInput;
     private EditText imageInput;
+    private EditText shopIdInput;
     private ImageView previewImage;
     private String shopId;
     private String foodId;
@@ -38,6 +39,7 @@ public class FoodEditActivity extends BaseActivity {
         setContentView(R.layout.activity_food_edit);
         setupBackButton();
 
+        shopIdInput = (EditText) findViewById(R.id.input_food_shop_id);
         nameInput = (EditText) findViewById(R.id.input_food_name);
         priceInput = (EditText) findViewById(R.id.input_food_price);
         descriptionInput = (EditText) findViewById(R.id.input_food_description);
@@ -52,6 +54,11 @@ public class FoodEditActivity extends BaseActivity {
 
         if (!TextUtils.isEmpty(foodId)) {
             loadFood(foodId);
+        }
+
+        if (!TextUtils.isEmpty(shopId)) {
+            shopIdInput.setText(shopId);
+            shopIdInput.setEnabled(false);
         }
 
         selectImageButton.setOnClickListener(new View.OnClickListener() {
@@ -95,18 +102,25 @@ public class FoodEditActivity extends BaseActivity {
             imageInput.setText(food.getImageUrl());
             ImageLoader.load(this, previewImage, food.getImageUrl());
             shopId = food.getShopId();
+            shopIdInput.setText(shopId);
+            shopIdInput.setEnabled(false);
         } catch (java.io.IOException e) {
             Toast.makeText(this, R.string.error_food_load_failed, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void saveFood() {
+        String resolvedShopId = shopIdInput.getText().toString().trim();
         String name = nameInput.getText().toString().trim();
         String priceValue = priceInput.getText().toString().trim();
         String description = descriptionInput.getText().toString().trim();
         String imageUrl = imageInput.getText().toString().trim();
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(priceValue) || TextUtils.isEmpty(shopId)) {
+        if (TextUtils.isEmpty(resolvedShopId)) {
+            resolvedShopId = shopId;
+        }
+
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(priceValue) || TextUtils.isEmpty(resolvedShopId)) {
             Toast.makeText(this, R.string.error_required_fields, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -123,7 +137,7 @@ public class FoodEditActivity extends BaseActivity {
             foodId = "food_" + System.currentTimeMillis();
         }
 
-        Food food = new Food(foodId, name, shopId, description, price, imageUrl);
+        Food food = new Food(foodId, name, resolvedShopId, description, price, imageUrl);
         try {
             repository.updateFood(this, food);
             Toast.makeText(this, R.string.action_saved, Toast.LENGTH_SHORT).show();
