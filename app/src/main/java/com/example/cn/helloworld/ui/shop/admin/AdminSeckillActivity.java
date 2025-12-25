@@ -19,10 +19,16 @@ import com.example.cn.helloworld.db.SeckillDao;
 import com.example.cn.helloworld.model.Food;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.BaseActivity {
+    private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
     private final List<SeckillItem> items = new ArrayList<SeckillItem>();
     private AdminSeckillAdapter adapter;
     private SeckillDao seckillDao;
@@ -112,18 +118,20 @@ public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.Ba
         productSpinner.setAdapter(adapter);
 
         long now = System.currentTimeMillis();
+        String formattedNow = formatTimeInput(now);
         if (item != null) {
             priceInput.setText(String.valueOf(item.seckillPrice));
             stockInput.setText(String.valueOf(item.stock));
-            startInput.setText(String.valueOf(item.startTime));
-            endInput.setText(String.valueOf(item.endTime));
+            startInput.setText(formatTimeInput(item.startTime));
+            endInput.setText(formatTimeInput(item.endTime));
             int selection = resolveSelectionIndex(foods, item.productId);
             if (selection >= 0) {
                 productSpinner.setSelection(selection);
             }
         } else {
-            startInput.setText(String.valueOf(now));
-            endInput.setText(String.valueOf(now + 2 * 60 * 60 * 1000));
+            long defaultEnd = addHours(now, 2);
+            startInput.setText(formattedNow);
+            endInput.setText(formatTimeInput(defaultEnd));
         }
 
         new AlertDialog.Builder(this)
@@ -144,13 +152,20 @@ public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.Ba
                                     Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        long startTime = parseTimeInput(startText);
+                        long endTime = parseTimeInput(endText);
+                        if (startTime <= 0 || endTime <= 0 || startTime >= endTime) {
+                            Toast.makeText(AdminSeckillActivity.this, R.string.admin_seckill_input_error,
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         SeckillItem updated = new SeckillItem(
                                 item == null ? 0 : item.id,
                                 productId,
                                 Double.parseDouble(priceText),
                                 Integer.parseInt(stockText),
-                                Long.parseLong(startText),
-                                Long.parseLong(endText),
+                                startTime,
+                                endTime,
                                 item == null ? 1 : item.status,
                                 resolveFoodById(foods, productId)
                         );
@@ -211,5 +226,30 @@ public class AdminSeckillActivity extends com.example.cn.helloworld.ui.common.Ba
             }
         }
         return null;
+    }
+
+    private long parseTimeInput(String value) {
+        SimpleDateFormat format = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+        try {
+            Date date = format.parse(value);
+            if (date == null) {
+                return -1;
+            }
+            return date.getTime();
+        } catch (ParseException e) {
+            return -1;
+        }
+    }
+
+    private String formatTimeInput(long time) {
+        SimpleDateFormat format = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+        return format.format(new Date(time));
+    }
+
+    private long addHours(long time, int hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTimeInMillis();
     }
 }

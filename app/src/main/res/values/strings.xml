@@ -209,8 +209,8 @@
     <string name="admin_seckill_no_products">暂无商品可选</string>
     <string name="admin_seckill_price_hint">秒杀价</string>
     <string name="admin_seckill_stock_hint">库存</string>
-    <string name="admin_seckill_start_hint">开始时间 (毫秒)</string>
-    <string name="admin_seckill_end_hint">结束时间 (毫秒)</string>
+    <string name="admin_seckill_start_hint">开始时间 (yyyy-MM-dd HH:mm)</string>
+    <string name="admin_seckill_end_hint">结束时间 (yyyy-MM-dd HH:mm)</string>
     <string name="admin_seckill_input_error">请填写完整的秒杀信息</string>
     <string name="admin_seckill_detail_format">秒杀价 ¥%1$.2f | 库存 %2$d | %3$s - %4$s | %5$s</string>
     <string name="admin_seckill_desc">维护秒杀商品、库存与上下架</string>
