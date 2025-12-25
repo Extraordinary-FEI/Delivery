@@ -65,6 +65,8 @@ public class CategoryDao {
         values.put("id", "cat_" + System.currentTimeMillis());
         values.put("name", name);
         values.put("shop_id", "default");
+        values.put("source", "user");
+        values.put("updated_by_user", 1);
         return db.insert(DeliveryDatabaseHelper.TABLE_CATEGORIES, null, values) > 0;
     }
 
@@ -100,6 +102,8 @@ public class CategoryDao {
         values.put("id", name);
         values.put("name", name);
         values.put("shop_id", "default");
+        values.put("source", "system");
+        values.put("updated_by_user", 0);
         db.insert(DeliveryDatabaseHelper.TABLE_CATEGORIES, null, values);
     }
 }

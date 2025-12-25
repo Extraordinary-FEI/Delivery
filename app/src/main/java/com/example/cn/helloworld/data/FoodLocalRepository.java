@@ -19,16 +19,15 @@ import java.util.List;
 public class FoodLocalRepository {
     private static final String FOOD_FILE = "foods.json";
     private static final Type FOOD_LIST_TYPE = new TypeToken<List<Food>>() { } .getType();
+    private static final String SOURCE_SEED = "seed";
+    private static final String SOURCE_USER = "user";
 
     public List<Food> getFoods(Context context) throws IOException {
         DeliveryDatabaseHelper dbHelper = new DeliveryDatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         List<Food> foods = readFoodsFromDatabase(db, null);
-        if (!foods.isEmpty()) {
-            return foods;
-        }
-        foods = readFoodsFromAssets(context);
-        seedFoods(db, foods);
+        List<Food> assetFoods = readFoodsFromAssets(context);
+        mergeMissingFoods(db, foods, assetFoods);
         return foods;
     }
 
@@ -65,13 +64,13 @@ public class FoodLocalRepository {
     public void addFood(Context context, Food food) throws IOException {
         DeliveryDatabaseHelper dbHelper = new DeliveryDatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        upsertFood(db, food);
+        upsertUserFood(db, food);
     }
 
     public void updateFood(Context context, Food updated) throws IOException {
         DeliveryDatabaseHelper dbHelper = new DeliveryDatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        upsertFood(db, updated);
+        upsertUserFood(db, updated);
     }
 
     public void updateFoodCategory(Context context, String foodId, String category) throws IOException {
@@ -96,6 +95,8 @@ public class FoodLocalRepository {
             categoryValues.put("id", resolvedCategory);
             categoryValues.put("name", resolvedCategory);
             categoryValues.put("shop_id", TextUtils.isEmpty(shopId) ? "default" : shopId);
+            categoryValues.put("source", SOURCE_USER);
+            categoryValues.put("updated_by_user", 1);
             db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_CATEGORIES, null, categoryValues,
                     SQLiteDatabase.CONFLICT_IGNORE);
         }
@@ -105,6 +106,8 @@ public class FoodLocalRepository {
         } else {
             values.put("category_id", resolvedCategory);
         }
+        values.put("source", SOURCE_USER);
+        values.put("updated_by_user", 1);
         db.update(DeliveryDatabaseHelper.TABLE_PRODUCTS, values, "id = ?", new String[]{foodId});
     }
 
@@ -118,7 +121,7 @@ public class FoodLocalRepository {
     }
 
     private List<Food> readFoodsFromAssets(Context context) throws IOException {
-        String json = LocalJsonStore.readJson(context, FOOD_FILE);
+        String json = LocalJsonStore.readAssetJson(context, FOOD_FILE);
         List<Food> foods = new Gson().fromJson(json, FOOD_LIST_TYPE);
         return foods == null ? new ArrayList<Food>() : foods;
     }
@@ -167,16 +170,80 @@ public class FoodLocalRepository {
         return foods;
     }
 
-    private void seedFoods(SQLiteDatabase db, List<Food> foods) {
-        if (foods == null || foods.isEmpty()) {
+    private void mergeMissingFoods(SQLiteDatabase db, List<Food> existingFoods, List<Food> assetFoods) {
+        if (assetFoods == null || assetFoods.isEmpty()) {
             return;
         }
-        for (Food food : foods) {
-            upsertFood(db, food);
+        for (Food food : assetFoods) {
+            if (food == null || TextUtils.isEmpty(food.getId())) {
+                continue;
+            }
+            String seedId = food.getId();
+            ProductMeta meta = findProductMeta(db, seedId);
+            if (meta == null) {
+                upsertSeedFood(db, food, seedId);
+                existingFoods.add(food);
+                continue;
+            }
+            if (meta.updatedByUser) {
+                continue;
+            }
+            ContentValues values = new ContentValues();
+            boolean changed = false;
+            if (TextUtils.isEmpty(meta.seedId)) {
+                values.put("seed_id", seedId);
+                changed = true;
+            }
+            if (TextUtils.isEmpty(meta.source)) {
+                values.put("source", SOURCE_SEED);
+                changed = true;
+            }
+            if (TextUtils.isEmpty(meta.description) && !TextUtils.isEmpty(food.getDescription())) {
+                values.put("description", food.getDescription());
+                changed = true;
+            }
+            if (TextUtils.isEmpty(meta.imageUrl) && !TextUtils.isEmpty(food.getImageUrl())) {
+                values.put("image_url", food.getImageUrl());
+                changed = true;
+            }
+            if (TextUtils.isEmpty(meta.categoryId) && !TextUtils.isEmpty(food.getCategory())) {
+                values.put("category_id", food.getCategory());
+                changed = true;
+                upsertCategory(db, food.getCategory(), food.getShopId(), SOURCE_SEED, false, food.getCategory());
+            }
+            if (changed) {
+                db.update(DeliveryDatabaseHelper.TABLE_PRODUCTS, values, "id = ?",
+                        new String[] { meta.id });
+            }
         }
+        String seedId = getSeedId(db, food.getId());
+        String source = getSource(db, food.getId());
+        if (TextUtils.isEmpty(source)) {
+            source = SOURCE_USER;
+        }
+        upsertFood(db, food, seedId, source, true);
     }
 
-    private void upsertFood(SQLiteDatabase db, Food food) {
+    private void upsertUserFood(SQLiteDatabase db, Food food) {
+        if (food == null || TextUtils.isEmpty(food.getId())) {
+            return;
+        }
+        String seedId = getSeedId(db, food.getId());
+        String source = getSource(db, food.getId());
+        if (TextUtils.isEmpty(source)) {
+            source = SOURCE_USER;
+        }
+        upsertFood(db, food, seedId, source, true);
+    }
+
+    private void upsertSeedFood(SQLiteDatabase db, Food food, String seedId) {
+        if (food == null || TextUtils.isEmpty(food.getId())) {
+            return;
+        }
+        upsertFood(db, food, seedId, SOURCE_SEED, false);
+    }
+
+    private void upsertFood(SQLiteDatabase db, Food food, String seedId, String source, boolean updatedByUser) {
         if (food == null || TextUtils.isEmpty(food.getId())) {
             return;
         }
@@ -188,13 +255,8 @@ public class FoodLocalRepository {
         db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_SHOPS, null, shopValues,
                 SQLiteDatabase.CONFLICT_IGNORE);
 
-        if (!TextUtils.isEmpty(category) && !categoryExists(db, category)) {
-            ContentValues categoryValues = new ContentValues();
-            categoryValues.put("id", category);
-            categoryValues.put("name", category);
-            categoryValues.put("shop_id", shopId);
-            db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_CATEGORIES, null, categoryValues,
-                    SQLiteDatabase.CONFLICT_IGNORE);
+        if (!TextUtils.isEmpty(category)) {
+            upsertCategory(db, category, shopId, source, updatedByUser, category);
         }
 
         ContentValues values = new ContentValues();
@@ -210,6 +272,11 @@ public class FoodLocalRepository {
         }
         values.put("shop_id", shopId);
         values.put("available", 1);
+        if (!TextUtils.isEmpty(seedId)) {
+            values.put("seed_id", seedId);
+        }
+        values.put("source", source);
+        values.put("updated_by_user", updatedByUser ? 1 : 0);
         db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_PRODUCTS, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
     }
@@ -222,6 +289,95 @@ public class FoodLocalRepository {
             return cursor.moveToFirst();
         } finally {
             cursor.close();
+        }
+    }
+
+    private void upsertCategory(SQLiteDatabase db, String category, String shopId, String source,
+                                boolean updatedByUser, String seedId) {
+        if (TextUtils.isEmpty(category)) {
+            return;
+        }
+        String resolvedShopId = TextUtils.isEmpty(shopId) ? "default" : shopId;
+        if (!categoryExists(db, category)) {
+            ContentValues categoryValues = new ContentValues();
+            categoryValues.put("id", category);
+            categoryValues.put("name", category);
+            categoryValues.put("shop_id", resolvedShopId);
+            if (!TextUtils.isEmpty(seedId)) {
+                categoryValues.put("seed_id", seedId);
+            }
+            categoryValues.put("source", source);
+            categoryValues.put("updated_by_user", updatedByUser ? 1 : 0);
+            db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_CATEGORIES, null, categoryValues,
+                    SQLiteDatabase.CONFLICT_IGNORE);
+        }
+    }
+
+    private String getSeedId(SQLiteDatabase db, String id) {
+        Cursor cursor = db.query(DeliveryDatabaseHelper.TABLE_PRODUCTS, new String[] { "seed_id" },
+                "id = ?", new String[] { id }, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    private String getSource(SQLiteDatabase db, String id) {
+        Cursor cursor = db.query(DeliveryDatabaseHelper.TABLE_PRODUCTS, new String[] { "source" },
+                "id = ?", new String[] { id }, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    private ProductMeta findProductMeta(SQLiteDatabase db, String seedId) {
+        Cursor cursor = db.query(DeliveryDatabaseHelper.TABLE_PRODUCTS,
+                new String[] { "id", "seed_id", "source", "updated_by_user", "description", "image_url", "category_id" },
+                "seed_id = ? OR id = ?", new String[] { seedId, seedId }, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                return new ProductMeta(
+                        cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getInt(3) == 1,
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6));
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    private static class ProductMeta {
+        private final String id;
+        private final String seedId;
+        private final String source;
+        private final boolean updatedByUser;
+        private final String description;
+        private final String imageUrl;
+        private final String categoryId;
+
+        private ProductMeta(String id, String seedId, String source, boolean updatedByUser,
+                            String description, String imageUrl, String categoryId) {
+            this.id = id;
+            this.seedId = seedId;
+            this.source = source;
+            this.updatedByUser = updatedByUser;
+            this.description = description;
+            this.imageUrl = imageUrl;
+            this.categoryId = categoryId;
         }
     }
 }

@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@color/ios_grouped_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_profile_header"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,13 +24,13 @@
 
                 <TextView
                     android:id="@+id/button_back"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="@drawable/bg_profile_icon_circle"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_profile_icon_button"
                     android:gravity="center"
                     android:text="‹"
-                    android:textColor="@color/primary_text"
-                    android:textSize="22sp" />
+                    android:textColor="@color/ios_text_primary"
+                    android:textSize="20sp" />
 
                 <View
                     android:layout_width="0dp"
@@ -47,25 +47,18 @@
                         android:id="@+id/button_service"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginEnd="8dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_profile_icon_circle"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_profile_icon_button"
                             android:gravity="center"
                             android:text="🎧"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/member_profile_service"
-                            android:textColor="@color/primary_text"
-                            android:textSize="12sp" />
+                            android:textColor="@color/ios_text_primary"
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -76,20 +69,13 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_profile_icon_circle"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_profile_icon_button"
                             android:gravity="center"
                             android:text="⚙"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/member_profile_settings"
-                            android:textColor="@color/primary_text"
-                            android:textSize="12sp" />
+                            android:textColor="@color/ios_text_primary"
+                            android:textSize="18sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -104,11 +90,11 @@
 
                 <ImageView
                     android:id="@+id/image_avatar"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:background="@drawable/bg_profile_icon_circle"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@drawable/bg_profile_avatar_frame"
                     android:contentDescription="@string/member_profile_avatar"
-                    android:padding="6dp"
+                    android:padding="4dp"
                     android:src="@drawable/ic_launcher" />
 
                 <LinearLayout
@@ -123,8 +109,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/member_profile_username"
-                        android:textColor="@color/primary_text"
-                        android:textSize="20sp"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -133,8 +119,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_phone_unbound"
-                        android:textColor="@color/profile_muted_text"
-                        android:textSize="12sp" />
+                        android:textColor="@color/ios_text_secondary"
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -147,22 +133,22 @@
                         android:paddingBottom="4dp">
 
                         <TextView
-                            android:id="@+id/text_member_level_badge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/member_profile_member_level"
-                            android:textColor="@color/primary_text"
-                            android:textSize="12sp" />
+                        android:id="@+id/text_member_level_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/member_profile_member_level"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="12sp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="★ ★ ★ ★"
-                            android:textColor="@color/profile_muted_text"
-                            android:textSize="10sp" />
-                    </LinearLayout>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="★ ★ ★ ★"
+                        android:textColor="@color/ios_text_secondary"
+                        android:textSize="10sp" />
                 </LinearLayout>
+            </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -179,23 +165,29 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/text_member_level_title"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/member_profile_member_level"
-                        android:textColor="@color/primary_text"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/text_member_growth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="@string/member_profile_growth"
-                        android:textColor="@color/profile_muted_text"
-                        android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/text_member_level_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/member_profile_member_level"
+                            android:textColor="@color/ios_text_primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/text_member_growth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/member_profile_growth"
+                            android:textColor="@color/ios_text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="0dp"
@@ -205,139 +197,172 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:gravity="end"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/member_profile_member_center"
+                                android:textColor="@color/ios_text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="@string/member_cell_chevron"
+                                android:textColor="@color/ios_text_secondary"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/member_profile_member_center"
-                            android:textColor="@color/primary_text"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="2dp"
                             android:text="@string/member_profile_member_privilege"
-                            android:textColor="@color/profile_muted_text"
-                            android:textSize="12sp" />
+                            android:textColor="@color/ios_text_secondary"
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
+                <ProgressBar
+                    android:id="@+id/progress_member_growth"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="10dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/bg_profile_progress" />
+
+                <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_card"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="12dp">
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="140dp"
                             android:layout_height="wrap_content"
-                            android:text="🍵"
-                            android:textSize="20sp" />
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_profile_benefit_card"
+                            android:orientation="vertical"
+                            android:padding="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:text="惊喜多选 1"
-                            android:textColor="@color/primary_text"
-                            android:textSize="12sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🍵"
+                                android:textSize="20sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:text="@string/member_profile_benefit_choice"
+                                android:textColor="@color/ios_text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/member_profile_benefit_choice_desc"
+                                android:textColor="@color/ios_text_secondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="140dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="查看今日免单"
-                            android:textColor="@color/profile_muted_text"
-                            android:textSize="11sp" />
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_profile_benefit_card"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🍧"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:text="@string/member_profile_benefit_flash"
+                                android:textColor="@color/ios_text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/member_profile_benefit_flash_desc"
+                                android:textColor="@color/ios_text_secondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_profile_benefit_card"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🧾"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:text="@string/member_profile_benefit_late"
+                                android:textColor="@color/ios_text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/member_profile_benefit_late_desc"
+                                android:textColor="@color/ios_text_secondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
                     </LinearLayout>
+                </HorizontalScrollView>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_card"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🍧"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:text="闪购双旦"
-                            android:textColor="@color/primary_text"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="去看看"
-                            android:textColor="@color/profile_muted_text"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_card"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🧾"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:text="延迟退房"
-                            android:textColor="@color/primary_text"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="1 次/半年"
-                            android:textColor="@color/profile_muted_text"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/bg_card"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -345,8 +370,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/member_assets_title"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp"
+                android:textColor="@color/ios_text_primary"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -368,8 +393,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/member_points_value"
-                        android:textColor="@color/primary_text"
-                        android:textSize="16sp"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -377,9 +402,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/member_profile_assets_points"
-                        android:textColor="@color/profile_muted_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/ios_divider" />
 
                 <LinearLayout
                     android:id="@+id/entry_balance"
@@ -394,8 +426,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/member_balance_value"
-                        android:textColor="@color/primary_text"
-                        android:textSize="16sp"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -403,9 +435,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/member_profile_assets_balance"
-                        android:textColor="@color/profile_muted_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/ios_divider" />
 
                 <LinearLayout
                     android:id="@+id/entry_coupon_center"
@@ -420,8 +459,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/member_coupon_value"
-                        android:textColor="@color/primary_text"
-                        android:textSize="16sp"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -429,9 +468,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/member_profile_assets_coupon"
-                        android:textColor="@color/profile_muted_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/ios_divider" />
 
                 <LinearLayout
                     android:id="@+id/entry_member_center"
@@ -445,16 +491,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/member_profile_member_level"
-                        android:textColor="@color/primary_text"
-                        android:textSize="16sp"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/member_profile_assets_member"
-                        android:textColor="@color/profile_muted_text"
+                        android:text="@string/member_profile_assets_level"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -463,8 +509,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/bg_card"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -472,8 +520,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/member_profile_quick_title"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp"
+                android:textColor="@color/ios_text_primary"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -493,17 +541,18 @@
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_circle"
+                        android:background="@drawable/bg_profile_icon_chip"
                         android:gravity="center"
                         android:text="☆"
-                        android:textSize="18sp" />
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_collect"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -518,17 +567,18 @@
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_circle"
+                        android:background="@drawable/bg_profile_icon_chip"
                         android:gravity="center"
                         android:text="🕘"
-                        android:textSize="18sp" />
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_history"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -543,17 +593,18 @@
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_circle"
+                        android:background="@drawable/bg_profile_icon_chip"
                         android:gravity="center"
                         android:text="🎁"
-                        android:textSize="18sp" />
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_coupon_card"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -567,9 +618,10 @@
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_circle"
+                        android:background="@drawable/bg_profile_icon_chip"
                         android:gravity="center"
                         android:text="币"
+                        android:textColor="@color/ios_text_primary"
                         android:textSize="16sp" />
 
                     <TextView
@@ -577,7 +629,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_points_coin"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -587,9 +639,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_card"
+            android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -603,8 +656,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/member_profile_orders_title"
-                    android:textColor="@color/primary_text"
-                    android:textSize="14sp"
+                    android:textColor="@color/ios_text_primary"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <View
@@ -612,13 +665,28 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/text_all_orders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/member_profile_all_orders"
-                    android:textColor="@color/profile_muted_text"
-                    android:textSize="12sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/member_profile_all_orders"
+                        android:textColor="@color/ios_text_secondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/member_cell_chevron"
+                        android:textColor="@color/ios_text_secondary"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -638,17 +706,18 @@
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_circle"
+                        android:background="@drawable/bg_profile_icon_chip"
                         android:gravity="center"
                         android:text="📋"
-                        android:textSize="18sp" />
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_order_all"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -663,17 +732,18 @@
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_circle"
+                        android:background="@drawable/bg_profile_icon_chip"
                         android:gravity="center"
                         android:text="⏳"
-                        android:textSize="18sp" />
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_order_pending_title"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -688,17 +758,18 @@
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_circle"
+                        android:background="@drawable/bg_profile_icon_chip"
                         android:gravity="center"
                         android:text="💬"
-                        android:textSize="18sp" />
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_order_review"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -713,17 +784,18 @@
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_circle"
+                        android:background="@drawable/bg_profile_icon_chip"
                         android:gravity="center"
                         android:text="¥"
-                        android:textSize="18sp" />
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_order_refund"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/ios_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>

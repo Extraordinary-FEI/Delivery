@@ -42,6 +42,19 @@ public final class LocalJsonStore {
         return builder.toString();
     }
 
+    public static String readAssetJson(Context context, String filename) throws IOException {
+        AssetManager assetManager = context.getAssets();
+        InputStream inputStream = assetManager.open(filename);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        StringBuilder builder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+        reader.close();
+        return builder.toString();
+    }
+
     public static void writeJson(Context context, String filename, String json) throws IOException {
         File file = ensureLocalFile(context, filename);
         FileOutputStream outputStream = new FileOutputStream(file, false);
@@ -64,4 +77,3 @@ public final class LocalJsonStore {
         inputStream.close();
     }
 }
-

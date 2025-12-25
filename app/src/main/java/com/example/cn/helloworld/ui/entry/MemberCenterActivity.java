@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
@@ -144,6 +145,7 @@ public class MemberCenterActivity extends BaseActivity {
         TextView levelBadge = (TextView) findViewById(R.id.text_member_level_badge);
         TextView levelTitle = (TextView) findViewById(R.id.text_member_level_title);
         TextView growthView = (TextView) findViewById(R.id.text_member_growth);
+        ProgressBar growthProgress = (ProgressBar) findViewById(R.id.progress_member_growth);
 
         int points = profile.points;
         MemberLevel level = MemberLevel.resolve(points);
@@ -151,6 +153,11 @@ public class MemberCenterActivity extends BaseActivity {
         levelBadge.setText(level.title);
         levelTitle.setText(level.title);
         growthView.setText(getString(R.string.member_profile_growth_format, points, level.nextTarget));
+        if (growthProgress != null) {
+            int target = Math.max(level.nextTarget, 1);
+            int progress = Math.min(100, Math.max(0, points * 100 / target));
+            growthProgress.setProgress(progress);
+        }
 
         TextView pointsView = (TextView) findViewById(R.id.text_points_value);
         TextView couponView = (TextView) findViewById(R.id.text_coupon_value);

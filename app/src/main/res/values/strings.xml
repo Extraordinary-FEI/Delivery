@@ -413,7 +413,8 @@
     <string name="member_profile_wallet_coupon">好券礼包</string>
     <string name="member_profile_quick_title">快捷入口</string>
     <string name="member_profile_phone_unbound">暂未绑定手机号</string>
-    <string name="member_profile_all_orders">全部订单 &gt;</string>
+    <string name="member_profile_all_orders">全部订单</string>
+    <string name="member_profile_assets_level">会员等级</string>
     <string name="member_profile_assets_member">会员权益</string>
     <string name="member_profile_assets_balance">余额</string>
     <string name="member_profile_assets_coupon">优惠券</string>
@@ -422,6 +423,12 @@
     <string name="member_profile_coupon_center">卡券中心</string>
     <string name="member_profile_orders_title">订单</string>
     <string name="member_profile_order_pending_title">待支付</string>
+    <string name="member_profile_benefit_choice">惊喜多选</string>
+    <string name="member_profile_benefit_choice_desc">去领取</string>
+    <string name="member_profile_benefit_flash">双旦闪购</string>
+    <string name="member_profile_benefit_flash_desc">去看看</string>
+    <string name="member_profile_benefit_late">延迟退房</string>
+    <string name="member_profile_benefit_late_desc">了解规则</string>
     <string name="member_profile_growth_tag">成长值</string>
     <string name="coupon_center_title">优惠券中心</string>
     <string name="points_center_title">积分中心</string>

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "delivery.db";
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 10;
 
     public static final String TABLE_USERS = "users";
     public static final String TABLE_SHOPS = "shops";
@@ -55,7 +55,10 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + " ("
                 + "id TEXT PRIMARY KEY,"
                 + "name TEXT,"
-                + "shop_id TEXT"
+                + "shop_id TEXT,"
+                + "seed_id TEXT,"
+                + "source TEXT,"
+                + "updated_by_user INTEGER DEFAULT 0"
                 + ")");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PRODUCTS + " ("
                 + "id TEXT PRIMARY KEY,"
@@ -65,7 +68,10 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
                 + "image_url TEXT,"
                 + "category_id TEXT,"
                 + "shop_id TEXT,"
-                + "available INTEGER DEFAULT 1"
+                + "available INTEGER DEFAULT 1,"
+                + "seed_id TEXT,"
+                + "source TEXT,"
+                + "updated_by_user INTEGER DEFAULT 0"
                 + ")");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CART_ITEMS + " ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -224,6 +230,24 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
         }
         if (!columnExists(db, TABLE_ORDER_ITEMS, "subtotal")) {
             db.execSQL("ALTER TABLE " + TABLE_ORDER_ITEMS + " ADD COLUMN subtotal REAL");
+        }
+        if (!columnExists(db, TABLE_CATEGORIES, "seed_id")) {
+            db.execSQL("ALTER TABLE " + TABLE_CATEGORIES + " ADD COLUMN seed_id TEXT");
+        }
+        if (!columnExists(db, TABLE_CATEGORIES, "source")) {
+            db.execSQL("ALTER TABLE " + TABLE_CATEGORIES + " ADD COLUMN source TEXT");
+        }
+        if (!columnExists(db, TABLE_CATEGORIES, "updated_by_user")) {
+            db.execSQL("ALTER TABLE " + TABLE_CATEGORIES + " ADD COLUMN updated_by_user INTEGER DEFAULT 0");
+        }
+        if (!columnExists(db, TABLE_PRODUCTS, "seed_id")) {
+            db.execSQL("ALTER TABLE " + TABLE_PRODUCTS + " ADD COLUMN seed_id TEXT");
+        }
+        if (!columnExists(db, TABLE_PRODUCTS, "source")) {
+            db.execSQL("ALTER TABLE " + TABLE_PRODUCTS + " ADD COLUMN source TEXT");
+        }
+        if (!columnExists(db, TABLE_PRODUCTS, "updated_by_user")) {
+            db.execSQL("ALTER TABLE " + TABLE_PRODUCTS + " ADD COLUMN updated_by_user INTEGER DEFAULT 0");
         }
     }
 
