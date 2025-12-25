@@ -53,6 +53,10 @@
             android:label="@string/admin_manage_foods" />
 
         <activity
+            android:name=".ui.shop.admin.AdminSeckillActivity"
+            android:label="@string/admin_seckill_title" />
+
+        <activity
             android:name=".ui.shop.admin.ShopEditActivity"
             android:label="@string/admin_edit_shop" />
 
@@ -67,6 +71,10 @@
         <activity
             android:name=".ui.entry.FlashSaleActivity"
             android:label="@string/flash_sale_title" />
+
+        <activity
+            android:name=".ui.entry.SearchResultActivity"
+            android:label="@string/market_action_search" />
 
         <activity
             android:name=".ui.entry.MemberCenterActivity"
@@ -111,6 +119,10 @@
         <activity
             android:name=".ui.order.OrderConfirmActivity"
             android:label="@string/title_order_confirm" />
+
+        <activity
+            android:name=".ui.order.ReviewActivity"
+            android:label="@string/review_title" />
 
         <activity
             android:name=".ui.order.CheckoutActivity"

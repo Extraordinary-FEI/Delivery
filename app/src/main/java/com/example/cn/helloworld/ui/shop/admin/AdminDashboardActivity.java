@@ -33,5 +33,14 @@ public class AdminDashboardActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        View seckillManage = findViewById(R.id.card_manage_seckill);
+        seckillManage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminDashboardActivity.this, AdminSeckillActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
@@ -13,6 +14,7 @@ import com.example.cn.helloworld.data.cart.CartManager;
 import com.example.cn.helloworld.data.cart.FoodItem;
 import com.example.cn.helloworld.db.UserContentDao;
 import com.example.cn.helloworld.model.Food;
+import com.example.cn.helloworld.utils.ImageLoader;
 import com.example.cn.helloworld.utils.SessionManager;
 
 import java.util.List;
@@ -69,6 +71,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         viewHolder.descView.setText(food.getDescription());
         viewHolder.priceView.setText(viewHolder.itemView.getContext()
                 .getString(R.string.food_price_format, food.getPrice()));
+        ImageLoader.load(viewHolder.itemView.getContext(), viewHolder.imageView, food.getImageUrl());
         final CartManager cartManager = CartManager.getInstance(viewHolder.itemView.getContext());
         int quantity = cartManager.getItemQuantity(food.getName());
         viewHolder.bindQuantity(quantity);
@@ -96,7 +99,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                cartManager.addItem(new FoodItem(food.getName(), food.getPrice(), food.getDescription(), 0));
+                cartManager.addItem(new FoodItem(
+                        food.getName(),
+                        food.getPrice(),
+                        food.getDescription(),
+                        0,
+                        food.getImageUrl()));
                 int newQuantity = cartManager.getItemQuantity(food.getName());
                 viewHolder.bindQuantity(newQuantity);
                 animateCartAction(v);
@@ -108,7 +116,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                cartManager.addItem(new FoodItem(food.getName(), food.getPrice(), food.getDescription(), 0));
+                cartManager.addItem(new FoodItem(
+                        food.getName(),
+                        food.getPrice(),
+                        food.getDescription(),
+                        0,
+                        food.getImageUrl()));
                 int newQuantity = cartManager.getItemQuantity(food.getName());
                 viewHolder.bindQuantity(newQuantity);
                 animateCartAction(v);
@@ -153,6 +166,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         final TextView increaseButton;
         final TextView quantityText;
         final TextView favoriteButton;
+        final ImageView imageView;
 
         FoodViewHolder(View itemView) {
             super(itemView);
@@ -165,6 +179,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             increaseButton = (TextView) itemView.findViewById(R.id.button_increase);
             quantityText = (TextView) itemView.findViewById(R.id.text_quantity);
             favoriteButton = (TextView) itemView.findViewById(R.id.button_favorite);
+            imageView = (ImageView) itemView.findViewById(R.id.food_item_image);
         }
 
         void bindQuantity(int quantity) {

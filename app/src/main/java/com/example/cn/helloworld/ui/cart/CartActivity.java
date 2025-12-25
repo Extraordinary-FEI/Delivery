@@ -88,7 +88,11 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
     private void refreshCartItems() {
         cartItems.clear();
         for (com.example.cn.helloworld.data.cart.CartItem item : cartManager.getItems()) {
-            cartItems.add(new CartItem(item.getName(), BigDecimal.valueOf(item.getPrice()), item.getQuantity()));
+            cartItems.add(new CartItem(
+                    item.getName(),
+                    BigDecimal.valueOf(item.getPrice()),
+                    item.getQuantity(),
+                    item.getImageUrl()));
         }
         cartAdapter.notifyDataSetChanged();
         updateTotal();

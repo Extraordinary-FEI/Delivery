@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.utils.ImageLoader;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -42,6 +44,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.priceView.setText(holder.itemView.getContext().getString(
                 R.string.cart_item_price_format,
                 item.getUnitPrice().toPlainString()));
+        ImageLoader.load(holder.itemView.getContext(), holder.imageView, item.getImageUrl());
         holder.quantityView.setText(String.valueOf(item.getQuantity()));
         updateLineTotal(holder, item);
 
@@ -105,6 +108,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         private final Button plusButton;
         private final Button minusButton;
         private final Button deleteButton;
+        private final ImageView imageView;
 
         CartViewHolder(View itemView) {
             super(itemView);
@@ -115,6 +119,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             plusButton = (Button) itemView.findViewById(R.id.button_quantity_plus);
             minusButton = (Button) itemView.findViewById(R.id.button_quantity_minus);
             deleteButton = (Button) itemView.findViewById(R.id.button_delete_item);
+            imageView = (ImageView) itemView.findViewById(R.id.image_cart_item);
         }
     }
 }

@@ -2,10 +2,14 @@ package com.example.cn.helloworld.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.ui.cart.CartActivity;
@@ -13,6 +17,7 @@ import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.entry.CouponCenterActivity;
 import com.example.cn.helloworld.ui.entry.FlashSaleActivity;
 import com.example.cn.helloworld.ui.entry.MemberCenterActivity;
+import com.example.cn.helloworld.ui.entry.SearchResultActivity;
 import com.example.cn.helloworld.ui.entry.ServiceHelpActivity;
 import com.example.cn.helloworld.ui.entry.SettingsActivity;
 import com.example.cn.helloworld.ui.market.FoodMarketActivity;
@@ -83,6 +88,30 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ServiceHelpActivity.class));
+            }
+        });
+
+        final EditText searchInput = (EditText) findViewById(R.id.text_main_search);
+        searchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String keyword = v.getText().toString().trim();
+                if (TextUtils.isEmpty(keyword)) {
+                    return false;
+                }
+                Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
+                intent.putExtra(SearchResultActivity.EXTRA_QUERY, keyword);
+                startActivity(intent);
+                return true;
+            }
+        });
+        searchInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String keyword = searchInput.getText().toString().trim();
+                Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
+                intent.putExtra(SearchResultActivity.EXTRA_QUERY, keyword);
+                startActivity(intent);
             }
         });
 

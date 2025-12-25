@@ -53,13 +53,15 @@ public class UserDao {
         public String nickname;
         public String phone;
         public String avatarUrl;
+        public int points;
 
-        public UserProfile(int userId, String username, String nickname, String phone, String avatarUrl) {
+        public UserProfile(int userId, String username, String nickname, String phone, String avatarUrl, int points) {
             this.userId = userId;
             this.username = username;
             this.nickname = nickname;
             this.phone = phone;
             this.avatarUrl = avatarUrl;
+            this.points = points;
         }
     }
 
@@ -134,19 +136,32 @@ public class UserDao {
         SQLiteDatabase db = helper.getReadableDatabase();
         boolean hasNickname = columnExists(db, "users", "nickname");
         boolean hasAvatarUrl = columnExists(db, "users", "avatar_url");
+        boolean hasPoints = columnExists(db, "users", "points");
         Cursor cursor = db.rawQuery(
                 hasNickname
                         ? (hasAvatarUrl
-                        ? "SELECT id, username, nickname, phone, avatar_url FROM users WHERE id=? LIMIT 1"
-                        : "SELECT id, username, nickname, phone FROM users WHERE id=? LIMIT 1")
+                        ? (hasPoints
+                        ? "SELECT id, username, nickname, phone, avatar_url, points FROM users WHERE id=? LIMIT 1"
+                        : "SELECT id, username, nickname, phone, avatar_url FROM users WHERE id=? LIMIT 1")
+                        : (hasPoints
+                        ? "SELECT id, username, nickname, phone, points FROM users WHERE id=? LIMIT 1"
+                        : "SELECT id, username, nickname, phone FROM users WHERE id=? LIMIT 1"))
                         : (hasAvatarUrl
-                        ? "SELECT id, username, phone, avatar_url FROM users WHERE id=? LIMIT 1"
-                        : "SELECT id, username, phone FROM users WHERE id=? LIMIT 1"),
+                        ? (hasPoints
+                        ? "SELECT id, username, phone, avatar_url, points FROM users WHERE id=? LIMIT 1"
+                        : "SELECT id, username, phone, avatar_url FROM users WHERE id=? LIMIT 1")
+                        : (hasPoints
+                        ? "SELECT id, username, phone, points FROM users WHERE id=? LIMIT 1"
+                        : "SELECT id, username, phone FROM users WHERE id=? LIMIT 1")),
                 new String[]{String.valueOf(userId)}
         );
         try {
             if (cursor == null || !cursor.moveToFirst()) {
                 return null;
+            }
+            int points = 0;
+            if (hasPoints) {
+                points = cursor.getInt(cursor.getColumnIndex("points"));
             }
             return new UserProfile(
                     cursor.getInt(0),
@@ -155,13 +170,57 @@ public class UserDao {
                     hasNickname ? cursor.getString(3) : cursor.getString(2),
                     hasAvatarUrl
                             ? (hasNickname ? cursor.getString(4) : cursor.getString(3))
-                            : null
+                            : null,
+                    points
             );
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
+    }
+
+    public int getPoints(int userId) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        if (!columnExists(db, "users", "points")) {
+            return 0;
+        }
+        Cursor cursor = db.rawQuery("SELECT points FROM users WHERE id=? LIMIT 1",
+                new String[]{String.valueOf(userId)});
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+        } finally {
+            cursor.close();
+        }
+        return 0;
+    }
+
+    public boolean addPoints(int userId, int delta) {
+        if (delta <= 0) {
+            return false;
+        }
+        SQLiteDatabase db = helper.getWritableDatabase();
+        if (!columnExists(db, "users", "points")) {
+            return false;
+        }
+        db.execSQL("UPDATE users SET points = points + ? WHERE id = ?",
+                new Object[]{delta, userId});
+        return true;
+    }
+
+    public boolean deductPoints(int userId, int delta) {
+        if (delta <= 0) {
+            return false;
+        }
+        SQLiteDatabase db = helper.getWritableDatabase();
+        if (!columnExists(db, "users", "points")) {
+            return false;
+        }
+        db.execSQL("UPDATE users SET points = CASE WHEN points >= ? THEN points - ? ELSE points END WHERE id = ?",
+                new Object[]{delta, delta, userId});
+        return true;
     }
 
     public boolean updateProfile(int userId, String nickname, String phone, String avatarUrl) {

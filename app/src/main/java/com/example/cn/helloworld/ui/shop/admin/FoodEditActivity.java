@@ -1,8 +1,5 @@
 package com.example.cn.helloworld.ui.shop.admin;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,7 +17,6 @@ import com.example.cn.helloworld.utils.ImageLoader;
 public class FoodEditActivity extends BaseActivity {
     public static final String EXTRA_SHOP_ID = "extra_shop_id";
     public static final String EXTRA_FOOD_ID = "extra_food_id";
-    private static final int REQUEST_PICK_IMAGE = 902;
 
     private final FoodLocalRepository repository = new FoodLocalRepository();
 
@@ -45,8 +41,16 @@ public class FoodEditActivity extends BaseActivity {
         descriptionInput = (EditText) findViewById(R.id.input_food_description);
         imageInput = (EditText) findViewById(R.id.input_food_image);
         previewImage = (ImageView) findViewById(R.id.image_food_preview);
+        imageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    ImageLoader.load(FoodEditActivity.this, previewImage,
+                            imageInput.getText().toString());
+                }
+            }
+        });
 
-        Button selectImageButton = (Button) findViewById(R.id.button_pick_food_image);
         Button saveButton = (Button) findViewById(R.id.button_save_food);
 
         shopId = getIntent().getStringExtra(EXTRA_SHOP_ID);
@@ -61,33 +65,12 @@ public class FoodEditActivity extends BaseActivity {
             shopIdInput.setEnabled(false);
         }
 
-        selectImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.action_pick_image)), REQUEST_PICK_IMAGE);
-            }
-        });
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveFood();
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
-            Uri uri = data.getData();
-            if (uri != null) {
-                imageInput.setText(uri.toString());
-                ImageLoader.load(this, previewImage, uri.toString());
-            }
-        }
     }
 
     private void loadFood(String id) {

@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
-import com.example.cn.helloworld.db.UserContentDao;
 import com.example.cn.helloworld.db.UserDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.utils.ImageLoader;
@@ -115,10 +114,7 @@ public class MemberCenterActivity extends BaseActivity {
         TextView levelTitle = (TextView) findViewById(R.id.text_member_level_title);
         TextView growthView = (TextView) findViewById(R.id.text_member_growth);
 
-        UserContentDao contentDao = new UserContentDao(this);
-        int favoriteCount = contentDao.getFavoriteCount(userId);
-        int historyCount = contentDao.getHistoryCount(userId);
-        int points = favoriteCount * 30 + historyCount * 10;
+        int points = profile.points;
         MemberLevel level = MemberLevel.resolve(points);
 
         levelBadge.setText(level.title);

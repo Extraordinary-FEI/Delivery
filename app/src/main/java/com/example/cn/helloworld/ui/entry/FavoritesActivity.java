@@ -67,6 +67,7 @@ public class FavoritesActivity extends BaseActivity implements FoodAdapter.OnFoo
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_PRICE, food.getPrice());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_DESCRIPTION, food.getDescription());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_IMAGE_URL, food.getImageUrl());
+        intent.putExtra(FoodDetailActivity.EXTRA_SHOP_ID, food.getShopId());
         startActivity(intent);
     }
 

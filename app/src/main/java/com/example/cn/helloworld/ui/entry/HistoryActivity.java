@@ -37,7 +37,7 @@ public class HistoryActivity extends BaseActivity implements FoodAdapter.OnFoodC
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_history);
         emptyView = (TextView) findViewById(R.id.text_history_empty);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FoodAdapter(histories, this);
+        adapter = new FoodAdapter(histories, this, null, null, false);
         recyclerView.setAdapter(adapter);
 
         loadHistory();
@@ -67,6 +67,7 @@ public class HistoryActivity extends BaseActivity implements FoodAdapter.OnFoodC
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_PRICE, food.getPrice());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_DESCRIPTION, food.getDescription());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_IMAGE_URL, food.getImageUrl());
+        intent.putExtra(FoodDetailActivity.EXTRA_SHOP_ID, food.getShopId());
         startActivity(intent);
     }
 

@@ -67,6 +67,20 @@
             android:textColor="@color/primary_color"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/button_enter_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_quantity_outline"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/food_enter_shop"
+            android:textColor="@color/primary_color"
+            android:textSize="14sp" />
+
         <Button
             android:id="@+id/button_add_to_cart"
             android:layout_width="match_parent"
@@ -89,6 +103,30 @@
             android:layout_marginTop="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/review_list_title"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/layout_review_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical" />
+
+        <Button
+            android:id="@+id/button_add_review"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_primary_button"
+            android:text="@string/review_add_action"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </ScrollView>

@@ -25,42 +25,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/flash_sale_title"
+            android:text="@string/review_title"
             android:textColor="@color/primary_text"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/text_flash_sale_countdown"
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/spinner_review_food"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/flash_sale_countdown"
-            android:textColor="@color/primary_color"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_search"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/input_review_content"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_search"
+            android:gravity="top"
+            android:hint="@string/review_hint"
+            android:padding="12dp"
+            android:textColor="@color/primary_text"
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/button_manage_seckill"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_marginTop="10dp"
+            android:id="@+id/button_submit_review"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/bg_primary_button"
-            android:text="@string/flash_sale_admin_manage"
-            android:textColor="@android:color/white"
-            android:visibility="gone" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_flash_sale"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" />
-
-        <TextView
-            android:id="@+id/text_flash_sale_admin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/flash_sale_user_hint"
-            android:textColor="@color/secondary_text" />
+            android:text="@string/review_submit_action"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>
+

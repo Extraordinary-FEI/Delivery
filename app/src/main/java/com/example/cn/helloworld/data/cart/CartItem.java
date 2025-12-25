@@ -3,12 +3,14 @@ package com.example.cn.helloworld.data.cart;
 public class CartItem {
     private final String name;
     private final double price;
+    private final String imageUrl;
     private int quantity;
 
-    public CartItem(String name, double price, int quantity) {
+    public CartItem(String name, double price, int quantity, String imageUrl) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -17,6 +19,10 @@ public class CartItem {
 
     public double getPrice() {
         return price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public int getQuantity() {

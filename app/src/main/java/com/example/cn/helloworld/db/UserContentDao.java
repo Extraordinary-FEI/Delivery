@@ -60,6 +60,9 @@ public class UserContentDao {
         ContentValues values = buildFoodValues(userId, food);
         values.put("created_at", System.currentTimeMillis());
         db.insertWithOnConflict("favorites", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        values.remove("created_at");
+        values.put("visited_at", System.currentTimeMillis());
+        db.insertWithOnConflict("browse_history", null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public void removeFavorite(int userId, String foodId) {
@@ -68,6 +71,8 @@ public class UserContentDao {
         }
         SQLiteDatabase db = helper.getWritableDatabase();
         db.delete("favorites", "user_id = ? AND food_id = ?",
+                new String[]{String.valueOf(userId), foodId});
+        db.delete("browse_history", "user_id = ? AND food_id = ?",
                 new String[]{String.valueOf(userId), foodId});
     }
 
@@ -101,6 +106,9 @@ public class UserContentDao {
         if (food == null) {
             return;
         }
+        if (!isFavorite(userId, resolveFoodId(food))) {
+            return;
+        }
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = buildFoodValues(userId, food);
         values.put("visited_at", System.currentTimeMillis());
@@ -109,14 +117,13 @@ public class UserContentDao {
 
     public List<Food> getBrowseHistory(int userId) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(
-                "browse_history",
-                new String[]{"food_id", "food_name", "food_desc", "food_price", "image_url"},
-                "user_id = ?",
-                new String[]{String.valueOf(userId)},
-                null,
-                null,
-                "visited_at DESC"
+        Cursor cursor = db.rawQuery(
+                "SELECT h.food_id, h.food_name, h.food_desc, h.food_price, h.image_url " +
+                        "FROM browse_history h INNER JOIN favorites f " +
+                        "ON h.user_id = f.user_id AND h.food_id = f.food_id " +
+                        "WHERE h.user_id = ? " +
+                        "ORDER BY h.visited_at DESC",
+                new String[]{String.valueOf(userId)}
         );
         List<Food> result = new ArrayList<Food>();
         try {

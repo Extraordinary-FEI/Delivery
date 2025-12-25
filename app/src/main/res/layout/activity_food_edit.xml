@@ -64,16 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/hint_food_image" />
-
-        <Button
-            android:id="@+id/button_pick_food_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_chip"
-            android:text="@string/action_pick_image"
-            android:textColor="@color/primary_color" />
+            android:hint="@string/hint_food_image"
+            android:inputType="textUri" />
 
         <ImageView
             android:id="@+id/image_food_preview"

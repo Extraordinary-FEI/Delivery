@@ -146,6 +146,7 @@ public class CheckoutActivity extends BaseActivity {
         intent.putExtra(OrderConfirmActivity.EXTRA_ORDER_TIME, orderTime);
         intent.putStringArrayListExtra(OrderConfirmActivity.EXTRA_ORDER_ITEMS, items);
         intent.putExtra(OrderConfirmActivity.EXTRA_ORDER_TOTAL, cartManager.getTotalPrice());
+        intent.putExtra(OrderConfirmActivity.EXTRA_USER_ID, userId);
         startActivity(intent);
     }
 

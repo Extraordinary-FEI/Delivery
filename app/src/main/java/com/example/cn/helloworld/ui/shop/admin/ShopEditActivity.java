@@ -1,8 +1,5 @@
 package com.example.cn.helloworld.ui.shop.admin;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,7 +16,6 @@ import com.example.cn.helloworld.utils.ImageLoader;
 
 public class ShopEditActivity extends BaseActivity {
     public static final String EXTRA_SHOP_ID = "extra_shop_id";
-    private static final int REQUEST_PICK_IMAGE = 901;
 
     private final ShopLocalRepository repository = new ShopLocalRepository();
 
@@ -46,8 +42,16 @@ public class ShopEditActivity extends BaseActivity {
         descriptionInput = (EditText) findViewById(R.id.input_shop_description);
         imageInput = (EditText) findViewById(R.id.input_shop_image);
         previewImage = (ImageView) findViewById(R.id.image_shop_preview);
+        imageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    ImageLoader.load(ShopEditActivity.this, previewImage,
+                            imageInput.getText().toString());
+                }
+            }
+        });
 
-        Button selectImageButton = (Button) findViewById(R.id.button_pick_shop_image);
         Button saveButton = (Button) findViewById(R.id.button_save_shop);
 
         shopId = parseShopId(getIntent().getStringExtra(EXTRA_SHOP_ID));
@@ -55,33 +59,12 @@ public class ShopEditActivity extends BaseActivity {
             loadShop(shopId);
         }
 
-        selectImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.action_pick_image)), REQUEST_PICK_IMAGE);
-            }
-        });
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveShop();
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
-            Uri uri = data.getData();
-            if (uri != null) {
-                imageInput.setText(uri.toString());
-                ImageLoader.load(this, previewImage, uri.toString());
-            }
-        }
     }
 
     private void loadShop(int id) {

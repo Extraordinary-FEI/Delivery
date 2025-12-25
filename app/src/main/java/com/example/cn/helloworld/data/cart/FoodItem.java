@@ -5,12 +5,14 @@ public class FoodItem {
     private final double price;
     private final String description;
     private final int imageResId;
+    private final String imageUrl;
 
-    public FoodItem(String name, double price, String description, int imageResId) {
+    public FoodItem(String name, double price, String description, int imageResId, String imageUrl) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.imageResId = imageResId;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -27,5 +29,9 @@ public class FoodItem {
 
     public int getImageResId() {
         return imageResId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

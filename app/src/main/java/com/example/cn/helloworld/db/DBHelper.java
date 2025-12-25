@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "delivery.db";
-    public static final int DB_VERSION = 6;
+    public static final int DB_VERSION = 7;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -33,7 +33,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         "phone TEXT," +
                         "nickname TEXT," +
                         "avatar_url TEXT," +
-                        "created_at INTEGER NOT NULL" +
+                        "created_at INTEGER NOT NULL," +
+                        "points INTEGER DEFAULT 0" +
                         ");"
         );
         db.execSQL(
@@ -71,6 +72,36 @@ public class DBHelper extends SQLiteOpenHelper {
                         "image_url TEXT," +
                         "visited_at INTEGER," +
                         "UNIQUE(user_id, food_id) ON CONFLICT REPLACE" +
+                        ");"
+        );
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS seckill (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "product_id TEXT NOT NULL," +
+                        "seckill_price REAL NOT NULL," +
+                        "stock INTEGER NOT NULL," +
+                        "start_time INTEGER NOT NULL," +
+                        "end_time INTEGER NOT NULL," +
+                        "status INTEGER DEFAULT 1" +
+                        ");"
+        );
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS user_coupons (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "user_id INTEGER NOT NULL," +
+                        "coupon_name TEXT NOT NULL," +
+                        "points_cost INTEGER NOT NULL," +
+                        "created_at INTEGER" +
+                        ");"
+        );
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS reviews (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "user_id INTEGER NOT NULL," +
+                        "food_id TEXT NOT NULL," +
+                        "food_name TEXT," +
+                        "content TEXT," +
+                        "created_at INTEGER" +
                         ");"
         );
     }
@@ -113,6 +144,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         if (oldVersion < 6) {
+            createTables(db);
+        }
+
+        if (oldVersion < 7) {
+            if (!columnExists(db, "users", "points")) {
+                db.execSQL("ALTER TABLE users ADD COLUMN points INTEGER DEFAULT 0");
+            }
             createTables(db);
         }
     }

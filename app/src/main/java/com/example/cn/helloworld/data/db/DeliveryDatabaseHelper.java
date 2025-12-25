@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "delivery.db";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
 
     public static final String TABLE_USERS = "users";
     public static final String TABLE_SHOPS = "shops";
@@ -40,7 +40,8 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
                 + "phone TEXT,"
                 + "nickname TEXT,"
                 + "avatar_url TEXT,"
-                + "created_at INTEGER NOT NULL"
+                + "created_at INTEGER NOT NULL,"
+                + "points INTEGER DEFAULT 0"
                 + ")");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SHOPS + " ("
                 + "id TEXT PRIMARY KEY,"
@@ -117,15 +118,57 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
                 + "visited_at INTEGER,"
                 + "UNIQUE(user_id, food_id) ON CONFLICT REPLACE"
                 + ")");
+        db.execSQL("CREATE TABLE IF NOT EXISTS seckill ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "product_id TEXT NOT NULL,"
+                + "seckill_price REAL NOT NULL,"
+                + "stock INTEGER NOT NULL,"
+                + "start_time INTEGER NOT NULL,"
+                + "end_time INTEGER NOT NULL,"
+                + "status INTEGER DEFAULT 1"
+                + ")");
+        db.execSQL("CREATE TABLE IF NOT EXISTS user_coupons ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "user_id INTEGER NOT NULL,"
+                + "coupon_name TEXT NOT NULL,"
+                + "points_cost INTEGER NOT NULL,"
+                + "created_at INTEGER"
+                + ")");
+        db.execSQL("CREATE TABLE IF NOT EXISTS reviews ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "user_id INTEGER NOT NULL,"
+                + "food_id TEXT NOT NULL,"
+                + "food_name TEXT,"
+                + "content TEXT,"
+                + "created_at INTEGER"
+                + ")");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         createTables(db);
+        if (!columnExists(db, TABLE_USERS, "points")) {
+            db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN points INTEGER DEFAULT 0");
+        }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         createTables(db);
+    }
+
+    private static boolean columnExists(SQLiteDatabase db, String tableName, String columnName) {
+        android.database.Cursor cursor = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
+        try {
+            int nameIndex = cursor.getColumnIndex("name");
+            while (cursor.moveToNext()) {
+                if (columnName.equals(cursor.getString(nameIndex))) {
+                    return true;
+                }
+            }
+            return false;
+        } finally {
+            cursor.close();
+        }
     }
 }

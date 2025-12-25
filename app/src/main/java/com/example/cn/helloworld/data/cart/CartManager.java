@@ -35,7 +35,7 @@ public class CartManager {
     public synchronized void addItem(FoodItem foodItem) {
         CartItem existing = findItem(foodItem.getName());
         if (existing == null) {
-            items.add(new CartItem(foodItem.getName(), foodItem.getPrice(), 1));
+            items.add(new CartItem(foodItem.getName(), foodItem.getPrice(), 1, foodItem.getImageUrl()));
         } else {
             existing.increaseQuantity(1);
         }
@@ -112,8 +112,9 @@ public class CartManager {
                 String name = obj.optString("name");
                 double price = obj.optDouble("price", 0.0);
                 int quantity = obj.optInt("quantity", 0);
+                String imageUrl = obj.optString("imageUrl", null);
                 if (quantity > 0) {
-                    items.add(new CartItem(name, price, quantity));
+                    items.add(new CartItem(name, price, quantity, imageUrl));
                 }
             }
         } catch (JSONException ignored) {
@@ -128,6 +129,7 @@ public class CartManager {
                 obj.put("name", item.getName());
                 obj.put("price", item.getPrice());
                 obj.put("quantity", item.getQuantity());
+                obj.put("imageUrl", item.getImageUrl());
                 array.put(obj);
             } catch (JSONException ignored) {
             }

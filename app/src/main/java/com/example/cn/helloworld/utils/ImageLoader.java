@@ -15,47 +15,25 @@ public final class ImageLoader {
     }
 
     public static void load(Context context, ImageView imageView, String path) {
-        if (TextUtils.isEmpty(path)) {
+        String target = normalizeImagePath(path);
+        if (TextUtils.isEmpty(target)) {
             imageView.setImageResource(R.mipmap.ic_launcher);
             return;
         }
-        String trimmed = path.trim();
-        String pexelsId = extractPexelsId(trimmed);
-        if (!TextUtils.isEmpty(pexelsId)) {
-            String primaryUrl = buildPexelsUrl(pexelsId, "jpeg");
-            Glide.with(context)
-                    .load(primaryUrl)
-                    .crossFade()
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .into(imageView);
-            return;
-        } else {
-            Glide.with(context)
-                    .load(trimmed)
-                    .crossFade()
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .into(imageView);
-        }
+        Glide.with(context)
+                .load(target)
+                .crossFade()
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(imageView);
     }
 
     public static void loadAvatar(Context context, ImageView imageView, String path) {
-        if (TextUtils.isEmpty(path)) {
+        String target = normalizeImagePath(path);
+        if (TextUtils.isEmpty(target)) {
             imageView.setImageResource(R.mipmap.ic_launcher);
             return;
         }
-        String trimmed = path.trim();
-        String pexelsId = extractPexelsId(trimmed);
-        String target = trimmed;
-        if (!TextUtils.isEmpty(pexelsId)) {
-            target = buildPexelsUrl(pexelsId, "jpeg");
-        }
-//        Glide.with(context)
-//                .load(target)
-//                .placeholder(R.mipmap.ic_launcher)
-//                .error(R.mipmap.ic_launcher)
-//                .into(imageView);
         Glide.with(context)
                 .load(target)
                 .placeholder(R.drawable.ic_launcher)
@@ -98,5 +76,46 @@ public final class ImageLoader {
             return candidate;
         }
         return null;
+    }
+
+    private static String normalizeImagePath(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return null;
+        }
+        String trimmed = path.trim();
+        if (TextUtils.isEmpty(trimmed)) {
+            return null;
+        }
+        if (TextUtils.isDigitsOnly(trimmed)) {
+            return buildPexelsUrl(trimmed, "jpeg");
+        }
+        String normalized = trimmed;
+        if (looksLikeWebUrlWithoutScheme(trimmed)) {
+            normalized = "https://" + trimmed;
+        }
+        if (isPexelsPageUrl(normalized)) {
+            String pexelsId = extractPexelsId(normalized);
+            if (!TextUtils.isEmpty(pexelsId)) {
+                return buildPexelsUrl(pexelsId, "jpeg");
+            }
+        }
+        return normalized;
+    }
+
+    private static boolean isPexelsPageUrl(String url) {
+        return url.contains("pexels.com") && !url.contains("images.pexels.com");
+    }
+
+    private static boolean looksLikeWebUrlWithoutScheme(String url) {
+        if (url.startsWith("content:")
+                || url.startsWith("file:")
+                || url.startsWith("android.resource:")
+                || url.startsWith("/")) {
+            return false;
+        }
+        if (url.contains("://")) {
+            return false;
+        }
+        return url.startsWith("www.") || url.contains(".");
     }
 }
