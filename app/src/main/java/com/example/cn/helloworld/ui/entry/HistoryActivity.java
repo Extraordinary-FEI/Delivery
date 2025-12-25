@@ -37,7 +37,7 @@ public class HistoryActivity extends BaseActivity implements FoodAdapter.OnFoodC
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_history);
         emptyView = (TextView) findViewById(R.id.text_history_empty);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FoodAdapter(histories, this, null, null, false);
+        adapter = new FoodAdapter(histories, this);
         recyclerView.setAdapter(adapter);
 
         loadHistory();
