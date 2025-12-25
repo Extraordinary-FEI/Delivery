@@ -91,7 +91,7 @@ public class FoodLocalRepository {
         } finally {
             cursor.close();
         }
-        if (!TextUtils.isEmpty(resolvedCategory)) {
+        if (!TextUtils.isEmpty(resolvedCategory) && !categoryExists(db, resolvedCategory)) {
             ContentValues categoryValues = new ContentValues();
             categoryValues.put("id", resolvedCategory);
             categoryValues.put("name", resolvedCategory);
@@ -128,9 +128,11 @@ public class FoodLocalRepository {
         if (TextUtils.isEmpty(categoryId)) {
             return foods;
         }
+        String defaultCategory = context.getString(com.example.cn.helloworld.R.string.category_unassigned);
         List<Food> filtered = new ArrayList<Food>();
         for (Food food : foods) {
-            if (categoryId.equals(food.getCategory())) {
+            if (categoryId.equals(food.getCategory())
+                    || (defaultCategory.equals(categoryId) && TextUtils.isEmpty(food.getCategory()))) {
                 filtered.add(food);
             }
         }
@@ -186,7 +188,7 @@ public class FoodLocalRepository {
         db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_SHOPS, null, shopValues,
                 SQLiteDatabase.CONFLICT_IGNORE);
 
-        if (!TextUtils.isEmpty(category)) {
+        if (!TextUtils.isEmpty(category) && !categoryExists(db, category)) {
             ContentValues categoryValues = new ContentValues();
             categoryValues.put("id", category);
             categoryValues.put("name", category);
@@ -210,5 +212,16 @@ public class FoodLocalRepository {
         values.put("available", 1);
         db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_PRODUCTS, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    private boolean categoryExists(SQLiteDatabase db, String name) {
+        Cursor cursor = db.rawQuery(
+                "SELECT 1 FROM " + DeliveryDatabaseHelper.TABLE_CATEGORIES + " WHERE name = ? LIMIT 1",
+                new String[] { name });
+        try {
+            return cursor.moveToFirst();
+        } finally {
+            cursor.close();
+        }
     }
 }

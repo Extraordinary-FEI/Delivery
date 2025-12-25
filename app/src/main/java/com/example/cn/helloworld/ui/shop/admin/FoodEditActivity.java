@@ -119,7 +119,6 @@ public class FoodEditActivity extends BaseActivity {
 
     private void loadCategories() {
         categories.clear();
-        categories.add(getString(R.string.food_category_unassigned));
         categories.addAll(categoryDao.getCategoryNames());
         if (!TextUtils.isEmpty(currentCategory) && !categories.contains(currentCategory)) {
             categories.add(currentCategory);
@@ -146,7 +145,7 @@ public class FoodEditActivity extends BaseActivity {
         String description = descriptionInput.getText().toString().trim();
         String category = null;
         int selectedIndex = categoryInput.getSelectedItemPosition();
-        if (selectedIndex > 0 && selectedIndex < categories.size()) {
+        if (selectedIndex >= 0 && selectedIndex < categories.size()) {
             category = categories.get(selectedIndex);
         }
         String imageUrl = imageInput.getText().toString().trim();

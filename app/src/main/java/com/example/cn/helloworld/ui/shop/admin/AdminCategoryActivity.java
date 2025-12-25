@@ -41,6 +41,19 @@ public class AdminCategoryActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        listView.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                String category = categories.get(position);
+                if (categoryDao.getDefaultCategoryName().equals(category)) {
+                    Toast.makeText(AdminCategoryActivity.this,
+                            R.string.admin_category_delete_forbidden, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                showDeleteDialog(category);
+                return true;
+            }
+        });
 
         findViewById(R.id.button_add_category).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +96,27 @@ public class AdminCategoryActivity extends BaseActivity {
                             Toast.makeText(AdminCategoryActivity.this,
                                     R.string.admin_category_name_duplicate, Toast.LENGTH_SHORT).show();
                             return;
+                        }
+                        loadCategories();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void showDeleteDialog(final String category) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.admin_category_delete)
+                .setMessage(getString(R.string.admin_category_delete_confirm, category))
+                .setPositiveButton(R.string.action_delete, new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface dialog, int which) {
+                        if (categoryDao.deleteCategory(category)) {
+                            Toast.makeText(AdminCategoryActivity.this,
+                                    R.string.action_deleted, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(AdminCategoryActivity.this,
+                                    R.string.error_category_delete_failed, Toast.LENGTH_SHORT).show();
                         }
                         loadCategories();
                     }

@@ -37,7 +37,7 @@ public class AdminCategoryFoodsActivity extends BaseActivity implements AdminFoo
         categoryDao = new CategoryDao(this);
         categoryName = getIntent().getStringExtra(EXTRA_CATEGORY_NAME);
         if (TextUtils.isEmpty(categoryName)) {
-            categoryName = getString(R.string.market_category_default);
+            categoryName = categoryDao.getDefaultCategoryName();
         }
 
         TextView titleView = (TextView) findViewById(R.id.text_admin_category_foods_title);
@@ -85,7 +85,6 @@ public class AdminCategoryFoodsActivity extends BaseActivity implements AdminFoo
             return;
         }
         final List<String> categoryNames = new ArrayList<String>();
-        categoryNames.add(getString(R.string.food_category_unassigned));
         categoryNames.addAll(categoryDao.getCategoryNames());
         if (!TextUtils.isEmpty(food.getCategory()) && !categoryNames.contains(food.getCategory())) {
             categoryNames.add(food.getCategory());
@@ -97,7 +96,10 @@ public class AdminCategoryFoodsActivity extends BaseActivity implements AdminFoo
         String currentCategory = food.getCategory();
         int checkedIndex = categoryNames.indexOf(currentCategory);
         if (checkedIndex < 0) {
-            checkedIndex = 0;
+            checkedIndex = categoryNames.indexOf(categoryDao.getDefaultCategoryName());
+            if (checkedIndex < 0) {
+                checkedIndex = 0;
+            }
         }
         new AlertDialog.Builder(this)
                 .setTitle(R.string.action_change_category)
@@ -105,7 +107,7 @@ public class AdminCategoryFoodsActivity extends BaseActivity implements AdminFoo
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String selected = which == 0 ? null : categoryNames.get(which);
+                                String selected = categoryNames.get(which);
                                 try {
                                     repository.updateFoodCategory(AdminCategoryFoodsActivity.this, food.getId(),
                                             selected);

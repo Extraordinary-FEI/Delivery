@@ -149,7 +149,7 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
 
     private String resolveCategory(Food food) {
         if (food == null || TextUtils.isEmpty(food.getCategory())) {
-            return getString(R.string.market_category_default);
+            return getString(R.string.category_unassigned);
         }
         return food.getCategory();
     }

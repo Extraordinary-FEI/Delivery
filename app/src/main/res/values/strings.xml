@@ -44,7 +44,8 @@
     <string name="dock_market">市集</string>
     <string name="title_market">市集</string>
     <string name="market_category_all">全部</string>
-    <string name="market_category_default">其他</string>
+    <string name="category_unassigned">未分类</string>
+    <string name="market_category_default">@string/category_unassigned</string>
     <string name="market_action_search">搜索</string>
     <string name="search_empty_hint">未找到匹配的商品、店铺或服务</string>
     <string name="dock_cart">购物车</string>
@@ -191,6 +192,9 @@
     <string name="admin_category_name_hint">输入分类名称</string>
     <string name="admin_category_name_required">请输入分类名称</string>
     <string name="admin_category_name_duplicate">分类已存在</string>
+    <string name="admin_category_delete">删除分类</string>
+    <string name="admin_category_delete_confirm">确定要删除“%s”分类吗？</string>
+    <string name="admin_category_delete_forbidden">未分类为固定分类，无法删除。</string>
     <string name="admin_seckill_title">秒杀管理</string>
     <string name="admin_seckill_add">新增秒杀</string>
     <string name="admin_seckill_edit">编辑秒杀</string>
@@ -234,7 +238,7 @@
     <string name="hint_food_price">价格</string>
     <string name="hint_food_description">菜品描述</string>
     <string name="hint_food_category">市集分类（可选）</string>
-    <string name="food_category_unassigned">不选择分类</string>
+    <string name="food_category_unassigned">@string/category_unassigned</string>
     <string name="action_change_category">改分类</string>
     <string name="admin_category_foods_title">分类：%s</string>
     <string name="hint_food_image">请输入图片网络地址（http/https）</string>
@@ -245,6 +249,7 @@
     <string name="error_food_save_failed">保存菜品失败。</string>
     <string name="error_food_load_failed">读取菜品失败。</string>
     <string name="error_food_delete_failed">删除菜品失败。</string>
+    <string name="error_category_delete_failed">删除分类失败。</string>
     <string name="confirm_delete_food">确定要删除该菜品吗？</string>
     <string name="food_shop_format">所属店铺：%1$s</string>
     <string name="flash_sale_title">限时秒杀</string>

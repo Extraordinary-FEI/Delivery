@@ -84,7 +84,6 @@ public class AdminFoodListActivity extends BaseActivity implements AdminFoodAdap
             return;
         }
         final List<String> categoryNames = new ArrayList<String>();
-        categoryNames.add(getString(R.string.food_category_unassigned));
         categoryNames.addAll(categoryDao.getCategoryNames());
         if (!TextUtils.isEmpty(food.getCategory()) && !categoryNames.contains(food.getCategory())) {
             categoryNames.add(food.getCategory());
@@ -96,7 +95,10 @@ public class AdminFoodListActivity extends BaseActivity implements AdminFoodAdap
         String currentCategory = food.getCategory();
         int checkedIndex = categoryNames.indexOf(currentCategory);
         if (checkedIndex < 0) {
-            checkedIndex = 0;
+            checkedIndex = categoryNames.indexOf(categoryDao.getDefaultCategoryName());
+            if (checkedIndex < 0) {
+                checkedIndex = 0;
+            }
         }
         new AlertDialog.Builder(this)
                 .setTitle(R.string.action_change_category)
@@ -104,7 +106,7 @@ public class AdminFoodListActivity extends BaseActivity implements AdminFoodAdap
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String selected = which == 0 ? null : categoryNames.get(which);
+                                String selected = categoryNames.get(which);
                                 try {
                                     repository.updateFoodCategory(AdminFoodListActivity.this, food.getId(), selected);
                                     loadFoods();
