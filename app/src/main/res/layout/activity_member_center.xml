@@ -102,7 +102,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginLeft="12dp">
 
                     <TextView
                         android:id="@+id/text_username"
@@ -538,14 +539,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_profile_icon_chip"
-                        android:gravity="center"
-                        android:text="☆"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="16sp" />
+                        android:contentDescription="@string/member_profile_collect"
+                        android:padding="8dp"
+                        android:src="@android:drawable/btn_star_big_on"
+                        android:tint="@color/ios_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -564,14 +565,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_profile_icon_chip"
-                        android:gravity="center"
-                        android:text="🕘"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="16sp" />
+                        android:contentDescription="@string/member_profile_history"
+                        android:padding="8dp"
+                        android:src="@android:drawable/ic_menu_recent_history"
+                        android:tint="@color/ios_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -590,14 +591,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_profile_icon_chip"
-                        android:gravity="center"
-                        android:text="🎁"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="16sp" />
+                        android:contentDescription="@string/member_profile_coupon_card"
+                        android:padding="8dp"
+                        android:src="@android:drawable/ic_menu_share"
+                        android:tint="@color/ios_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -615,14 +616,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_profile_icon_chip"
-                        android:gravity="center"
-                        android:text="币"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="16sp" />
+                        android:contentDescription="@string/member_profile_points_coin"
+                        android:padding="8dp"
+                        android:src="@android:drawable/ic_menu_sort_by_size"
+                        android:tint="@color/ios_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -703,14 +704,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_profile_icon_chip"
-                        android:gravity="center"
-                        android:text="📋"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="16sp" />
+                        android:contentDescription="@string/member_profile_order_all"
+                        android:padding="8dp"
+                        android:src="@android:drawable/ic_menu_agenda"
+                        android:tint="@color/ios_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -729,14 +730,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_profile_icon_chip"
-                        android:gravity="center"
-                        android:text="⏳"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="16sp" />
+                        android:contentDescription="@string/member_profile_order_pending_title"
+                        android:padding="8dp"
+                        android:src="@android:drawable/ic_menu_recent_history"
+                        android:tint="@color/ios_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -755,14 +756,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_profile_icon_chip"
-                        android:gravity="center"
-                        android:text="💬"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="16sp" />
+                        android:contentDescription="@string/member_profile_order_review"
+                        android:padding="8dp"
+                        android:src="@android:drawable/ic_menu_edit"
+                        android:tint="@color/ios_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -781,14 +782,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_profile_icon_chip"
-                        android:gravity="center"
-                        android:text="¥"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="16sp" />
+                        android:contentDescription="@string/member_profile_order_refund"
+                        android:padding="8dp"
+                        android:src="@android:drawable/ic_menu_revert"
+                        android:tint="@color/ios_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"

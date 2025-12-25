@@ -13,6 +13,15 @@
     <color name="background_light">#F5F5F7</color>
     <color name="card_background">#FFFFFF</color>
     <color name="divider_color">#E5E5EA</color>
+    <color name="ios_grouped_background">#F5F5F7</color>
+    <color name="ios_text_primary">#1C1C1E</color>
+    <color name="ios_text_secondary">#8E8E93</color>
+    <color name="ios_divider">#E5E5EA</color>
+    <color name="ios_card_background">#FFFFFF</color>
+    <color name="ios_icon_background">#FFFFFF</color>
+    <color name="ios_badge_background">#E8F0FF</color>
+    <color name="ios_progress_track">#E5E5EA</color>
+    <color name="ios_progress_fill">#007AFF</color>
     <color name="profile_header_start">#F2F2F7</color>
     <color name="profile_header_end">#E9F2FF</color>
     <color name="profile_member_start">#E9F2FF</color>

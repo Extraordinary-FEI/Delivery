@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.CategoryDao;
@@ -19,7 +22,7 @@ import java.util.List;
 
 public class AdminCategoryActivity extends BaseActivity {
     private final List<String> categories = new ArrayList<String>();
-    private ArrayAdapter<String> adapter;
+    private CategoryAdapter adapter;
     private CategoryDao categoryDao;
 
     @Override
@@ -30,7 +33,7 @@ public class AdminCategoryActivity extends BaseActivity {
 
         categoryDao = new CategoryDao(this);
         ListView listView = (ListView) findViewById(R.id.list_categories);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, categories);
+        adapter = new CategoryAdapter(categories);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
@@ -41,20 +44,6 @@ public class AdminCategoryActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        listView.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                String category = categories.get(position);
-                if (categoryDao.getDefaultCategoryName().equals(category)) {
-                    Toast.makeText(AdminCategoryActivity.this,
-                            R.string.admin_category_delete_forbidden, Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                showDeleteDialog(category);
-                return true;
-            }
-        });
-
         findViewById(R.id.button_add_category).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,5 +112,53 @@ public class AdminCategoryActivity extends BaseActivity {
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
+    }
+
+    private class CategoryAdapter extends android.widget.BaseAdapter {
+        private final List<String> data;
+
+        private CategoryAdapter(List<String> data) {
+            this.data = data;
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
+
+        @Override
+        public String getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_admin_category, parent, false);
+            }
+            final String category = getItem(position);
+            TextView nameView = (TextView) view.findViewById(R.id.text_category_name);
+            ImageButton deleteButton = (ImageButton) view.findViewById(R.id.button_delete_category);
+            nameView.setText(category);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (categoryDao.getDefaultCategoryName().equals(category)) {
+                        Toast.makeText(AdminCategoryActivity.this,
+                                R.string.admin_category_delete_forbidden, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    showDeleteDialog(category);
+                }
+            });
+            return view;
+        }
     }
 }
