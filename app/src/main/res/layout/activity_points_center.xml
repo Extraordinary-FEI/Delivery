@@ -63,14 +63,24 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/text_points_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:text="@string/points_level_format"
+                android:textColor="@color/profile_muted_text"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="@string/points_expire_hint"
                 android:textColor="@color/profile_muted_text"
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/text_points_gap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -87,6 +97,29 @@
                 android:textColor="@color/primary_color"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/points_curve_title"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.example.cn.helloworld.ui.widget.PointsCurveView
+                android:id="@+id/view_points_curve"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="12dp" />
         </LinearLayout>
 
         <LinearLayout

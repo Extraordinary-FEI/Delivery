@@ -67,6 +67,12 @@ public class MemberCenterActivity extends BaseActivity {
                 startActivity(new Intent(MemberCenterActivity.this, PointsCenterActivity.class));
             }
         });
+        findViewById(R.id.layout_points_entry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MemberCenterActivity.this, PointsCenterActivity.class));
+            }
+        });
         findViewById(R.id.layout_profile_summary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,32 +171,6 @@ public class MemberCenterActivity extends BaseActivity {
         pointsView.setText(String.valueOf(points));
         couponView.setText(getString(R.string.member_coupon_value));
         balanceView.setText(getString(R.string.member_balance_value));
-    }
-
-    private static class MemberLevel {
-        final String title;
-        final int nextTarget;
-
-        private MemberLevel(String title, int nextTarget) {
-            this.title = title;
-            this.nextTarget = nextTarget;
-        }
-
-        static MemberLevel resolve(int points) {
-            if (points < 200) {
-                return new MemberLevel("新芽会员", 200);
-            }
-            if (points < 600) {
-                return new MemberLevel("星耀会员", 600);
-            }
-            if (points < 1200) {
-                return new MemberLevel("银翼会员", 1200);
-            }
-            if (points < 2000) {
-                return new MemberLevel("金穗会员", 2000);
-            }
-            return new MemberLevel("钻石会员", 3000);
-        }
     }
 
     private String maskPhone(String phone) {

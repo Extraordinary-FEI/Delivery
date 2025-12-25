@@ -9,13 +9,21 @@ import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.CouponDao;
 import com.example.cn.helloworld.db.PointsDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
+import com.example.cn.helloworld.ui.widget.PointsCurveView;
 import com.example.cn.helloworld.utils.SessionManager;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PointsCenterActivity extends BaseActivity {
     private TextView pointsView;
+    private TextView pointsGapView;
+    private TextView pointsLevelView;
     private PointsDao pointsDao;
     private CouponDao couponDao;
     private int userId;
+    private PointsCurveView curveView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,9 @@ public class PointsCenterActivity extends BaseActivity {
         pointsDao = new PointsDao(this);
         couponDao = new CouponDao(this);
         pointsView = (TextView) findViewById(R.id.text_points_value);
+        pointsGapView = (TextView) findViewById(R.id.text_points_gap);
+        pointsLevelView = (TextView) findViewById(R.id.text_points_level);
+        curveView = (PointsCurveView) findViewById(R.id.view_points_curve);
 
         findViewById(R.id.text_points_rule_action).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +75,37 @@ public class PointsCenterActivity extends BaseActivity {
     private void refreshPoints() {
         int points = pointsDao.getPoints(userId);
         pointsView.setText(String.valueOf(points));
+        bindLevel(points);
+        bindCurve(points);
+    }
+
+    private void bindLevel(int points) {
+        MemberLevel level = MemberLevel.resolve(points);
+        if (pointsLevelView != null) {
+            pointsLevelView.setText(getString(R.string.points_level_format, level.title));
+        }
+        if (pointsGapView != null) {
+            int gap = Math.max(level.nextTarget - points, 0);
+            pointsGapView.setText(getString(R.string.points_gap_format, gap));
+        }
+    }
+
+    private void bindCurve(int currentPoints) {
+        if (curveView == null) {
+            return;
+        }
+        List<PointsDao.PointsLog> logs = pointsDao.listLogs(userId);
+        int maxRecords = 6;
+        int records = Math.min(maxRecords, logs.size());
+        List<Integer> seriesDesc = new ArrayList<>();
+        int runningPoints = currentPoints;
+        seriesDesc.add(runningPoints);
+        for (int i = 0; i < records; i++) {
+            runningPoints = Math.max(0, runningPoints - logs.get(i).change);
+            seriesDesc.add(runningPoints);
+        }
+        Collections.reverse(seriesDesc);
+        curveView.setPoints(seriesDesc);
     }
 
     private void exchangeCoupon(String name, int cost) {

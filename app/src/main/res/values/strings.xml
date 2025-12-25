@@ -436,6 +436,10 @@
     <string name="points_rule_action">积分规则 &gt;</string>
     <string name="points_expire_hint">积分长期有效</string>
     <string name="points_gap_hint">距离白银还差 527 分</string>
+    <string name="points_level_format">当前等级：%1$s</string>
+    <string name="points_gap_format">距离下一等级还差 %1$d 分</string>
+    <string name="points_curve_title">积分曲线图</string>
+    <string name="points_curve_empty">暂无积分数据</string>
     <string name="points_earn_title">积分获取方式</string>
     <string name="points_earn_order">下单得积分</string>
     <string name="points_earn_order_desc">每消费 1 元 = 1 分</string>
