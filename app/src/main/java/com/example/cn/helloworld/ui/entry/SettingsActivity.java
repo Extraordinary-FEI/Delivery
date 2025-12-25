@@ -311,50 +311,6 @@ public class SettingsActivity extends BaseActivity {
                 }
             }
         }, year, month, day);
-        dialog.show();
-    }
-
-    private String formatBirthday(String birthday) {
-        if (TextUtils.isEmpty(birthday)) {
-            return getString(R.string.settings_birthday_placeholder);
-        }
-        return birthday;
-    }
-
-    private void showBirthdayPicker() {
-        if (currentProfile == null) {
-            return;
-        }
-        Calendar calendar = Calendar.getInstance();
-        String birthday = currentProfile.birthday;
-        if (!TextUtils.isEmpty(birthday)) {
-            try {
-                Date parsed = birthdayFormat.parse(birthday);
-                if (parsed != null) {
-                    calendar.setTime(parsed);
-                }
-            } catch (ParseException ignored) {
-                // Use current date as fallback.
-            }
-        }
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(android.widget.DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
-                Calendar selected = Calendar.getInstance();
-                selected.set(selectedYear, selectedMonth, selectedDay);
-                String formatted = birthdayFormat.format(selected.getTime());
-                if (userDao.updateBirthday(userId, formatted)) {
-                    currentProfile.birthday = formatted;
-                    birthdayView.setText(formatted);
-                    Toast.makeText(SettingsActivity.this, R.string.settings_birthday_saved, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(SettingsActivity.this, R.string.settings_save_failed, Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, year, month, day);
         dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dialog.show();
     }
