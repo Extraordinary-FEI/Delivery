@@ -37,8 +37,12 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
-            db.execSQL("ALTER TABLE users ADD COLUMN password_hash TEXT");
-            db.execSQL("ALTER TABLE users ADD COLUMN created_at INTEGER");
+            if (!columnExists(db, "users", "password_hash")) {
+                db.execSQL("ALTER TABLE users ADD COLUMN password_hash TEXT");
+            }
+            if (!columnExists(db, "users", "created_at")) {
+                db.execSQL("ALTER TABLE users ADD COLUMN created_at INTEGER");
+            }
 
             Cursor cursor = db.rawQuery("SELECT id, password FROM users", null);
             try {
@@ -53,6 +57,21 @@ public class DBHelper extends SQLiteOpenHelper {
             } finally {
                 cursor.close();
             }
+        }
+    }
+
+    private static boolean columnExists(SQLiteDatabase db, String tableName, String columnName) {
+        Cursor cursor = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
+        try {
+            int nameIndex = cursor.getColumnIndex("name");
+            while (cursor.moveToNext()) {
+                if (columnName.equals(cursor.getString(nameIndex))) {
+                    return true;
+                }
+            }
+            return false;
+        } finally {
+            cursor.close();
         }
     }
 
