@@ -3,6 +3,7 @@
     package="com.example.cn.helloworld">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -76,6 +77,10 @@
             android:label="@string/coupon_center_title" />
 
         <activity
+            android:name=".ui.entry.PointsCenterActivity"
+            android:label="@string/points_center_title" />
+
+        <activity
             android:name=".ui.entry.ServiceHelpActivity"
             android:label="@string/service_help_title" />
 
@@ -110,6 +115,16 @@
         <activity
             android:name=".ui.order.CheckoutActivity"
             android:label="@string/title_order_confirm" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

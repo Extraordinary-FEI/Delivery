@@ -40,6 +40,25 @@ public final class ImageLoader {
         }
     }
 
+    public static void loadAvatar(Context context, ImageView imageView, String path) {
+        if (TextUtils.isEmpty(path)) {
+            imageView.setImageResource(R.mipmap.ic_launcher);
+            return;
+        }
+        String trimmed = path.trim();
+        String pexelsId = extractPexelsId(trimmed);
+        String target = trimmed;
+        if (!TextUtils.isEmpty(pexelsId)) {
+            target = buildPexelsUrl(pexelsId, "jpeg");
+        }
+        Glide.with(context)
+                .load(target)
+                .circleCrop()
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(imageView);
+    }
+
     private static String buildPexelsUrl(String pexelsId, String extension) {
         return PEXELS_IMAGE_HOST + pexelsId + "/pexels-photo-" + pexelsId + "." + extension + PEXELS_IMAGE_QUERY;
     }

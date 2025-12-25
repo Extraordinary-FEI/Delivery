@@ -144,17 +144,24 @@
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/input_avatar_url"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_avatar_hint"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:background="@drawable/bg_search"
-                android:inputType="textUri"
-                android:padding="12dp"
-                android:textColor="@color/primary_text"
-                android:textColorHint="@color/profile_muted_text"
-                android:hint="@string/settings_hint_avatar" />
+                android:text="@string/settings_avatar_hint"
+                android:textColor="@color/profile_muted_text"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/button_change_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_quantity_outline"
+                android:text="@string/settings_change_avatar"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_save_profile"

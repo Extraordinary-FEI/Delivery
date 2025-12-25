@@ -29,6 +29,13 @@ public class MemberCenterActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        findViewById(R.id.button_service).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MemberCenterActivity.this, ServiceHelpActivity.class);
+                startActivity(intent);
+            }
+        });
         findViewById(R.id.entry_favorites).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,6 +46,36 @@ public class MemberCenterActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MemberCenterActivity.this, HistoryActivity.class));
+            }
+        });
+        findViewById(R.id.entry_coupon_center).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MemberCenterActivity.this, CouponCenterActivity.class));
+            }
+        });
+        findViewById(R.id.entry_points_center).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MemberCenterActivity.this, PointsCenterActivity.class));
+            }
+        });
+        findViewById(R.id.entry_points_quick).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MemberCenterActivity.this, PointsCenterActivity.class));
+            }
+        });
+        findViewById(R.id.layout_profile_summary).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MemberCenterActivity.this, SettingsActivity.class));
+            }
+        });
+        findViewById(R.id.image_avatar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MemberCenterActivity.this, SettingsActivity.class));
             }
         });
 
@@ -65,12 +102,14 @@ public class MemberCenterActivity extends BaseActivity {
             return;
         }
         TextView usernameView = (TextView) findViewById(R.id.text_username);
+        TextView phoneView = (TextView) findViewById(R.id.text_phone_summary);
         ImageView avatarView = (ImageView) findViewById(R.id.image_avatar);
         String displayName = profile.nickname == null || profile.nickname.trim().isEmpty()
                 ? profile.username
                 : profile.nickname;
         usernameView.setText(displayName);
-        ImageLoader.load(this, avatarView, profile.avatarUrl);
+        phoneView.setText(maskPhone(profile.phone));
+        ImageLoader.loadAvatar(this, avatarView, profile.avatarUrl);
 
         TextView levelBadge = (TextView) findViewById(R.id.text_member_level_badge);
         TextView levelTitle = (TextView) findViewById(R.id.text_member_level_title);
@@ -85,6 +124,13 @@ public class MemberCenterActivity extends BaseActivity {
         levelBadge.setText(level.title);
         levelTitle.setText(level.title);
         growthView.setText(getString(R.string.member_profile_growth_format, points, level.nextTarget));
+
+        TextView pointsView = (TextView) findViewById(R.id.text_points_value);
+        TextView couponView = (TextView) findViewById(R.id.text_coupon_value);
+        TextView balanceView = (TextView) findViewById(R.id.text_balance_value);
+        pointsView.setText(String.valueOf(points));
+        couponView.setText(getString(R.string.member_coupon_value));
+        balanceView.setText(getString(R.string.member_balance_value));
     }
 
     private static class MemberLevel {
@@ -111,5 +157,12 @@ public class MemberCenterActivity extends BaseActivity {
             }
             return new MemberLevel("钻石会员", 3000);
         }
+    }
+
+    private String maskPhone(String phone) {
+        if (phone == null || phone.length() < 7) {
+            return getString(R.string.member_profile_phone_unbound);
+        }
+        return phone.substring(0, 3) + "****" + phone.substring(phone.length() - 4);
     }
 }

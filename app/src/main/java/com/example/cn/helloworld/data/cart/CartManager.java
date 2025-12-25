@@ -93,11 +93,6 @@ public class CartManager {
         return total;
     }
 
-    public synchronized void clear() {
-        items.clear();
-        saveToPreferences();
-    }
-
     private CartItem findItem(String name) {
         for (CartItem item : items) {
             if (item.getName().equals(name)) {
