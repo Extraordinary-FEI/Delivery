@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
+    card_view:cardCornerRadius="16dp"
     card_view:cardElevation="2dp"
     card_view:cardUseCompatPadding="true">
 
@@ -32,21 +33,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#222222" />
+                android:textColor="@color/primary_text" />
 
             <TextView
                 android:id="@+id/text_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textColor="#666666" />
+                android:textColor="@color/secondary_text" />
 
             <TextView
                 android:id="@+id/text_item_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:textColor="#F44336" />
+                android:textColor="@color/error_color" />
 
             <LinearLayout
                 android:layout_width="match_parent"

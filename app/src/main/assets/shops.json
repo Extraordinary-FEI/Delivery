@@ -25,5 +25,50 @@
     "description": "书香与咖啡结合的阅读空间，适合安静停留。",
     "phone": "021-55557777",
     "imageUrl": "https://example.com/images/bookstore.jpg"
+  },
+  {
+    "id": 4,
+    "name": "极速到家超市",
+    "address": "上海市浦东新区世纪大道200号",
+    "rating": 4.7,
+    "description": "主打生鲜与日用百货，30分钟闪送到家。",
+    "phone": "021-33336666",
+    "imageUrl": "https://example.com/images/grocery.jpg"
+  },
+  {
+    "id": 5,
+    "name": "闪电同城跑腿",
+    "address": "上海市普陀区金沙江路99号",
+    "rating": 4.5,
+    "description": "支持代取件、代送达与紧急文件同城速送。",
+    "phone": "021-22224444",
+    "imageUrl": "https://example.com/images/errand.jpg"
+  },
+  {
+    "id": 6,
+    "name": "光影电影演出",
+    "address": "上海市长宁区虹桥路188号",
+    "rating": 4.6,
+    "description": "热门电影与演出场次一站式预订，支持选座。",
+    "phone": "021-77779999",
+    "imageUrl": "https://example.com/images/movie.jpg"
+  },
+  {
+    "id": 7,
+    "name": "云宿精选民宿",
+    "address": "上海市崇明区新河镇88号",
+    "rating": 4.8,
+    "description": "精选特色民宿与酒店，支持延迟退房与管家服务。",
+    "phone": "021-44445555",
+    "imageUrl": "https://example.com/images/hotel.jpg"
+  },
+  {
+    "id": 8,
+    "name": "茶屿奶茶甜品",
+    "address": "上海市静安区愚园路16号",
+    "rating": 4.9,
+    "description": "主打网红奶茶与甜品，现制现送。",
+    "phone": "021-99990000",
+    "imageUrl": "https://example.com/images/milktea.jpg"
   }
 ]

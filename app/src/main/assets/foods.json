@@ -34,5 +34,104 @@
     "price": 16.0,
     "imageUrl": "https://example.com/images/salad.jpg",
     "category": "轻食"
+  },
+  {
+    "id": "food_5",
+    "name": "当季鲜果大礼包",
+    "shopId": "shop_4",
+    "description": "苹果、橙子与车厘子组合装，冷链配送",
+    "price": 58.0,
+    "imageUrl": "https://example.com/images/fruit_box.jpg",
+    "category": "超市到家"
+  },
+  {
+    "id": "food_6",
+    "name": "原味全脂牛奶 12 瓶装",
+    "shopId": "shop_4",
+    "description": "家庭囤货装，配早餐更安心",
+    "price": 69.0,
+    "imageUrl": "https://example.com/images/milk_pack.jpg",
+    "category": "超市到家"
+  },
+  {
+    "id": "food_7",
+    "name": "同城取件极速跑腿",
+    "shopId": "shop_5",
+    "description": "1 小时内上门取件并送达指定地址",
+    "price": 29.0,
+    "imageUrl": "https://example.com/images/errand_pickup.jpg",
+    "category": "同城跑腿"
+  },
+  {
+    "id": "food_8",
+    "name": "文件加急直送",
+    "shopId": "shop_5",
+    "description": "支持办公文件/合同急送，专人专送",
+    "price": 39.0,
+    "imageUrl": "https://example.com/images/errand_doc.jpg",
+    "category": "同城跑腿"
+  },
+  {
+    "id": "food_9",
+    "name": "热门电影双人票",
+    "shopId": "shop_6",
+    "description": "热映场次任选座，支持在线选座",
+    "price": 88.0,
+    "imageUrl": "https://example.com/images/movie_ticket.jpg",
+    "category": "电影演出"
+  },
+  {
+    "id": "food_10",
+    "name": "周末音乐剧特惠票",
+    "shopId": "shop_6",
+    "description": "优选热门场次，含座位区位推荐",
+    "price": 198.0,
+    "imageUrl": "https://example.com/images/show_ticket.jpg",
+    "category": "电影演出"
+  },
+  {
+    "id": "food_11",
+    "name": "城市景观大床房",
+    "shopId": "shop_7",
+    "description": "含早餐与延迟退房服务",
+    "price": 368.0,
+    "imageUrl": "https://example.com/images/hotel_room.jpg",
+    "category": "酒店民宿"
+  },
+  {
+    "id": "food_12",
+    "name": "庭院民宿双床房",
+    "shopId": "shop_7",
+    "description": "安静庭院景观，配特色下午茶",
+    "price": 428.0,
+    "imageUrl": "https://example.com/images/homestay.jpg",
+    "category": "酒店民宿"
+  },
+  {
+    "id": "food_13",
+    "name": "生椰拿铁（网红爆款）",
+    "shopId": "shop_8",
+    "description": "椰香浓郁，冷热可选，热度持续霸榜",
+    "price": 26.0,
+    "imageUrl": "https://example.com/images/coconut_latte.jpg",
+    "category": "奶茶甜品"
+  },
+  {
+    "id": "food_14",
+    "name": "多肉葡萄奶茶",
+    "shopId": "shop_8",
+    "description": "果肉饱满，清爽不腻",
+    "price": 24.0,
+    "imageUrl": "https://example.com/images/grape_tea.jpg",
+    "category": "奶茶甜品"
+  },
+  {
+    "id": "food_15",
+    "name": "杨枝甘露甜品杯",
+    "shopId": "shop_8",
+    "description": "芒果与西柚搭配椰奶，清甜顺滑",
+    "price": 22.0,
+    "imageUrl": "https://example.com/images/yangzhi.jpg",
+    "category": "奶茶甜品"
   }
 ]

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
+    card_view:cardCornerRadius="16dp"
     card_view:cardElevation="2dp"
     card_view:cardUseCompatPadding="true">
 
@@ -24,8 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="店铺名称"
-                android:textColor="#222222"
-                android:textSize="18sp"
+                android:textColor="@color/primary_text"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -34,8 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="店铺地址"
-                android:textColor="#666666"
-                android:textSize="14sp" />
+                android:textColor="@color/secondary_text"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/text_shop_rating"
@@ -43,8 +44,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="4.8"
-                android:textColor="#FF9800"
-                android:textSize="14sp" />
+                android:textColor="@color/warning_color"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/text_shop_description"
@@ -52,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="店铺简介"
-                android:textColor="#444444"
-                android:textSize="13sp" />
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <ImageView
