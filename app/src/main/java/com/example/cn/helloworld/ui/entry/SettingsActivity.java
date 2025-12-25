@@ -13,11 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.UserDao;
@@ -39,8 +36,8 @@ public class SettingsActivity extends BaseActivity {
     private Button changeAvatarButton;
     private int userId;
     private UserDao.UserProfile currentProfile;
-    private ActivityResultLauncher<Intent> galleryLauncher;
-    private ActivityResultLauncher<Intent> cameraLauncher;
+    private static final int REQUEST_PICK_IMAGE = 1001;
+    private static final int REQUEST_TAKE_PHOTO = 1002;
     private Uri pendingCameraUri;
 
     @Override
@@ -65,7 +62,6 @@ public class SettingsActivity extends BaseActivity {
 
         loadProfile();
 
-        setupAvatarLaunchers();
         View avatarArea = findViewById(R.id.image_avatar);
         avatarArea.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,27 +164,6 @@ public class SettingsActivity extends BaseActivity {
         return value == null ? "" : value.trim();
     }
 
-    private void setupAvatarLaunchers() {
-        galleryLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new androidx.activity.result.ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        handleGalleryResult(result);
-                    }
-                }
-        );
-        cameraLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new androidx.activity.result.ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        handleCameraResult(result);
-                    }
-                }
-        );
-    }
-
     private void showAvatarPicker() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.avatar_picker_title)
@@ -211,7 +186,7 @@ public class SettingsActivity extends BaseActivity {
 
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        galleryLauncher.launch(intent);
+        startActivityForResult(intent, REQUEST_PICK_IMAGE);
     }
 
     private void openCamera() {
@@ -223,7 +198,7 @@ public class SettingsActivity extends BaseActivity {
         }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, pendingCameraUri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        cameraLauncher.launch(intent);
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
     private Uri createCameraUri() {
@@ -231,18 +206,31 @@ public class SettingsActivity extends BaseActivity {
         return FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", imageFile);
     }
 
-    private void handleGalleryResult(ActivityResult result) {
-        if (result.getResultCode() != RESULT_OK || result.getData() == null) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
             return;
         }
-        Uri uri = result.getData().getData();
+        if (requestCode == REQUEST_PICK_IMAGE) {
+            handleGalleryResult(data);
+        } else if (requestCode == REQUEST_TAKE_PHOTO) {
+            handleCameraResult();
+        }
+    }
+
+    private void handleGalleryResult(Intent data) {
+        if (data == null) {
+            return;
+        }
+        Uri uri = data.getData();
         if (uri != null) {
             updateAvatar(uri.toString());
         }
     }
 
-    private void handleCameraResult(ActivityResult result) {
-        if (result.getResultCode() != RESULT_OK || pendingCameraUri == null) {
+    private void handleCameraResult() {
+        if (pendingCameraUri == null) {
             return;
         }
         updateAvatar(pendingCameraUri.toString());

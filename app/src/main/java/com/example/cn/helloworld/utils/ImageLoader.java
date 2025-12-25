@@ -51,12 +51,17 @@ public final class ImageLoader {
         if (!TextUtils.isEmpty(pexelsId)) {
             target = buildPexelsUrl(pexelsId, "jpeg");
         }
+//        Glide.with(context)
+//                .load(target)
+//                .placeholder(R.mipmap.ic_launcher)
+//                .error(R.mipmap.ic_launcher)
+//                .into(imageView);
         Glide.with(context)
                 .load(target)
-                .circleCrop()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.ic_launcher)
+                .error(R.drawable.ic_launcher)
                 .into(imageView);
+
     }
 
     private static String buildPexelsUrl(String pexelsId, String extension) {
