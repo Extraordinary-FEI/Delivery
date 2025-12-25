@@ -140,7 +140,7 @@ public class CheckoutActivity extends BaseActivity {
             items.add(item.getName() + " x" + item.getQuantity());
         }
         String orderId = "OD" + System.currentTimeMillis();
-        String orderTime = new SimpleDateFormat(\"yyyy-MM-dd HH:mm\", Locale.getDefault()).format(new Date());
+        String orderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
         Intent intent = new Intent(this, OrderConfirmActivity.class);
         intent.putExtra(OrderConfirmActivity.EXTRA_ORDER_ID, orderId);
         intent.putExtra(OrderConfirmActivity.EXTRA_ORDER_TIME, orderTime);
@@ -165,6 +165,6 @@ public class CheckoutActivity extends BaseActivity {
     }
 
     private String safeText(String value) {
-        return value == null ? \"\" : value.trim();
+        return value == null ? "" : value.trim();
     }
 }

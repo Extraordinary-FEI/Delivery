@@ -2,10 +2,11 @@
 <resources>
     <color name="colorPrimary">#6D28D9</color>
     <color name="colorPrimaryDark">#4C1D95</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#6D28D9</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="primary_color">#6D28D9</color>
+    <color name="primary_color_pressed">#5B21B6</color>
     <color name="background_light">#F5F5F7</color>
     <color name="card_background">#FFFFFF</color>
     <color name="divider_color">#E6E6EB</color>
@@ -19,4 +20,7 @@
     <color name="chip_background">#ECE9FF</color>
     <color name="banner_start">#5C7CFA</color>
     <color name="banner_end">#3B5BDB</color>
+    <color name="applePurple">#6D28D9</color>
+    <color name="appleControlNormal">#111111</color>
+    <color name="applePurple_20">#336D28D9</color>
 </resources>

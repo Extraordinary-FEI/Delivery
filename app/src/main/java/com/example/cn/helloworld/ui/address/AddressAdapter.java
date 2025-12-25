@@ -112,7 +112,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     }
 
     private String safeText(String value) {
-        return value == null ? \"\" : value;
+        return value == null ? "" : value;
     }
 }
-

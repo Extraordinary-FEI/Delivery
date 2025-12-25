@@ -67,6 +67,11 @@ public class CartManager {
         }
     }
 
+    public synchronized void clear() {
+        items.clear();
+        saveToPreferences();
+    }
+
     public synchronized int getTotalCount() {
         int total = 0;
         for (CartItem item : items) {
