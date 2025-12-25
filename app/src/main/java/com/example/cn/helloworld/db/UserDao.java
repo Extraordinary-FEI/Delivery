@@ -5,10 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.security.MessageDigest;
 
 public class UserDao {
 
-    // 固定管理员验证码（演示用）
     public static final String ADMIN_CODE = "8888";
 
     private DBHelper helper;
@@ -16,6 +16,20 @@ public class UserDao {
     public UserDao(Context context) {
         helper = new DBHelper(context.getApplicationContext());
     }
+
+    /* ================= 注册结果 ================= */
+
+    public static class RegisterResult {
+        public boolean ok;
+        public String msg;
+
+        public RegisterResult(boolean ok, String msg) {
+            this.ok = ok;
+            this.msg = msg;
+        }
+    }
+
+    /* ================= 登录结果 ================= */
 
     public static class LoginResult {
         public boolean ok;
@@ -33,69 +47,85 @@ public class UserDao {
         }
     }
 
-    /**
-     * 注册：registerType = "user" 或 "admin"
-     * admin 注册必须 adminCode = 8888
-     */
-    public boolean register(String username, String password, String registerType, String adminCode) {
-        if (username == null || username.trim().length() == 0) return false;
-        if (password == null || password.trim().length() == 0) return false;
+    /* ================= 工具：SHA-256 ================= */
 
-        String role = "user";
+    private String sha256(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = md.digest(input.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
-        if ("admin".equals(registerType)) {
-            if (!ADMIN_CODE.equals(adminCode)) return false;
-            role = "admin";
+    /* ================= 用户名查重 ================= */
+
+    public boolean isUsernameTaken(String username) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor c = db.rawQuery(
+                "SELECT 1 FROM users WHERE username=? LIMIT 1",
+                new String[]{username}
+        );
+        try {
+            return c != null && c.moveToFirst();
+        } finally {
+            if (c != null) c.close();
+        }
+    }
+
+    /* ================= 注册 ================= */
+
+    public RegisterResult register(String username, String password, String role, String adminCode) {
+
+        if (isUsernameTaken(username)) {
+            return new RegisterResult(false, "用户名已存在");
+        }
+
+        if ("admin".equals(role)) {
+            if (!ADMIN_CODE.equals(adminCode)) {
+                return new RegisterResult(false, "管理员验证码错误");
+            }
+        } else {
+            role = "user"; // 强制兜底
+        }
+
+        String passwordHash = sha256(password);
+        if (passwordHash.length() == 0) {
+            return new RegisterResult(false, "密码处理失败");
         }
 
         SQLiteDatabase db = helper.getWritableDatabase();
 
-        // 查重
-        Cursor c = db.rawQuery("SELECT id FROM users WHERE username=?", new String[]{username});
-        try {
-            if (c != null && c.moveToFirst()) {
-                return false; // 用户名已存在
-            }
-        } finally {
-            if (c != null) c.close();
-        }
-
         ContentValues cv = new ContentValues();
         cv.put("username", username);
-        cv.put("password", password); // 简化：明文（需要更安全我再给你加 hash）
+        cv.put("password_hash", passwordHash);
         cv.put("role", role);
         cv.put("created_at", System.currentTimeMillis());
 
         long id = db.insert("users", null, cv);
-        return id != -1;
+        if (id == -1) {
+            return new RegisterResult(false, "注册失败，请重试");
+        }
+
+        return new RegisterResult(true, "注册成功");
     }
 
-    /**
-     * 登录：loginType = "user" 或 "admin"
-     * admin 登录必须 adminCode = 8888
-     *
-     * 关键：普通登录不允许返回 admin 身份（即使账号是 admin）
-     */
+    /* ================= 登录 ================= */
+
     public LoginResult login(String username, String password, String loginType, String adminCode) {
 
-        if (username == null || username.trim().length() == 0) {
-            return new LoginResult(false, "用户名不能为空", -1, "", "");
-        }
-        if (password == null || password.trim().length() == 0) {
-            return new LoginResult(false, "密码不能为空", -1, "", "");
-        }
-
-        boolean wantsAdmin = "admin".equals(loginType);
-
-        if (wantsAdmin) {
-            if (!ADMIN_CODE.equals(adminCode)) {
-                return new LoginResult(false, "管理员验证码错误", -1, "", "");
-            }
-        }
+        String passwordHash = sha256(password);
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT id, role FROM users WHERE username=? AND password=?",
-                new String[]{username, password});
+        Cursor c = db.rawQuery(
+                "SELECT id, role FROM users WHERE username=? AND password_hash=?",
+                new String[]{username, passwordHash}
+        );
 
         try {
             if (c == null || !c.moveToFirst()) {
@@ -105,12 +135,16 @@ public class UserDao {
             int userId = c.getInt(0);
             String roleInDb = c.getString(1);
 
-            // ✅ 普通入口：永远返回 user
-            if (!wantsAdmin) {
+            // 普通用户入口：永远只能是 user
+            if (!"admin".equals(loginType)) {
                 return new LoginResult(true, "登录成功", userId, "user", username);
             }
 
-            // ✅ 管理员入口：必须数据库里也是 admin
+            // 管理员入口：必须验证码 + 数据库角色为 admin
+            if (!ADMIN_CODE.equals(adminCode)) {
+                return new LoginResult(false, "管理员验证码错误", -1, "", "");
+            }
+
             if (!"admin".equals(roleInDb)) {
                 return new LoginResult(false, "该账号不是管理员", -1, "", "");
             }

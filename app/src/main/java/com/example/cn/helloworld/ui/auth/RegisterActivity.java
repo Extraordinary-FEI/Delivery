@@ -85,12 +85,10 @@ public class RegisterActivity extends BaseActivity {
         }
 
         UserDao userDao = new UserDao(this);
-        boolean success = userDao.register(username, password, role, adminCode);
-        if (success) {
-            Toast.makeText(this, R.string.register_success, Toast.LENGTH_SHORT).show();
+        UserDao.RegisterResult result = userDao.register(username, password, role, adminCode);
+        Toast.makeText(this, result.msg, Toast.LENGTH_SHORT).show();
+        if (result.ok) {
             finish();
-        } else {
-            Toast.makeText(this, R.string.register_error_failed, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -126,6 +126,7 @@
     <string name="register_error_password_mismatch">两次密码不一致。</string>
     <string name="register_error_admin_code_required">请输入管理员验证码。</string>
     <string name="register_error_admin_code_invalid">管理员验证码错误。</string>
+    <string name="register_error_username_taken">用户名已存在，请换一个。</string>
     <string name="register_success">注册成功。</string>
     <string name="register_error_failed">注册失败，请稍后重试。</string>
     <string name="register_error_network">注册失败，请检查网络或服务器配置。</string>

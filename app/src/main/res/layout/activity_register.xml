@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:tag="@string/role_user_value"
+            android:tag="user"
             android:text="@string/role_user" />
 
         <RadioButton
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:tag="@string/role_admin_value"
+            android:tag="admin"
             android:text="@string/role_admin" />
     </RadioGroup>
 
