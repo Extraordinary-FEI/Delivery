@@ -103,6 +103,9 @@ public class UserDao {
 
         ContentValues cv = new ContentValues();
         cv.put("username", username);
+        if (columnExists(db, "users", "password")) {
+            cv.put("password", password);
+        }
         cv.put("password_hash", passwordHash);
         cv.put("role", role);
         cv.put("created_at", System.currentTimeMillis());
@@ -113,6 +116,21 @@ public class UserDao {
         }
 
         return new RegisterResult(true, "注册成功");
+    }
+
+    private static boolean columnExists(SQLiteDatabase db, String tableName, String columnName) {
+        Cursor cursor = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
+        try {
+            int nameIndex = cursor.getColumnIndex("name");
+            while (cursor.moveToNext()) {
+                if (columnName.equals(cursor.getString(nameIndex))) {
+                    return true;
+                }
+            }
+            return false;
+        } finally {
+            cursor.close();
+        }
     }
 
     /* ================= 登录 ================= */
