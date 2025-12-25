@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
-import androidx.annotation.Nullable;
+import android.annotation.Nullable;
 
 import com.example.cn.helloworld.R;
 
@@ -49,7 +49,7 @@ public class PointsCurveView extends View {
 
         gridPaint.setStyle(Paint.Style.STROKE);
         gridPaint.setStrokeWidth(dp(1));
-        gridPaint.setColor(getResources().getColor(R.color.profile_divider));
+        gridPaint.setColor(getResources().getColor(R.color.divider_color));
 
         textPaint.setColor(getResources().getColor(R.color.profile_muted_text));
         textPaint.setTextSize(sp(11));
