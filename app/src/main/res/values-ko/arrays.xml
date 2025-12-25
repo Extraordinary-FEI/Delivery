@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="language_options">
-        <item>Simplified Chinese</item>
-        <item>Traditional Chinese</item>
-        <item>English</item>
-        <item>Japanese</item>
-        <item>Korean</item>
-        <item>French</item>
-        <item>Spanish</item>
+        <item>중국어(간체)</item>
+        <item>중국어(번체)</item>
+        <item>영어</item>
+        <item>일본어</item>
+        <item>한국어</item>
+        <item>프랑스어</item>
+        <item>스페인어</item>
     </string-array>
     <string-array name="language_option_values">
         <item>zh-CN</item>

@@ -38,6 +38,13 @@
     <string name="home_service_movie">电影演出</string>
     <string name="home_service_hotel">酒店民宿</string>
     <string name="home_footer">更多能力正在完善中，为你打造京东 + 美团式体验</string>
+    <string name="dock_home">首页</string>
+    <string name="dock_delivery">外卖</string>
+    <string name="dock_market">市集</string>
+    <string name="dock_cart">购物车</string>
+    <string name="dock_profile">我的</string>
+    <string name="dock_quick">Dock</string>
+    <string name="dock_handle">隐藏底栏</string>
     <string name="title_shop_list">店铺列表</string>
     <string name="default_product_name">商品</string>
     <string name="title_order_detail">订单详情</string>

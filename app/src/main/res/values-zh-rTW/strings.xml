@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_title">登入</string>
+    <string name="login_subtitle">請選擇語言與登入身分</string>
+    <string name="language_label">全國語言</string>
+    <string name="role_label">登入身分</string>
+    <string name="role_user">一般用戶</string>
+    <string name="role_admin">管理員</string>
+    <string name="label_username">使用者名稱</string>
+    <string name="label_password">密碼</string>
+    <string name="action_login">登入</string>
+    <string name="action_register">註冊</string>
+    <string name="register_title">註冊</string>
+    <string name="label_confirm_password">確認密碼</string>
+    <string name="action_back_to_login">返回登入</string>
+    <string name="action_back">返回</string>
+</resources>

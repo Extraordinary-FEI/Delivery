@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_title">Connexion</string>
+    <string name="login_subtitle">Sélectionnez la langue et le rôle de connexion</string>
+    <string name="language_label">Langues nationales</string>
+    <string name="role_label">Rôle de connexion</string>
+    <string name="role_user">Utilisateur</string>
+    <string name="role_admin">Administrateur</string>
+    <string name="label_username">Nom d’utilisateur</string>
+    <string name="label_password">Mot de passe</string>
+    <string name="action_login">Se connecter</string>
+    <string name="action_register">S’inscrire</string>
+    <string name="register_title">S’inscrire</string>
+    <string name="label_confirm_password">Confirmer le mot de passe</string>
+    <string name="action_back_to_login">Retour à la connexion</string>
+    <string name="action_back">Retour</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_title">ログイン</string>
+    <string name="login_subtitle">言語とログイン役割を選択してください</string>
+    <string name="language_label">対応言語</string>
+    <string name="role_label">ログイン役割</string>
+    <string name="role_user">一般ユーザー</string>
+    <string name="role_admin">管理者</string>
+    <string name="label_username">ユーザー名</string>
+    <string name="label_password">パスワード</string>
+    <string name="action_login">ログイン</string>
+    <string name="action_register">登録</string>
+    <string name="register_title">登録</string>
+    <string name="label_confirm_password">パスワードの確認</string>
+    <string name="action_back_to_login">ログインに戻る</string>
+    <string name="action_back">戻る</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_title">Iniciar sesión</string>
+    <string name="login_subtitle">Selecciona el idioma y el rol de inicio de sesión</string>
+    <string name="language_label">Idiomas nacionales</string>
+    <string name="role_label">Rol de inicio de sesión</string>
+    <string name="role_user">Usuario</string>
+    <string name="role_admin">Administrador</string>
+    <string name="label_username">Nombre de usuario</string>
+    <string name="label_password">Contraseña</string>
+    <string name="action_login">Iniciar sesión</string>
+    <string name="action_register">Registrarse</string>
+    <string name="register_title">Registrarse</string>
+    <string name="label_confirm_password">Confirmar contraseña</string>
+    <string name="action_back_to_login">Volver al inicio de sesión</string>
+    <string name="action_back">Atrás</string>
+</resources>
