@@ -59,6 +59,18 @@
     <string name="user_action_favorites">Favorites</string>
     <string name="user_action_orders">Orders</string>
     <string name="user_action_settings">Settings</string>
+    <string name="settings_edit_profile">Profile</string>
+    <string name="settings_field_nickname">Nickname</string>
+    <string name="settings_field_phone">Phone</string>
+    <string name="settings_field_avatar">Avatar URL</string>
+    <string name="settings_hint_nickname">Enter your nickname</string>
+    <string name="settings_hint_phone">Enter your phone number</string>
+    <string name="settings_hint_avatar">Paste an avatar image URL</string>
+    <string name="settings_save">Save changes</string>
+    <string name="settings_save_success">Profile saved</string>
+    <string name="settings_save_failed">Failed to save profile</string>
+    <string name="settings_phone_placeholder">No phone number</string>
+    <string name="settings_error_nickname">Nickname is required</string>
 
     <string name="food_image_description">Food image</string>
     <string name="add_to_cart">Add to cart</string>

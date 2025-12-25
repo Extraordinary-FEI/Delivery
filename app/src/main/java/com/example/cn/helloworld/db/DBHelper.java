@@ -11,7 +11,7 @@ import java.security.MessageDigest;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "delivery.db";
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 3;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -25,6 +25,9 @@ public class DBHelper extends SQLiteOpenHelper {
                         "username TEXT NOT NULL UNIQUE," +
                         "password_hash TEXT NOT NULL," +
                         "role TEXT NOT NULL," +
+                        "phone TEXT," +
+                        "nickname TEXT," +
+                        "avatar_url TEXT," +
                         "created_at INTEGER NOT NULL" +
                         ");"
         );
@@ -57,6 +60,19 @@ public class DBHelper extends SQLiteOpenHelper {
             } finally {
                 cursor.close();
             }
+        }
+
+        if (oldVersion < 3) {
+            if (!columnExists(db, "users", "phone")) {
+                db.execSQL("ALTER TABLE users ADD COLUMN phone TEXT");
+            }
+            if (!columnExists(db, "users", "nickname")) {
+                db.execSQL("ALTER TABLE users ADD COLUMN nickname TEXT");
+            }
+            if (!columnExists(db, "users", "avatar_url")) {
+                db.execSQL("ALTER TABLE users ADD COLUMN avatar_url TEXT");
+            }
+            db.execSQL("UPDATE users SET nickname = username WHERE nickname IS NULL");
         }
     }
 

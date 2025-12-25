@@ -45,6 +45,11 @@ public final class SessionManager {
         return preferences.getString(KEY_USER_ID, "");
     }
 
+    public static void clearSession(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        preferences.edit().clear().apply();
+    }
+
     public static boolean isAdmin(Context context) {
         return ROLE_ADMIN.equals(getRole(context));
     }

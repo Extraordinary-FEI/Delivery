@@ -80,6 +80,10 @@
             android:label="@string/service_help_title" />
 
         <activity
+            android:name=".ui.entry.SettingsActivity"
+            android:label="@string/user_action_settings" />
+
+        <activity
             android:name=".ui.cart.CartActivity"
             android:label="@string/title_cart" />
 

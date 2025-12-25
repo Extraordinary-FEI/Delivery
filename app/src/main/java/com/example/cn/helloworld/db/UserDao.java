@@ -47,6 +47,24 @@ public class UserDao {
         }
     }
 
+    /* ================= 用户信息 ================= */
+
+    public static class UserProfile {
+        public int userId;
+        public String username;
+        public String nickname;
+        public String phone;
+        public String avatarUrl;
+
+        public UserProfile(int userId, String username, String nickname, String phone, String avatarUrl) {
+            this.userId = userId;
+            this.username = username;
+            this.nickname = nickname;
+            this.phone = phone;
+            this.avatarUrl = avatarUrl;
+        }
+    }
+
     /* ================= 工具：SHA-256 ================= */
 
     private String sha256(String input) {
@@ -108,6 +126,9 @@ public class UserDao {
         }
         cv.put("password_hash", passwordHash);
         cv.put("role", role);
+        if (columnExists(db, "users", "nickname")) {
+            cv.put("nickname", username);
+        }
         cv.put("created_at", System.currentTimeMillis());
 
         long id = db.insert("users", null, cv);
@@ -131,6 +152,41 @@ public class UserDao {
         } finally {
             cursor.close();
         }
+    }
+
+    /* ================= 查询与更新资料 ================= */
+
+    public UserProfile getProfile(int userId) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT id, username, nickname, phone, avatar_url FROM users WHERE id=? LIMIT 1",
+                new String[]{String.valueOf(userId)}
+        );
+        try {
+            if (cursor == null || !cursor.moveToFirst()) {
+                return null;
+            }
+            return new UserProfile(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4)
+            );
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    public boolean updateProfile(int userId, String nickname, String phone, String avatarUrl) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("nickname", nickname);
+        values.put("phone", phone);
+        values.put("avatar_url", avatarUrl);
+        return db.update("users", values, "id=?", new String[]{String.valueOf(userId)}) > 0;
     }
 
     /* ================= 登录 ================= */
