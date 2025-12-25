@@ -132,8 +132,11 @@ public class UserDao {
 
     public UserProfile getProfile(int userId) {
         SQLiteDatabase db = helper.getReadableDatabase();
+        boolean hasNickname = columnExists(db, "users", "nickname");
         Cursor cursor = db.rawQuery(
-                "SELECT id, username, nickname, phone, avatar_url FROM users WHERE id=? LIMIT 1",
+                hasNickname
+                        ? "SELECT id, username, nickname, phone, avatar_url FROM users WHERE id=? LIMIT 1"
+                        : "SELECT id, username, phone, avatar_url FROM users WHERE id=? LIMIT 1",
                 new String[]{String.valueOf(userId)}
         );
         try {
@@ -143,9 +146,9 @@ public class UserDao {
             return new UserProfile(
                     cursor.getInt(0),
                     cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4)
+                    hasNickname ? cursor.getString(2) : cursor.getString(1),
+                    hasNickname ? cursor.getString(3) : cursor.getString(2),
+                    hasNickname ? cursor.getString(4) : cursor.getString(3)
             );
         } finally {
             if (cursor != null) {
@@ -157,7 +160,9 @@ public class UserDao {
     public boolean updateProfile(int userId, String nickname, String phone, String avatarUrl) {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("nickname", nickname);
+        if (columnExists(db, "users", "nickname")) {
+            values.put("nickname", nickname);
+        }
         values.put("phone", phone);
         values.put("avatar_url", avatarUrl);
         return db.update("users", values, "id=?", new String[]{String.valueOf(userId)}) > 0;
