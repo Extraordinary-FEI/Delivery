@@ -40,6 +40,10 @@
             android:label="@string/title_shop_list" />
 
         <activity
+            android:name=".ui.market.FoodMarketActivity"
+            android:label="@string/title_market" />
+
+        <activity
             android:name=".ui.shop.admin.AdminDashboardActivity"
             android:label="@string/admin_dashboard_title" />
 
