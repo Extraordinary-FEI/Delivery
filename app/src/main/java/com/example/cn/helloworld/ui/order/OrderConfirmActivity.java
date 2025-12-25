@@ -1,8 +1,6 @@
 package com.example.cn.helloworld.ui.order;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -11,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.data.cart.CartManager;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 
 import java.text.SimpleDateFormat;
@@ -24,8 +23,6 @@ public class OrderConfirmActivity extends BaseActivity {
     public static final String EXTRA_ORDER_TIME = "extra_order_time";
     public static final String EXTRA_ORDER_ITEMS = "extra_order_items";
     public static final String EXTRA_ORDER_TOTAL = "extra_order_total";
-
-    private static final String CART_PREFS = "cart_storage";
 
     private TextView orderIdView;
     private TextView orderTimeView;
@@ -125,8 +122,7 @@ public class OrderConfirmActivity extends BaseActivity {
     }
 
     private void clearCart() {
-        SharedPreferences preferences = getSharedPreferences(CART_PREFS, Context.MODE_PRIVATE);
-        preferences.edit().clear().apply();
+        CartManager.getInstance(this).clear();
     }
 
     private void returnToHome() {

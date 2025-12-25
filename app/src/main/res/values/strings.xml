@@ -19,7 +19,7 @@
     <string name="home_action_flash_sale">限时秒杀</string>
     <string name="home_action_flash_sale_desc">精选爆款低至 5 折</string>
     <string name="home_action_member">会员中心</string>
-    <string name="home_action_member_desc">苹果风格体验 + 省心售后</string>
+    <string name="home_action_member_desc">会员积分 + 等级权益 + 专属福利</string>
     <string name="home_action_coupon">红包券包</string>
     <string name="home_action_coupon_desc">新人立减 + 夜宵补贴</string>
     <string name="home_action_service">精选服务</string>
@@ -96,7 +96,7 @@
     <string name="discover_life_desc">跑腿代购、鲜花礼品、家政维修</string>
     <string name="user_action_favorites">收藏</string>
     <string name="user_action_orders">订单</string>
-    <string name="user_action_settings">设置</string>
+    <string name="user_action_settings">个人中心</string>
 
     <string name="food_image_description">食品图片</string>
     <string name="add_to_cart">加入购物车</string>

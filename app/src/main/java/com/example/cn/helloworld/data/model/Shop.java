@@ -10,6 +10,7 @@ public class Shop {
     private String hours;
     private double rating;
     private String description;
+    private String imageUrl;
     private List<Food> foods;
 
     public String getId() {
@@ -38,6 +39,10 @@ public class Shop {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public List<Food> getFoods() {

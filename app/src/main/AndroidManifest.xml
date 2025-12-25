@@ -84,6 +84,22 @@
             android:label="@string/user_action_settings" />
 
         <activity
+            android:name=".ui.address.AddressListActivity"
+            android:label="@string/address_manage_title" />
+
+        <activity
+            android:name=".ui.address.AddressEditActivity"
+            android:label="@string/address_edit_title" />
+
+        <activity
+            android:name=".ui.entry.FavoritesActivity"
+            android:label="@string/favorites_title" />
+
+        <activity
+            android:name=".ui.entry.HistoryActivity"
+            android:label="@string/history_title" />
+
+        <activity
             android:name=".ui.cart.CartActivity"
             android:label="@string/title_cart" />
 

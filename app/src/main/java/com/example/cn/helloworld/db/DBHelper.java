@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "delivery.db";
-    public static final int DB_VERSION = 5;
+    public static final int DB_VERSION = 6;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -16,6 +16,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        createTables(db);
+
+        // 可选：初始化一个默认管理员
+        db.execSQL("INSERT OR IGNORE INTO users(username,password,role,created_at) " +
+                "VALUES('admin','123456','admin'," + System.currentTimeMillis() + ");");
+    }
+
+    private void createTables(SQLiteDatabase db) {
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS users (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -28,10 +36,43 @@ public class DBHelper extends SQLiteOpenHelper {
                         "created_at INTEGER NOT NULL" +
                         ");"
         );
-
-        // 可选：初始化一个默认管理员
-        db.execSQL("INSERT OR IGNORE INTO users(username,password,role,created_at) " +
-                "VALUES('admin','123456','admin'," + System.currentTimeMillis() + ");");
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS addresses (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "user_id INTEGER NOT NULL," +
+                        "contact_name TEXT," +
+                        "contact_phone TEXT," +
+                        "detail TEXT," +
+                        "is_default INTEGER DEFAULT 0," +
+                        "created_at INTEGER" +
+                        ");"
+        );
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS favorites (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "user_id INTEGER NOT NULL," +
+                        "food_id TEXT NOT NULL," +
+                        "food_name TEXT," +
+                        "food_desc TEXT," +
+                        "food_price REAL," +
+                        "image_url TEXT," +
+                        "created_at INTEGER," +
+                        "UNIQUE(user_id, food_id) ON CONFLICT REPLACE" +
+                        ");"
+        );
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS browse_history (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "user_id INTEGER NOT NULL," +
+                        "food_id TEXT NOT NULL," +
+                        "food_name TEXT," +
+                        "food_desc TEXT," +
+                        "food_price REAL," +
+                        "image_url TEXT," +
+                        "visited_at INTEGER," +
+                        "UNIQUE(user_id, food_id) ON CONFLICT REPLACE" +
+                        ");"
+        );
     }
 
     @Override
@@ -69,6 +110,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("UPDATE users SET username = nickname WHERE username IS NULL OR username = ''");
             }
             db.execSQL("UPDATE users SET username = 'user_' || id WHERE username IS NULL OR username = ''");
+        }
+
+        if (oldVersion < 6) {
+            createTables(db);
         }
     }
 

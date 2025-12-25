@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "delivery.db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 6;
 
     public static final String TABLE_USERS = "users";
     public static final String TABLE_SHOPS = "shops";
@@ -33,11 +33,14 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
 
     private void createTables(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
-                + "id TEXT PRIMARY KEY,"
-                + "name TEXT,"
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "username TEXT NOT NULL UNIQUE,"
+                + "password TEXT NOT NULL,"
+                + "role TEXT NOT NULL,"
                 + "phone TEXT,"
-                + "role TEXT,"
-                + "created_at INTEGER"
+                + "nickname TEXT,"
+                + "avatar_url TEXT,"
+                + "created_at INTEGER NOT NULL"
                 + ")");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SHOPS + " ("
                 + "id TEXT PRIMARY KEY,"
@@ -83,22 +86,46 @@ public class DeliveryDatabaseHelper extends SQLiteOpenHelper {
                 + "quantity INTEGER,"
                 + "price REAL"
                 + ")");
+        db.execSQL("CREATE TABLE IF NOT EXISTS addresses ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "user_id INTEGER NOT NULL,"
+                + "contact_name TEXT,"
+                + "contact_phone TEXT,"
+                + "detail TEXT,"
+                + "is_default INTEGER DEFAULT 0,"
+                + "created_at INTEGER"
+                + ")");
+        db.execSQL("CREATE TABLE IF NOT EXISTS favorites ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "user_id INTEGER NOT NULL,"
+                + "food_id TEXT NOT NULL,"
+                + "food_name TEXT,"
+                + "food_desc TEXT,"
+                + "food_price REAL,"
+                + "image_url TEXT,"
+                + "created_at INTEGER,"
+                + "UNIQUE(user_id, food_id) ON CONFLICT REPLACE"
+                + ")");
+        db.execSQL("CREATE TABLE IF NOT EXISTS browse_history ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "user_id INTEGER NOT NULL,"
+                + "food_id TEXT NOT NULL,"
+                + "food_name TEXT,"
+                + "food_desc TEXT,"
+                + "food_price REAL,"
+                + "image_url TEXT,"
+                + "visited_at INTEGER,"
+                + "UNIQUE(user_id, food_id) ON CONFLICT REPLACE"
+                + ")");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER_ITEMS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART_ITEMS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        onCreate(db);
+        createTables(db);
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
+        createTables(db);
     }
 }

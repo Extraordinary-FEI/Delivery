@@ -42,6 +42,17 @@
                 android:textColor="@color/primary_color" />
 
             <TextView
+                android:id="@+id/button_favorite"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="☆"
+                android:textColor="@color/primary_color"
+                android:textSize="16sp"
+                android:background="@drawable/bg_quantity_outline" />
+
+            <TextView
                 android:id="@+id/button_add_single"
                 android:layout_width="28dp"
                 android:layout_height="28dp"

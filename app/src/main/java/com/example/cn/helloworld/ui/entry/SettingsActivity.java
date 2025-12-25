@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.UserDao;
+import com.example.cn.helloworld.ui.address.AddressListActivity;
 import com.example.cn.helloworld.ui.auth.LoginActivity;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.utils.ImageLoader;
@@ -26,6 +27,7 @@ public class SettingsActivity extends BaseActivity {
     private EditText phoneInput;
     private EditText avatarInput;
     private int userId;
+    private UserDao.UserProfile currentProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class SettingsActivity extends BaseActivity {
 
         Button saveButton = (Button) findViewById(R.id.button_save_profile);
         Button logoutButton = (Button) findViewById(R.id.button_logout);
+        View addressButton = findViewById(R.id.button_manage_addresses);
 
         loadProfile();
 
@@ -60,19 +63,25 @@ public class SettingsActivity extends BaseActivity {
                 logout();
             }
         });
+        addressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SettingsActivity.this, AddressListActivity.class));
+            }
+        });
     }
 
     private void loadProfile() {
-        UserDao.UserProfile profile = userDao.getProfile(userId);
-        if (profile == null) {
+        currentProfile = userDao.getProfile(userId);
+        if (currentProfile == null) {
             return;
         }
-        usernameView.setText(profile.username);
-        nicknameInput.setText(profile.nickname);
-        phoneInput.setText(profile.phone);
-        avatarInput.setText(profile.avatarUrl);
-        phoneSummaryView.setText(maskPhone(profile.phone));
-        ImageLoader.load(this, avatarView, profile.avatarUrl);
+        usernameView.setText(currentProfile.username);
+        nicknameInput.setText(currentProfile.nickname);
+        phoneInput.setText(currentProfile.phone);
+        avatarInput.setText(currentProfile.avatarUrl);
+        phoneSummaryView.setText(maskPhone(currentProfile.phone));
+        ImageLoader.load(this, avatarView, currentProfile.avatarUrl);
     }
 
     private void saveProfile() {
@@ -80,8 +89,16 @@ public class SettingsActivity extends BaseActivity {
         String phone = phoneInput.getText().toString().trim();
         String avatarUrl = avatarInput.getText().toString().trim();
 
-        if (TextUtils.isEmpty(nickname)) {
-            nicknameInput.setError(getString(R.string.settings_error_nickname));
+        if (currentProfile == null) {
+            return;
+        }
+
+        boolean changed = !TextUtils.equals(nickname, safeText(currentProfile.nickname))
+                || !TextUtils.equals(phone, safeText(currentProfile.phone))
+                || !TextUtils.equals(avatarUrl, safeText(currentProfile.avatarUrl));
+
+        if (!changed) {
+            Toast.makeText(this, R.string.settings_save_no_changes, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -90,6 +107,7 @@ public class SettingsActivity extends BaseActivity {
             phoneSummaryView.setText(maskPhone(phone));
             ImageLoader.load(this, avatarView, avatarUrl);
             Toast.makeText(this, R.string.settings_save_success, Toast.LENGTH_SHORT).show();
+            loadProfile();
         } else {
             Toast.makeText(this, R.string.settings_save_failed, Toast.LENGTH_SHORT).show();
         }
@@ -116,5 +134,9 @@ public class SettingsActivity extends BaseActivity {
             return getString(R.string.settings_phone_placeholder);
         }
         return phone.substring(0, 3) + "****" + phone.substring(phone.length() - 4);
+    }
+
+    private String safeText(String value) {
+        return value == null ? "" : value.trim();
     }
 }

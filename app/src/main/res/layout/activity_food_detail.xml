@@ -53,6 +53,20 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/black" />
 
+        <TextView
+            android:id="@+id/button_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_quantity_outline"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/favorite_add"
+            android:textColor="@color/primary_color"
+            android:textSize="14sp" />
+
         <Button
             android:id="@+id/button_add_to_cart"
             android:layout_width="match_parent"

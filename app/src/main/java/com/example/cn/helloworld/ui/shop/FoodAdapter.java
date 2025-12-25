@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.data.cart.CartManager;
 import com.example.cn.helloworld.data.cart.FoodItem;
+import com.example.cn.helloworld.db.UserContentDao;
 import com.example.cn.helloworld.model.Food;
+import com.example.cn.helloworld.utils.SessionManager;
 
 import java.util.List;
 
@@ -32,6 +34,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     private final OnFoodClickListener listener;
     private final OnFoodLongClickListener longClickListener;
     private final OnQuantityChangeListener quantityChangeListener;
+    private UserContentDao contentDao;
+    private int userId;
 
     public FoodAdapter(List<Food> foods, OnFoodClickListener listener) {
         this(foods, listener, null, null);
@@ -60,6 +64,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     public void onBindViewHolder(FoodViewHolder holder, int position) {
         final FoodViewHolder viewHolder = holder;
         final Food food = foods.get(position);
+        ensureContentDao(viewHolder.itemView);
         viewHolder.nameView.setText(food.getName());
         viewHolder.descView.setText(food.getDescription());
         viewHolder.priceView.setText(viewHolder.itemView.getContext()
@@ -67,6 +72,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         final CartManager cartManager = CartManager.getInstance(viewHolder.itemView.getContext());
         int quantity = cartManager.getItemQuantity(food.getName());
         viewHolder.bindQuantity(quantity);
+        viewHolder.bindFavorite(contentDao.isFavorite(userId, resolveFoodId(food)));
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +128,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 notifyQuantityChanged(cartManager);
             }
         });
+
+        viewHolder.favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contentDao.toggleFavorite(userId, food);
+                viewHolder.bindFavorite(contentDao.isFavorite(userId, resolveFoodId(food)));
+            }
+        });
     }
 
     @Override
@@ -138,6 +152,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         final TextView decreaseButton;
         final TextView increaseButton;
         final TextView quantityText;
+        final TextView favoriteButton;
 
         FoodViewHolder(View itemView) {
             super(itemView);
@@ -149,6 +164,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             decreaseButton = (TextView) itemView.findViewById(R.id.button_decrease);
             increaseButton = (TextView) itemView.findViewById(R.id.button_increase);
             quantityText = (TextView) itemView.findViewById(R.id.text_quantity);
+            favoriteButton = (TextView) itemView.findViewById(R.id.button_favorite);
         }
 
         void bindQuantity(int quantity) {
@@ -161,11 +177,44 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 quantityText.setText(String.valueOf(quantity));
             }
         }
+
+        void bindFavorite(boolean isFavorite) {
+            favoriteButton.setText(isFavorite ? "★" : "☆");
+            favoriteButton.setContentDescription(isFavorite
+                    ? itemView.getContext().getString(R.string.favorite_added)
+                    : itemView.getContext().getString(R.string.favorite_add));
+        }
     }
 
     private void notifyQuantityChanged(CartManager cartManager) {
         if (quantityChangeListener != null) {
             quantityChangeListener.onQuantityChange(cartManager.getTotalCount());
+        }
+    }
+
+    private void ensureContentDao(View view) {
+        if (contentDao != null) {
+            return;
+        }
+        contentDao = new UserContentDao(view.getContext());
+        userId = parseUserId(SessionManager.getUserId(view.getContext()));
+    }
+
+    private String resolveFoodId(Food food) {
+        if (food == null) {
+            return "";
+        }
+        if (food.getId() != null && food.getId().trim().length() > 0) {
+            return food.getId();
+        }
+        return food.getName();
+    }
+
+    private int parseUserId(String userIdText) {
+        try {
+            return Integer.parseInt(userIdText);
+        } catch (NumberFormatException e) {
+            return -1;
         }
     }
 

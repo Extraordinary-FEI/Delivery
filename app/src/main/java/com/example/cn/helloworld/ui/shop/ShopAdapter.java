@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.model.Shop;
+import com.example.cn.helloworld.utils.ImageLoader;
 
 import java.util.List;
 import java.util.Locale;
@@ -39,6 +41,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopViewHolder
         holder.addressView.setText(shop.getAddress());
         holder.ratingView.setText(String.format(Locale.getDefault(), "%.1f", shop.getRating()));
         holder.descriptionView.setText(shop.getDescription());
+        ImageLoader.load(holder.itemView.getContext(), holder.imageView, shop.getImageUrl());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +62,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopViewHolder
         private final TextView addressView;
         private final TextView ratingView;
         private final TextView descriptionView;
+        private final ImageView imageView;
 
         ShopViewHolder(View itemView) {
             super(itemView);
@@ -66,6 +70,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopViewHolder
             addressView = (TextView) itemView.findViewById(R.id.text_shop_address);
             ratingView = (TextView) itemView.findViewById(R.id.text_shop_rating);
             descriptionView = (TextView) itemView.findViewById(R.id.text_shop_description);
+            imageView = (ImageView) itemView.findViewById(R.id.image_shop);
         }
     }
 }

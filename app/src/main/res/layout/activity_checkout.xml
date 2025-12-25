@@ -40,6 +40,7 @@
             android:textSize="13sp" />
 
         <LinearLayout
+            android:id="@+id/layout_checkout_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
@@ -56,6 +57,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/text_checkout_address_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -64,10 +66,20 @@
                 android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/text_checkout_address_eta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/checkout_address_eta"
+                android:textColor="@color/primary_color"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/text_checkout_address_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/checkout_address_action"
                 android:textColor="@color/primary_color"
                 android:textSize="12sp" />
         </LinearLayout>

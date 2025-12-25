@@ -150,6 +150,7 @@ public class FoodMarketActivity extends BaseActivity implements FoodAdapter.OnFo
     @Override
     public void onFoodClick(Food food) {
         Intent intent = new Intent(this, FoodDetailActivity.class);
+        intent.putExtra(FoodDetailActivity.EXTRA_FOOD_ID, food.getId());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_NAME, food.getName());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_PRICE, food.getPrice());
         intent.putExtra(FoodDetailActivity.EXTRA_FOOD_DESCRIPTION, food.getDescription());

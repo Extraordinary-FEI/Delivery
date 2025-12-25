@@ -14,6 +14,7 @@ import com.example.cn.helloworld.ui.entry.CouponCenterActivity;
 import com.example.cn.helloworld.ui.entry.FlashSaleActivity;
 import com.example.cn.helloworld.ui.entry.MemberCenterActivity;
 import com.example.cn.helloworld.ui.entry.ServiceHelpActivity;
+import com.example.cn.helloworld.ui.entry.SettingsActivity;
 import com.example.cn.helloworld.ui.market.FoodMarketActivity;
 import com.example.cn.helloworld.ui.shop.ShopListActivity;
 import com.example.cn.helloworld.ui.shop.admin.AdminDashboardActivity;
@@ -147,7 +148,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.dock_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MemberCenterActivity.class));
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             }
         });
     }

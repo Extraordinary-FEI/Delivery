@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/button_back"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_profile_icon_circle"
+                android:gravity="center"
+                android:text="‹"
+                android:textColor="@color/primary_text"
+                android:textSize="22sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/address_edit_title"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/address_field_name"
+            android:textColor="@color/secondary_text"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/input_address_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_search"
+            android:padding="12dp"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/profile_muted_text"
+            android:hint="@string/address_hint_name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/address_field_phone"
+            android:textColor="@color/secondary_text"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/input_address_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_search"
+            android:inputType="phone"
+            android:padding="12dp"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/profile_muted_text"
+            android:hint="@string/address_hint_phone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/address_field_detail"
+            android:textColor="@color/secondary_text"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/input_address_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_search"
+            android:padding="12dp"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/profile_muted_text"
+            android:hint="@string/address_hint_detail" />
+
+        <CheckBox
+            android:id="@+id/checkbox_address_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/address_set_default" />
+
+        <Button
+            android:id="@+id/button_save_address"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_primary_button"
+            android:text="@string/address_save"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>
