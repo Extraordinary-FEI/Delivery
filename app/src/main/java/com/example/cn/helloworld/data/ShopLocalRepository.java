@@ -50,9 +50,20 @@ public class ShopLocalRepository {
         writeShops(context, shops);
     }
 
+    public boolean deleteShop(Context context, int shopId) throws IOException {
+        List<Shop> shops = getShops(context);
+        for (int i = 0; i < shops.size(); i++) {
+            if (shops.get(i).getId() == shopId) {
+                shops.remove(i);
+                writeShops(context, shops);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void writeShops(Context context, List<Shop> shops) throws IOException {
         String json = new Gson().toJson(shops, SHOP_LIST_TYPE);
         LocalJsonStore.writeJson(context, SHOP_FILE, json);
     }
 }
-
