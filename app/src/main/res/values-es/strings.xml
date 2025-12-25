@@ -15,6 +15,7 @@
     <string name="admin_login_hint">El acceso de administrador requiere código.</string>
     <string name="register_title">Registrarse</string>
     <string name="label_confirm_password">Confirmar contraseña</string>
+    <string name="register_error_username_taken">El nombre de usuario ya existe. Elige otro.</string>
     <string name="action_back_to_login">Volver al inicio de sesión</string>
     <string name="action_back">Atrás</string>
 </resources>

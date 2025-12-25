@@ -88,6 +88,7 @@
     <string name="register_error_empty_fields">Please fill out all fields.</string>
     <string name="register_error_password_short">Password must be at least 6 characters.</string>
     <string name="register_error_password_mismatch">Passwords do not match.</string>
+    <string name="register_error_username_taken">Username already exists. Please choose another.</string>
     <string name="register_success">Registration successful.</string>
     <string name="register_error_failed">Registration failed. Please try again.</string>
     <string name="register_error_network">Registration failed. Check network or server configuration.</string>

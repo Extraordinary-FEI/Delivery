@@ -16,6 +16,7 @@
     <string name="admin_login_hint">관리자 로그인에는 코드가 필요합니다.</string>
     <string name="register_title">회원가입</string>
     <string name="label_confirm_password">비밀번호 확인</string>
+    <string name="register_error_username_taken">이미 사용 중인 사용자 이름입니다. 다른 이름을 선택하세요.</string>
     <string name="action_back_to_login">로그인으로 돌아가기</string>
     <string name="action_back">뒤로</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.example.cn.helloworld.ui.auth;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ public class RegisterActivity extends BaseActivity {
     private EditText confirmPasswordInput;
     private EditText adminCodeInput;
     private RadioGroup roleGroup;
+    private UserDao userDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +36,10 @@ public class RegisterActivity extends BaseActivity {
         roleGroup = (RadioGroup) findViewById(R.id.radio_group_role);
         Button registerButton = (Button) findViewById(R.id.button_register_submit);
         Button backButton = (Button) findViewById(R.id.button_back_to_login);
+        userDao = new UserDao(this);
 
         setupRoleToggle();
+        setupUsernameCheck();
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +78,12 @@ public class RegisterActivity extends BaseActivity {
             return;
         }
 
+        UserDao userDao = new UserDao(this);
+        if (userDao.isUsernameTaken(username)) {
+            Toast.makeText(this, R.string.register_error_username_taken, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (SessionManager.ROLE_ADMIN.equals(role)) {
             if (adminCode.isEmpty()) {
                 Toast.makeText(this, R.string.register_error_admin_code_required, Toast.LENGTH_SHORT).show();
@@ -84,7 +95,6 @@ public class RegisterActivity extends BaseActivity {
             }
         }
 
-        UserDao userDao = new UserDao(this);
         UserDao.RegisterResult result = userDao.register(username, password, role, adminCode);
         Toast.makeText(this, result.msg, Toast.LENGTH_SHORT).show();
         if (result.ok) {
@@ -121,5 +131,34 @@ public class RegisterActivity extends BaseActivity {
         });
         String role = resolveSelectedRole();
         adminCodeInput.setVisibility(SessionManager.ROLE_ADMIN.equals(role) ? View.VISIBLE : View.GONE);
+    }
+
+    private void setupUsernameCheck() {
+        if (usernameInput == null) {
+            return;
+        }
+        usernameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String username = s.toString().trim();
+                if (username.isEmpty()) {
+                    usernameInput.setError(null);
+                    return;
+                }
+                if (userDao.isUsernameTaken(username)) {
+                    usernameInput.setError(getString(R.string.register_error_username_taken));
+                } else {
+                    usernameInput.setError(null);
+                }
+            }
+        });
     }
 }
