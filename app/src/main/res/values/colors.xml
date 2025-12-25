@@ -9,6 +9,13 @@
     <color name="background_light">#F5F5F7</color>
     <color name="card_background">#FFFFFF</color>
     <color name="divider_color">#E6E6EB</color>
+    <color name="profile_header_start">#FFF1F4</color>
+    <color name="profile_header_end">#EEF3FF</color>
+    <color name="profile_member_start">#E3EBFF</color>
+    <color name="profile_member_end">#D6E4FF</color>
+    <color name="profile_pill_background">#EEF1FF</color>
+    <color name="profile_muted_text">#8B95A5</color>
+    <color name="profile_icon_background">#FFFFFF</color>
     <color name="chip_background">#ECE9FF</color>
     <color name="banner_start">#5C7CFA</color>
     <color name="banner_end">#3B5BDB</color>

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.ui.common.BaseActivity;
+import com.example.cn.helloworld.ui.shop.ShopListActivity;
 
 public class AdminDashboardActivity extends BaseActivity {
     @Override

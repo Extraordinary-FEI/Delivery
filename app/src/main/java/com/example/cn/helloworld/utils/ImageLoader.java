@@ -5,8 +5,6 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cn.helloworld.R;
 
 public final class ImageLoader {
@@ -23,21 +21,23 @@ public final class ImageLoader {
         }
         String trimmed = path.trim();
         String pexelsId = extractPexelsId(trimmed);
-        RequestBuilder<?> requestBuilder;
         if (!TextUtils.isEmpty(pexelsId)) {
             String primaryUrl = buildPexelsUrl(pexelsId, "jpeg");
-            String fallbackUrl = buildPexelsUrl(pexelsId, "jpg");
-            requestBuilder = Glide.with(context)
+            Glide.with(context)
                     .load(primaryUrl)
-                    .error(Glide.with(context).load(fallbackUrl));
+                    .crossFade()
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(imageView);
+            return;
         } else {
-            requestBuilder = Glide.with(context).load(trimmed);
+            Glide.with(context)
+                    .load(trimmed)
+                    .crossFade()
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(imageView);
         }
-        requestBuilder
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(imageView);
     }
 
     private static String buildPexelsUrl(String pexelsId, String extension) {
