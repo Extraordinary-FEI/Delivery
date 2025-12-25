@@ -21,11 +21,43 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/text_role_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/role_label"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_role"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_role_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:tag="@string/role_user_value"
+            android:text="@string/role_user" />
+
+        <RadioButton
+            android:id="@+id/radio_role_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:tag="@string/role_admin_value"
+            android:text="@string/role_admin" />
+    </RadioGroup>
+
     <EditText
         android:id="@+id/edit_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:hint="@string/label_username"
         android:inputType="textPersonName" />
 
@@ -44,6 +76,15 @@
         android:layout_marginTop="12dp"
         android:hint="@string/label_confirm_password"
         android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/edit_admin_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/label_admin_code"
+        android:inputType="numberPassword"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/button_register_submit"

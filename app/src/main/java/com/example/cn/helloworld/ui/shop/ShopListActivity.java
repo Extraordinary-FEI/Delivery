@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopListActivity extends BaseActivity implements ShopAdapter.OnShopClickListener {
+    public static final String EXTRA_ALLOW_ADD_SHOP = "extra_allow_add_shop";
     private final List<Shop> shops = new ArrayList<Shop>();
     private ShopAdapter adapter;
     private final ShopLocalRepository repository = new ShopLocalRepository();
@@ -29,7 +30,8 @@ public class ShopListActivity extends BaseActivity implements ShopAdapter.OnShop
         setupBackButton();
 
         Button addButton = (Button) findViewById(R.id.button_add_shop);
-        if (SessionManager.isAdmin(this)) {
+        boolean allowAddShop = getIntent().getBooleanExtra(EXTRA_ALLOW_ADD_SHOP, false);
+        if (SessionManager.isAdmin(this) && allowAddShop) {
             addButton.setVisibility(Button.VISIBLE);
         }
         addButton.setOnClickListener(new android.view.View.OnClickListener() {

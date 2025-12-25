@@ -19,7 +19,9 @@ public class AdminDashboardActivity extends BaseActivity {
         shopManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AdminDashboardActivity.this, ShopListActivity.class));
+                Intent intent = new Intent(AdminDashboardActivity.this, ShopListActivity.class);
+                intent.putExtra(ShopListActivity.EXTRA_ALLOW_ADD_SHOP, true);
+                startActivity(intent);
             }
         });
 
@@ -28,6 +30,7 @@ public class AdminDashboardActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminDashboardActivity.this, ShopListActivity.class);
+                intent.putExtra(ShopListActivity.EXTRA_ALLOW_ADD_SHOP, false);
                 startActivity(intent);
             }
         });

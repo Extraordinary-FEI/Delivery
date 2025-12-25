@@ -14,7 +14,6 @@ import com.example.cn.helloworld.ui.entry.CouponCenterActivity;
 import com.example.cn.helloworld.ui.entry.FlashSaleActivity;
 import com.example.cn.helloworld.ui.entry.MemberCenterActivity;
 import com.example.cn.helloworld.ui.entry.ServiceHelpActivity;
-import com.example.cn.helloworld.ui.discover.DiscoverActivity;
 import com.example.cn.helloworld.ui.shop.ShopListActivity;
 import com.example.cn.helloworld.ui.shop.admin.AdminDashboardActivity;
 import com.example.cn.helloworld.utils.SessionManager;
@@ -133,7 +132,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.dock_market).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, DiscoverActivity.class));
+                startActivity(new Intent(MainActivity.this, ShopListActivity.class));
             }
         });
 

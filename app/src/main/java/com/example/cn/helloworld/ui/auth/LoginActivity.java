@@ -12,7 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
-import com.example.cn.helloworld.data.AuthApiClient;
+import com.example.cn.helloworld.db.UserDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.main.MainActivity;
 import com.example.cn.helloworld.utils.LocaleManager;
@@ -22,6 +22,7 @@ public class LoginActivity extends BaseActivity {
 
     private EditText usernameInput;
     private EditText passwordInput;
+    private EditText adminCodeInput;
     private RadioGroup roleGroup;
     private boolean isInitialLanguageSelection = true;
 
@@ -32,11 +33,13 @@ public class LoginActivity extends BaseActivity {
 
         usernameInput = (EditText) findViewById(R.id.edit_username);
         passwordInput = (EditText) findViewById(R.id.edit_password);
+        adminCodeInput = (EditText) findViewById(R.id.edit_admin_code);
         Button loginButton = (Button) findViewById(R.id.button_login);
         Button registerButton = (Button) findViewById(R.id.button_register);
         roleGroup = (RadioGroup) findViewById(R.id.radio_group_role);
 
         setupLanguageSelector();
+        setupRoleToggle();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,28 +102,29 @@ public class LoginActivity extends BaseActivity {
         String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
         String role = resolveSelectedRole();
+        String adminCode = adminCodeInput == null ? "" : adminCodeInput.getText().toString().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, R.string.login_error_empty_fields, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        AuthApiClient.login(this, username, password, role,
-                new AuthApiClient.Callback<AuthApiClient.LoginResponse>() {
-            @Override
-            public void onSuccess(AuthApiClient.LoginResponse result) {
-                SessionManager.saveSession(LoginActivity.this, result.getUsername(), result.getRole(),
-                        result.getToken(), result.getUserId());
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        if (SessionManager.ROLE_ADMIN.equals(role) && adminCode.isEmpty()) {
+            Toast.makeText(this, R.string.login_error_admin_code_required, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            @Override
-            public void onError(String message) {
-                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
+        UserDao userDao = new UserDao(this);
+        UserDao.LoginResult result = userDao.login(username, password, role, adminCode);
+        if (!result.ok) {
+            Toast.makeText(this, result.msg, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SessionManager.saveSession(this, result.username, result.role, "", String.valueOf(result.userId));
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private String resolveSelectedRole() {
@@ -133,5 +137,24 @@ public class LoginActivity extends BaseActivity {
             return checkedView.getTag().toString();
         }
         return getString(R.string.role_user_value);
+    }
+
+    private void setupRoleToggle() {
+        if (roleGroup == null || adminCodeInput == null) {
+            return;
+        }
+        roleGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                String role = resolveSelectedRole();
+                boolean showAdminCode = SessionManager.ROLE_ADMIN.equals(role);
+                adminCodeInput.setVisibility(showAdminCode ? View.VISIBLE : View.GONE);
+                if (!showAdminCode) {
+                    adminCodeInput.setText("");
+                }
+            }
+        });
+        String role = resolveSelectedRole();
+        adminCodeInput.setVisibility(SessionManager.ROLE_ADMIN.equals(role) ? View.VISIBLE : View.GONE);
     }
 }
