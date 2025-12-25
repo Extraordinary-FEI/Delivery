@@ -59,12 +59,18 @@
             android:layout_marginTop="8dp"
             android:hint="@string/hint_food_description" />
 
-        <EditText
-            android:id="@+id/input_food_category"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/hint_food_category" />
+            android:text="@string/hint_food_category"
+            android:textColor="@color/secondary_text" />
+
+        <Spinner
+            android:id="@+id/input_food_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" />
 
         <EditText
             android:id="@+id/input_food_image"

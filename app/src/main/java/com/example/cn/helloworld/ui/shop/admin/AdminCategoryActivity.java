@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.CategoryDao;
@@ -31,6 +32,15 @@ public class AdminCategoryActivity extends BaseActivity {
         ListView listView = (ListView) findViewById(R.id.list_categories);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, categories);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                String category = categories.get(position);
+                Intent intent = new Intent(AdminCategoryActivity.this, AdminCategoryFoodsActivity.class);
+                intent.putExtra(AdminCategoryFoodsActivity.EXTRA_CATEGORY_NAME, category);
+                startActivity(intent);
+            }
+        });
 
         findViewById(R.id.button_add_category).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,4 +91,3 @@ public class AdminCategoryActivity extends BaseActivity {
                 .show();
     }
 }
-

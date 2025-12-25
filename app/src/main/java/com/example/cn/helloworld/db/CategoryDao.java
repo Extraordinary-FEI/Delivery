@@ -27,7 +27,7 @@ public class CategoryDao {
         try {
             while (cursor.moveToNext()) {
                 String name = cursor.getString(0);
-                if (!TextUtils.isEmpty(name)) {
+                if (!TextUtils.isEmpty(name) && !"default".equals(name)) {
                     result.add(name);
                 }
             }

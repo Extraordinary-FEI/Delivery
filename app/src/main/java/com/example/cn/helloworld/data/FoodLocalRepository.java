@@ -74,6 +74,40 @@ public class FoodLocalRepository {
         upsertFood(db, updated);
     }
 
+    public void updateFoodCategory(Context context, String foodId, String category) throws IOException {
+        if (TextUtils.isEmpty(foodId)) {
+            return;
+        }
+        DeliveryDatabaseHelper dbHelper = new DeliveryDatabaseHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String resolvedCategory = TextUtils.isEmpty(category) ? null : category;
+        String shopId = "default";
+        Cursor cursor = db.query(DeliveryDatabaseHelper.TABLE_PRODUCTS, new String[]{"shop_id"},
+                "id = ?", new String[]{foodId}, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                shopId = cursor.getString(0);
+            }
+        } finally {
+            cursor.close();
+        }
+        if (!TextUtils.isEmpty(resolvedCategory)) {
+            ContentValues categoryValues = new ContentValues();
+            categoryValues.put("id", resolvedCategory);
+            categoryValues.put("name", resolvedCategory);
+            categoryValues.put("shop_id", TextUtils.isEmpty(shopId) ? "default" : shopId);
+            db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_CATEGORIES, null, categoryValues,
+                    SQLiteDatabase.CONFLICT_IGNORE);
+        }
+        ContentValues values = new ContentValues();
+        if (TextUtils.isEmpty(resolvedCategory)) {
+            values.putNull("category_id");
+        } else {
+            values.put("category_id", resolvedCategory);
+        }
+        db.update(DeliveryDatabaseHelper.TABLE_PRODUCTS, values, "id = ?", new String[]{foodId});
+    }
+
     public void deleteFood(Context context, String foodId) throws IOException {
         if (TextUtils.isEmpty(foodId)) {
             return;
@@ -87,6 +121,20 @@ public class FoodLocalRepository {
         String json = LocalJsonStore.readJson(context, FOOD_FILE);
         List<Food> foods = new Gson().fromJson(json, FOOD_LIST_TYPE);
         return foods == null ? new ArrayList<Food>() : foods;
+    }
+
+    public List<Food> getFoodsByCategory(Context context, String categoryId) throws IOException {
+        List<Food> foods = getFoods(context);
+        if (TextUtils.isEmpty(categoryId)) {
+            return foods;
+        }
+        List<Food> filtered = new ArrayList<Food>();
+        for (Food food : foods) {
+            if (categoryId.equals(food.getCategory())) {
+                filtered.add(food);
+            }
+        }
+        return filtered;
     }
 
     private List<Food> readFoodsFromDatabase(SQLiteDatabase db, String foodId) {
@@ -130,7 +178,7 @@ public class FoodLocalRepository {
         if (food == null || TextUtils.isEmpty(food.getId())) {
             return;
         }
-        String category = TextUtils.isEmpty(food.getCategory()) ? "default" : food.getCategory();
+        String category = TextUtils.isEmpty(food.getCategory()) ? null : food.getCategory();
         String shopId = TextUtils.isEmpty(food.getShopId()) ? "default" : food.getShopId();
         ContentValues shopValues = new ContentValues();
         shopValues.put("id", shopId);
@@ -138,12 +186,14 @@ public class FoodLocalRepository {
         db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_SHOPS, null, shopValues,
                 SQLiteDatabase.CONFLICT_IGNORE);
 
-        ContentValues categoryValues = new ContentValues();
-        categoryValues.put("id", category);
-        categoryValues.put("name", category);
-        categoryValues.put("shop_id", shopId);
-        db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_CATEGORIES, null, categoryValues,
-                SQLiteDatabase.CONFLICT_IGNORE);
+        if (!TextUtils.isEmpty(category)) {
+            ContentValues categoryValues = new ContentValues();
+            categoryValues.put("id", category);
+            categoryValues.put("name", category);
+            categoryValues.put("shop_id", shopId);
+            db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_CATEGORIES, null, categoryValues,
+                    SQLiteDatabase.CONFLICT_IGNORE);
+        }
 
         ContentValues values = new ContentValues();
         values.put("id", food.getId());
@@ -151,7 +201,11 @@ public class FoodLocalRepository {
         values.put("description", food.getDescription());
         values.put("price", food.getPrice());
         values.put("image_url", food.getImageUrl());
-        values.put("category_id", category);
+        if (TextUtils.isEmpty(category)) {
+            values.putNull("category_id");
+        } else {
+            values.put("category_id", category);
+        }
         values.put("shop_id", shopId);
         values.put("available", 1);
         db.insertWithOnConflict(DeliveryDatabaseHelper.TABLE_PRODUCTS, null, values,

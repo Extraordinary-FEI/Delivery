@@ -234,6 +234,9 @@
     <string name="hint_food_price">价格</string>
     <string name="hint_food_description">菜品描述</string>
     <string name="hint_food_category">市集分类（可选）</string>
+    <string name="food_category_unassigned">不选择分类</string>
+    <string name="action_change_category">改分类</string>
+    <string name="admin_category_foods_title">分类：%s</string>
     <string name="hint_food_image">请输入图片网络地址（http/https）</string>
     <string name="error_required_fields">请填写必填项。</string>
     <string name="error_invalid_rating">请输入正确评分。</string>

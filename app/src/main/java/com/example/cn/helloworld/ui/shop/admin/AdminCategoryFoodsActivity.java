@@ -7,8 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cn.helloworld.R;
@@ -20,29 +19,31 @@ import com.example.cn.helloworld.ui.common.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminFoodListActivity extends BaseActivity implements AdminFoodAdapter.OnFoodActionListener {
+public class AdminCategoryFoodsActivity extends BaseActivity implements AdminFoodAdapter.OnFoodActionListener {
+    public static final String EXTRA_CATEGORY_NAME = "extra_category_name";
+
     private final List<Food> foods = new ArrayList<Food>();
     private final FoodLocalRepository repository = new FoodLocalRepository();
     private AdminFoodAdapter adapter;
+    private String categoryName;
     private CategoryDao categoryDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_food_list);
+        setContentView(R.layout.activity_admin_category_foods);
         setupBackButton();
+
         categoryDao = new CategoryDao(this);
+        categoryName = getIntent().getStringExtra(EXTRA_CATEGORY_NAME);
+        if (TextUtils.isEmpty(categoryName)) {
+            categoryName = getString(R.string.market_category_default);
+        }
 
-        Button addFoodButton = (Button) findViewById(R.id.button_add_food);
-        addFoodButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdminFoodListActivity.this, FoodEditActivity.class);
-                startActivity(intent);
-            }
-        });
+        TextView titleView = (TextView) findViewById(R.id.text_admin_category_foods_title);
+        titleView.setText(getString(R.string.admin_category_foods_title, categoryName));
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_admin_foods);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_admin_category_foods);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdminFoodAdapter(foods, this);
         recyclerView.setAdapter(adapter);
@@ -106,11 +107,12 @@ public class AdminFoodListActivity extends BaseActivity implements AdminFoodAdap
                             public void onClick(DialogInterface dialog, int which) {
                                 String selected = which == 0 ? null : categoryNames.get(which);
                                 try {
-                                    repository.updateFoodCategory(AdminFoodListActivity.this, food.getId(), selected);
+                                    repository.updateFoodCategory(AdminCategoryFoodsActivity.this, food.getId(),
+                                            selected);
                                     loadFoods();
                                     dialog.dismiss();
                                 } catch (java.io.IOException e) {
-                                    Toast.makeText(AdminFoodListActivity.this,
+                                    Toast.makeText(AdminCategoryFoodsActivity.this,
                                             R.string.error_food_save_failed, Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -122,7 +124,7 @@ public class AdminFoodListActivity extends BaseActivity implements AdminFoodAdap
     private void loadFoods() {
         try {
             foods.clear();
-            foods.addAll(repository.getFoods(this));
+            foods.addAll(repository.getFoodsByCategory(this, categoryName));
             adapter.notifyDataSetChanged();
         } catch (java.io.IOException e) {
             Toast.makeText(this, R.string.error_food_load_failed, Toast.LENGTH_SHORT).show();

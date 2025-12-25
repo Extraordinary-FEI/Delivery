@@ -15,6 +15,7 @@ public class AdminFoodAdapter extends RecyclerView.Adapter<AdminFoodAdapter.Admi
     public interface OnFoodActionListener {
         void onEdit(Food food);
         void onDelete(Food food);
+        void onChangeCategory(Food food);
     }
 
     private final List<Food> foods;
@@ -49,6 +50,14 @@ public class AdminFoodAdapter extends RecyclerView.Adapter<AdminFoodAdapter.Admi
                 }
             }
         });
+        holder.changeCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onChangeCategory(food);
+                }
+            }
+        });
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +79,7 @@ public class AdminFoodAdapter extends RecyclerView.Adapter<AdminFoodAdapter.Admi
         private final TextView shopView;
         private final TextView priceView;
         private final TextView editButton;
+        private final TextView changeCategoryButton;
         private final TextView deleteButton;
 
         AdminFoodViewHolder(View itemView) {
@@ -79,6 +89,7 @@ public class AdminFoodAdapter extends RecyclerView.Adapter<AdminFoodAdapter.Admi
             shopView = (TextView) itemView.findViewById(R.id.text_admin_food_shop);
             priceView = (TextView) itemView.findViewById(R.id.text_admin_food_price);
             editButton = (TextView) itemView.findViewById(R.id.button_admin_food_edit);
+            changeCategoryButton = (TextView) itemView.findViewById(R.id.button_admin_food_change_category);
             deleteButton = (TextView) itemView.findViewById(R.id.button_admin_food_delete);
         }
     }

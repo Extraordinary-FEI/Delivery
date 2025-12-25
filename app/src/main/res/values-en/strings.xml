@@ -67,6 +67,9 @@
     <string name="flash_sale_status_upcoming_format">Next flash sale starts at %1$s</string>
     <string name="flash_sale_status_ended">Flash sale ended. Check back for the next one.</string>
     <string name="hint_food_category">Market category (optional)</string>
+    <string name="food_category_unassigned">No category</string>
+    <string name="action_change_category">Change category</string>
+    <string name="admin_category_foods_title">Category: %s</string>
     <string name="order_status_pending">Pending payment</string>
     <string name="order_status_paid">Awaiting acceptance</string>
     <string name="order_status_packing">Packing</string>
