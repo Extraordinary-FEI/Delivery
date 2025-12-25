@@ -44,6 +44,8 @@
     <string name="title_market">市集</string>
     <string name="market_category_all">全部</string>
     <string name="market_category_default">其他</string>
+    <string name="market_action_search">搜索</string>
+    <string name="market_action_more">更多</string>
     <string name="dock_cart">购物车</string>
     <string name="dock_profile">我的</string>
     <string name="dock_quick">Dock</string>

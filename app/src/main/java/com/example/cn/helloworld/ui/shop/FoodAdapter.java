@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.data.cart.CartManager;
+import com.example.cn.helloworld.data.cart.FoodItem;
 import com.example.cn.helloworld.model.Food;
 
 import java.util.List;
@@ -20,18 +22,29 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         void onFoodLongClick(Food food);
     }
 
+    public interface OnQuantityChangeListener {
+        void onQuantityChange(int totalCount);
+    }
+
     private final List<Food> foods;
     private final OnFoodClickListener listener;
     private final OnFoodLongClickListener longClickListener;
+    private final OnQuantityChangeListener quantityChangeListener;
 
     public FoodAdapter(List<Food> foods, OnFoodClickListener listener) {
-        this(foods, listener, null);
+        this(foods, listener, null, null);
     }
 
     public FoodAdapter(List<Food> foods, OnFoodClickListener listener, OnFoodLongClickListener longClickListener) {
+        this(foods, listener, longClickListener, null);
+    }
+
+    public FoodAdapter(List<Food> foods, OnFoodClickListener listener, OnFoodLongClickListener longClickListener,
+                       OnQuantityChangeListener quantityChangeListener) {
         this.foods = foods;
         this.listener = listener;
         this.longClickListener = longClickListener;
+        this.quantityChangeListener = quantityChangeListener;
     }
 
     @Override
@@ -43,12 +56,16 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
     @Override
     public void onBindViewHolder(FoodViewHolder holder, int position) {
+        final FoodViewHolder viewHolder = holder;
         final Food food = foods.get(position);
-        holder.nameView.setText(food.getName());
-        holder.descView.setText(food.getDescription());
-        holder.priceView.setText(holder.itemView.getContext()
+        viewHolder.nameView.setText(food.getName());
+        viewHolder.descView.setText(food.getDescription());
+        viewHolder.priceView.setText(viewHolder.itemView.getContext()
                 .getString(R.string.food_price_format, food.getPrice()));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        final CartManager cartManager = CartManager.getInstance(viewHolder.itemView.getContext());
+        int quantity = cartManager.getItemQuantity(food.getName());
+        viewHolder.bindQuantity(quantity);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
@@ -56,7 +73,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 }
             }
         });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (longClickListener != null) {
@@ -64,6 +81,40 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                     return true;
                 }
                 return false;
+            }
+        });
+
+        viewHolder.addSingleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cartManager.addItem(new FoodItem(food.getName(), food.getPrice(), food.getDescription(), 0));
+                int newQuantity = cartManager.getItemQuantity(food.getName());
+                viewHolder.bindQuantity(newQuantity);
+                animateCartAction(v);
+                notifyQuantityChanged(cartManager);
+            }
+        });
+
+        viewHolder.increaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cartManager.addItem(new FoodItem(food.getName(), food.getPrice(), food.getDescription(), 0));
+                int newQuantity = cartManager.getItemQuantity(food.getName());
+                viewHolder.bindQuantity(newQuantity);
+                animateCartAction(v);
+                notifyQuantityChanged(cartManager);
+            }
+        });
+
+        viewHolder.decreaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int current = cartManager.getItemQuantity(food.getName());
+                cartManager.updateItemQuantity(food.getName(), current - 1);
+                int newQuantity = cartManager.getItemQuantity(food.getName());
+                viewHolder.bindQuantity(newQuantity);
+                animateCartAction(v);
+                notifyQuantityChanged(cartManager);
             }
         });
     }
@@ -77,12 +128,57 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         final TextView nameView;
         final TextView descView;
         final TextView priceView;
+        final TextView addSingleButton;
+        final View quantityControls;
+        final TextView decreaseButton;
+        final TextView increaseButton;
+        final TextView quantityText;
 
         FoodViewHolder(View itemView) {
             super(itemView);
             nameView = (TextView) itemView.findViewById(R.id.food_item_name);
             descView = (TextView) itemView.findViewById(R.id.food_item_desc);
             priceView = (TextView) itemView.findViewById(R.id.food_item_price);
+            addSingleButton = (TextView) itemView.findViewById(R.id.button_add_single);
+            quantityControls = itemView.findViewById(R.id.quantity_controls);
+            decreaseButton = (TextView) itemView.findViewById(R.id.button_decrease);
+            increaseButton = (TextView) itemView.findViewById(R.id.button_increase);
+            quantityText = (TextView) itemView.findViewById(R.id.text_quantity);
         }
+
+        void bindQuantity(int quantity) {
+            if (quantity <= 0) {
+                addSingleButton.setVisibility(View.VISIBLE);
+                quantityControls.setVisibility(View.GONE);
+            } else {
+                addSingleButton.setVisibility(View.GONE);
+                quantityControls.setVisibility(View.VISIBLE);
+                quantityText.setText(String.valueOf(quantity));
+            }
+        }
+    }
+
+    private void notifyQuantityChanged(CartManager cartManager) {
+        if (quantityChangeListener != null) {
+            quantityChangeListener.onQuantityChange(cartManager.getTotalCount());
+        }
+    }
+
+    private void animateCartAction(View view) {
+        view.animate()
+                .scaleX(1.12f)
+                .scaleY(1.12f)
+                .setDuration(120)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(120)
+                                .start();
+                    }
+                })
+                .start();
     }
 }

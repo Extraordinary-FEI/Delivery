@@ -75,6 +75,11 @@ public class CartManager {
         return total;
     }
 
+    public synchronized int getItemQuantity(String name) {
+        CartItem item = findItem(name);
+        return item == null ? 0 : item.getQuantity();
+    }
+
     public synchronized double getTotalPrice() {
         double total = 0.0;
         for (CartItem item : items) {

@@ -31,6 +31,8 @@
     <string name="cart_checkout">Proceed to checkout</string>
     <string name="cart_empty_message">Your cart is empty. Browse items to get started.</string>
     <string name="cart_remove">Remove</string>
+    <string name="market_action_search">Search</string>
+    <string name="market_action_more">More</string>
 
     <string name="title_admin_dashboard">Admin Dashboard</string>
     <string name="title_admin_manage_products">Manage Products</string>
