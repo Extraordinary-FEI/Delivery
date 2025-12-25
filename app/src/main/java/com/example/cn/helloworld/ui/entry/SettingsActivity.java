@@ -3,6 +3,7 @@ package com.example.cn.helloworld.ui.entry;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,20 +36,30 @@ public class SettingsActivity extends BaseActivity {
         userDao = new UserDao(this);
         userId = parseUserId(SessionManager.getUserId(this));
 
-        avatarView = findViewById(R.id.image_avatar);
-        usernameView = findViewById(R.id.text_username);
-        phoneSummaryView = findViewById(R.id.text_phone_summary);
-        nicknameInput = findViewById(R.id.input_nickname);
-        phoneInput = findViewById(R.id.input_phone);
-        avatarInput = findViewById(R.id.input_avatar_url);
+        avatarView = (ImageView) findViewById(R.id.image_avatar);
+        usernameView = (TextView) findViewById(R.id.text_username);
+        phoneSummaryView = (TextView) findViewById(R.id.text_phone_summary);
+        nicknameInput = (EditText) findViewById(R.id.input_nickname);
+        phoneInput = (EditText) findViewById(R.id.input_phone);
+        avatarInput = (EditText) findViewById(R.id.input_avatar_url);
 
-        Button saveButton = findViewById(R.id.button_save_profile);
-        Button logoutButton = findViewById(R.id.button_logout);
+        Button saveButton = (Button) findViewById(R.id.button_save_profile);
+        Button logoutButton = (Button) findViewById(R.id.button_logout);
 
         loadProfile();
 
-        saveButton.setOnClickListener(view -> saveProfile());
-        logoutButton.setOnClickListener(view -> logout());
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveProfile();
+            }
+        });
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
     }
 
     private void loadProfile() {

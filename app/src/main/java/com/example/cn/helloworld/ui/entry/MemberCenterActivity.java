@@ -2,6 +2,7 @@ package com.example.cn.helloworld.ui.entry;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,9 +19,12 @@ public class MemberCenterActivity extends BaseActivity {
         setContentView(R.layout.activity_member_center);
         setupBackButton();
 
-        findViewById(R.id.button_settings).setOnClickListener(view -> {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+        findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MemberCenterActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
         });
 
         bindProfile();
