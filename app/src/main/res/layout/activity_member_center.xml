@@ -2,19 +2,23 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ios_grouped_background">
+    android:background="@drawable/bg_profile_page">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/layout_profile_panel"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/bg_profile_header"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,7 +30,7 @@
                     android:id="@+id/button_back"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
-                    android:background="@drawable/bg_profile_icon_button"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
                     android:text="‹"
                     android:textColor="@color/ios_text_primary"
@@ -37,73 +41,39 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/button_settings"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/button_service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:background="@drawable/bg_profile_icon_button"
-                            android:gravity="center"
-                            android:text="🎧"
-                            android:textColor="@color/ios_text_primary"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/button_settings"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:background="@drawable/bg_profile_icon_button"
-                            android:gravity="center"
-                            android:text="⚙"
-                            android:textColor="@color/ios_text_primary"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:text="⚙"
+                    android:textColor="@color/profile_muted_text"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_profile_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:stateListAnimator="@animator/profile_press_scale">
 
                 <ImageView
                     android:id="@+id/image_avatar"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/bg_profile_avatar_frame"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:contentDescription="@string/member_profile_avatar"
-                    android:padding="4dp"
                     android:src="@drawable/ic_launcher" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="14dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="12dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/text_username"
@@ -111,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/member_profile_username"
                         android:textColor="@color/ios_text_primary"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -120,245 +90,153 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_phone_unbound"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="14sp" />
+                        android:textColor="@color/profile_muted_text"
+                        android:textSize="13sp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_profile_pill"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="4dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="4dp">
-
-                        <TextView
+                    <TextView
                         android:id="@+id/text_member_level_badge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@string/member_profile_member_level"
-                        android:textColor="@color/ios_text_primary"
+                        android:textColor="@color/profile_light_text"
                         android:textSize="12sp" />
-
-                        <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="★ ★ ★ ★"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
-            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_points_entry"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_profile_member"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:stateListAnimator="@animator/profile_press_scale">
+
+            <TextView
+                android:id="@+id/text_member_level_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/member_profile_member_level"
+                android:textColor="@color/ios_text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_member_growth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/member_profile_growth"
+                android:textColor="@color/profile_muted_text"
+                android:textSize="12sp" />
+
+            <ProgressBar
+                android:id="@+id/progress_member_growth"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="12dp"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/bg_profile_progress" />
 
             <LinearLayout
-                android:id="@+id/layout_points_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_profile_member"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="44dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:stateListAnimator="@animator/profile_press_scale">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/text_member_level_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/member_profile_member_level"
-                            android:textColor="@color/ios_text_primary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/text_member_growth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/member_profile_growth"
-                            android:textColor="@color/ios_text_secondary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                        android:text="@string/member_profile_benefit_choice"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="14sp" />
 
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/member_profile_member_center"
-                                android:textColor="@color/ios_text_primary"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:text="@string/member_cell_chevron"
-                                android:textColor="@color/ios_text_secondary"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="@string/member_profile_member_privilege"
-                            android:textColor="@color/ios_text_secondary"
-                            android:textSize="11sp" />
-                    </LinearLayout>
+                        android:text="@string/member_cell_chevron"
+                        android:textColor="@color/profile_muted_text"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/progress_member_growth"
-                    style="?android:attr/progressBarStyleHorizontal"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="6dp"
-                    android:layout_marginTop="10dp"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:progress="0"
-                    android:progressDrawable="@drawable/bg_profile_progress" />
+                    android:layout_height="44dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:stateListAnimator="@animator/profile_press_scale">
 
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:overScrollMode="never"
-                    android:scrollbars="none">
-
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="@string/member_profile_benefit_flash"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="14sp" />
 
-                        <LinearLayout
-                            android:layout_width="140dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="12dp"
-                            android:background="@drawable/bg_profile_benefit_card"
-                            android:orientation="vertical"
-                            android:padding="12dp">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="🍵"
-                                android:textSize="20sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/member_cell_chevron"
+                        android:textColor="@color/profile_muted_text"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="@string/member_profile_benefit_choice"
-                                android:textColor="@color/ios_text_primary"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:stateListAnimator="@animator/profile_press_scale">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="@string/member_profile_benefit_choice_desc"
-                                android:textColor="@color/ios_text_secondary"
-                                android:textSize="11sp" />
-                        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/member_profile_benefit_late"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="14sp" />
 
-                        <LinearLayout
-                            android:layout_width="140dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="12dp"
-                            android:background="@drawable/bg_profile_benefit_card"
-                            android:orientation="vertical"
-                            android:padding="12dp">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="🍧"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="@string/member_profile_benefit_flash"
-                                android:textColor="@color/ios_text_primary"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="@string/member_profile_benefit_flash_desc"
-                                android:textColor="@color/ios_text_secondary"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="140dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_profile_benefit_card"
-                            android:orientation="vertical"
-                            android:padding="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="🧾"
-                                android:textSize="20sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="@string/member_profile_benefit_late"
-                                android:textColor="@color/ios_text_primary"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="@string/member_profile_benefit_late_desc"
-                                android:textColor="@color/ios_text_secondary"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </HorizontalScrollView>
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/member_cell_chevron"
+                        android:textColor="@color/profile_muted_text"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_assets_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -366,146 +244,34 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="18dp"
+            android:stateListAnimator="@animator/profile_press_scale">
+
+            <TextView
+                android:id="@+id/text_balance_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/member_balance_value"
+                android:textColor="@color/ios_text_primary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/member_assets_title"
-                android:textColor="@color/ios_text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="6dp"
+                android:text="@string/member_profile_assets_balance_label"
+                android:textColor="@color/profile_muted_text"
+                android:textSize="13sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_assets_summary"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/entry_points_center"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_points_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/member_points_value"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/member_profile_assets_points"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@color/ios_divider" />
-
-                <LinearLayout
-                    android:id="@+id/entry_balance"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_balance_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/member_balance_value"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/member_profile_assets_balance"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@color/ios_divider" />
-
-                <LinearLayout
-                    android:id="@+id/entry_coupon_center"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_coupon_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/member_coupon_value"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/member_profile_assets_coupon"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@color/ios_divider" />
-
-                <LinearLayout
-                    android:id="@+id/entry_member_center"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/member_profile_member_level"
-                        android:textColor="@color/ios_text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/member_profile_assets_level"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
+                android:text="@string/member_profile_assets_summary"
+                android:textColor="@color/profile_light_text"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -523,117 +289,152 @@
                 android:layout_height="wrap_content"
                 android:text="@string/member_profile_quick_title"
                 android:textColor="@color/ios_text_primary"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/entry_favorites"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginTop="12dp"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:stateListAnimator="@animator/profile_press_scale">
 
-                <LinearLayout
-                    android:id="@+id/entry_favorites"
-                    android:layout_width="0dp"
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/member_profile_collect"
+                    android:src="@android:drawable/btn_star_big_on"
+                    android:tint="@color/ios_text_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_marginStart="12dp"
+                    android:text="@string/member_profile_collect"
+                    android:textColor="@color/ios_text_primary"
+                    android:textSize="14sp" />
 
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_chip"
-                        android:contentDescription="@string/member_profile_collect"
-                        android:padding="8dp"
-                        android:src="@android:drawable/btn_star_big_on"
-                        android:tint="@color/ios_text_primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/member_profile_collect"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/entry_history"
+                <View
                     android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:text="@string/member_cell_chevron"
+                    android:textColor="@color/profile_muted_text"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_chip"
-                        android:contentDescription="@string/member_profile_history"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_menu_recent_history"
-                        android:tint="@color/ios_text_primary" />
+            <LinearLayout
+                android:id="@+id/entry_history"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:stateListAnimator="@animator/profile_press_scale">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/member_profile_history"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/member_profile_history"
+                    android:src="@android:drawable/ic_menu_recent_history"
+                    android:tint="@color/ios_text_primary" />
 
-                <LinearLayout
-                    android:id="@+id/entry_points_quick"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/member_profile_history"
+                    android:textColor="@color/ios_text_primary"
+                    android:textSize="14sp" />
+
+                <View
                     android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:text="@string/member_cell_chevron"
+                    android:textColor="@color/profile_muted_text"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_chip"
-                        android:contentDescription="@string/member_profile_coupon_card"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_menu_share"
-                        android:tint="@color/ios_text_primary" />
+            <LinearLayout
+                android:id="@+id/entry_coupon_center"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:stateListAnimator="@animator/profile_press_scale">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/member_profile_coupon_card"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/member_profile_coupon_card"
+                    android:src="@android:drawable/ic_menu_share"
+                    android:tint="@color/ios_text_primary" />
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/member_profile_coupon_card"
+                    android:textColor="@color/ios_text_primary"
+                    android:textSize="14sp" />
+
+                <View
                     android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:text="@string/member_cell_chevron"
+                    android:textColor="@color/profile_muted_text"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_chip"
-                        android:contentDescription="@string/member_profile_points_coin"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_menu_sort_by_size"
-                        android:tint="@color/ios_text_primary" />
+            <LinearLayout
+                android:id="@+id/entry_points_center"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:stateListAnimator="@animator/profile_press_scale">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/member_profile_points_coin"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/member_profile_points_coin"
+                    android:src="@android:drawable/ic_menu_sort_by_size"
+                    android:tint="@color/ios_text_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/member_profile_points_coin"
+                    android:textColor="@color/ios_text_primary"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/member_cell_chevron"
+                    android:textColor="@color/profile_muted_text"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -643,165 +444,77 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
             android:padding="16dp">
 
             <LinearLayout
+                android:id="@+id/entry_order_summary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:stateListAnimator="@animator/profile_press_scale">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/member_profile_orders_title"
+                    android:text="@string/member_profile_orders_summary"
                     android:textColor="@color/ios_text_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="14sp" />
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <LinearLayout
-                    android:id="@+id/text_all_orders"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/member_profile_all_orders"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="@string/member_cell_chevron"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/entry_order_all"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_chip"
-                        android:contentDescription="@string/member_profile_order_all"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_menu_agenda"
-                        android:tint="@color/ios_text_primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/member_profile_order_all"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/entry_order_pending"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_chip"
-                        android:contentDescription="@string/member_profile_order_pending_title"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_menu_recent_history"
-                        android:tint="@color/ios_text_primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/member_profile_order_pending_title"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/entry_order_review"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_chip"
-                        android:contentDescription="@string/member_profile_order_review"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_menu_edit"
-                        android:tint="@color/ios_text_primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/member_profile_order_review"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/entry_order_refund"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_profile_icon_chip"
-                        android:contentDescription="@string/member_profile_order_refund"
-                        android:padding="8dp"
-                        android:src="@android:drawable/ic_menu_revert"
-                        android:tint="@color/ios_text_primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/member_profile_order_refund"
-                        android:textColor="@color/ios_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                    android:text="@string/member_cell_chevron"
+                    android:textColor="@color/profile_muted_text"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_profile_group_card"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:id="@+id/entry_service"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:stateListAnimator="@animator/profile_press_scale">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/member_profile_service"
+                    android:textColor="@color/ios_text_primary"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/member_cell_chevron"
+                    android:textColor="@color/profile_muted_text"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

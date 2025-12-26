@@ -10,83 +10,40 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:fillViewport="true"
-        android:paddingBottom="140dp">
+        android:paddingBottom="140dp"
+        android:paddingTop="140dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_main_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_main"
-                        android:textColor="@color/primary_text"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/text_main_greeting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/home_greeting"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/button_open_cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_primary_button"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:text="@string/home_cart_action"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/text_main_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_search"
-                android:drawablePadding="8dp"
-                android:imeOptions="actionSearch"
-                android:hint="@string/home_search_hint"
-                android:padding="14dp"
-                android:textColor="@color/primary_text"
-                android:textColorHint="@color/secondary_text" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:background="@drawable/bg_banner"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_today_hero"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="18dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/home_today_label"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="@string/home_banner_title"
                     android:textColor="@android:color/white"
-                    android:textSize="19sp"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -101,166 +58,339 @@
                     android:id="@+id/button_browse_shops"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_chip"
-                    android:text="@string/home_empty_action"
-                    android:textColor="@color/primary_color" />
+                    android:layout_marginTop="14dp"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:text="@string/home_today_action"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:text="@string/home_quick_entry"
+                android:text="@string/home_editor_pick"
                 android:textColor="@color/primary_text"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/button_admin_dashboard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_chip"
-                android:text="@string/home_admin_dashboard"
-                android:textColor="@color/primary_color"
-                android:visibility="gone" />
-
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:orientation="horizontal">
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
                 <LinearLayout
-                    android:id="@+id/entry_flash_sale"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_card"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/entry_flash_sale"
+                        android:layout_width="280dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/home_action_flash_sale"
-                        android:textColor="@color/primary_text"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/bg_story_card"
+                        android:clickable="true"
+                        android:elevation="2dp"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_story_title_one"
+                            android:textColor="@color/primary_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/home_story_subtitle_one"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/home_story_shop_one"
+                            android:textColor="@color/primary_text"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/home_story_meta_one"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/entry_member_center"
+                        android:layout_width="280dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/home_action_flash_sale_desc"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp" />
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/bg_story_card"
+                        android:clickable="true"
+                        android:elevation="2dp"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_story_title_two"
+                            android:textColor="@color/primary_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/home_story_subtitle_two"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/home_story_shop_two"
+                            android:textColor="@color/primary_text"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/home_story_meta_two"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/entry_coupon_center"
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/bg_story_card"
+                        android:clickable="true"
+                        android:elevation="2dp"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_story_title_three"
+                            android:textColor="@color/primary_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/home_story_subtitle_three"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/home_story_shop_three"
+                            android:textColor="@color/primary_text"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/home_story_meta_three"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/entry_service_help"
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_story_card"
+                        android:clickable="true"
+                        android:elevation="2dp"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_story_title_four"
+                            android:textColor="@color/primary_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/home_story_subtitle_four"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/home_story_shop_four"
+                            android:textColor="@color/primary_text"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/home_story_meta_four"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
+            </HorizontalScrollView>
 
-                <LinearLayout
-                    android:id="@+id/entry_member_center"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_card"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_action_member"
-                        android:textColor="@color/primary_text"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/home_action_member_desc"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="20dp"
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
                 <LinearLayout
-                    android:id="@+id/entry_coupon_center"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_card"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/home_action_coupon"
-                        android:textColor="@color/primary_text"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:layout_marginRight="14dp"
+                        android:orientation="vertical">
 
-                    <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_filter_breakfast"
+                            android:textColor="@color/primary_color"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="22dp"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@color/primary_color" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/home_action_coupon_desc"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp" />
+                        android:layout_marginRight="14dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_filter_afternoon"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="22dp"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@android:color/transparent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="14dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_filter_night"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="22dp"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@android:color/transparent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="14dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_filter_light"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="22dp"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@android:color/transparent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_filter_hot"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="22dp"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@android:color/transparent" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/entry_service_help"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_card"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_action_service"
-                        android:textColor="@color/primary_text"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/home_action_service_desc"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
+            </HorizontalScrollView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:text="@string/home_recommend_shops"
+                android:text="@string/home_feed_title"
                 android:textColor="@color/primary_text"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -273,57 +403,94 @@
                 android:orientation="vertical"
                 android:padding="14dp">
 
-                <LinearLayout
-                    android:id="@+id/entry_flash_sale"
-                    android:layout_width="0dp"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:background="@drawable/bg_feed_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_shop_title"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/home_feed_shop_one"
                     android:textColor="@color/primary_text"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:id="@+id/entry_coupon_center"
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="@string/home_shop_desc"
+                    android:text="@string/home_feed_shop_one_meta"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/home_feed_shop_one_desc"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_feed_product_tag"
                     android:textColor="@color/secondary_text"
                     android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_chip"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="@string/home_shop_tag"
-                        android:textColor="@color/primary_color"
-                        android:textSize="12sp" />
+                    <View
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/bg_feed_image" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/home_shop_eta"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp" />
+                        android:layout_marginLeft="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_feed_product_name"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/home_feed_product_price"
+                            android:textColor="@color/primary_color"
+                            android:textSize="13sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="14dp"
                 android:background="@drawable/bg_card"
                 android:orientation="vertical"
                 android:padding="14dp">
@@ -331,7 +498,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_cart_title"
+                    android:text="@string/home_feed_topic_title"
                     android:textColor="@color/primary_text"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -340,89 +507,77 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="@string/home_cart_description"
+                    android:text="@string/home_feed_topic_desc"
                     android:textColor="@color/secondary_text"
                     android:textSize="12sp" />
 
-                <Button
-                    android:id="@+id/button_cart_summary"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_primary_button"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:text="@string/home_cart_action"
-                    android:textColor="@android:color/white" />
+                    android:layout_marginTop="10dp"
+                    android:text="@string/home_feed_topic_action"
+                    android:textColor="@color/primary_color"
+                    android:textSize="13sp" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:text="@string/home_life_services"
-                android:textColor="@color/primary_text"
-                android:textSize="17sp"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:background="@drawable/bg_feed_image" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/bg_chip"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="@string/home_service_grocery"
-                    android:textColor="@color/primary_color"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/home_feed_shop_two"
+                    android:textColor="@color/primary_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/home_feed_shop_two_meta"
+                    android:textColor="@color/secondary_text"
                     android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/bg_chip"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="@string/home_service_errand"
-                    android:textColor="@color/primary_color"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/bg_chip"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="@string/home_service_movie"
-                    android:textColor="@color/primary_color"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_chip"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="@string/home_service_hotel"
-                    android:textColor="@color/primary_color"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/home_feed_shop_two_desc"
+                    android:textColor="@color/secondary_text"
                     android:textSize="12sp" />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/button_admin_dashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_chip"
+                android:text="@string/home_admin_dashboard"
+                android:textColor="@color/primary_color"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/button_cart_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:text="@string/home_cart_action"
+                android:textColor="@color/primary_color"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -435,6 +590,71 @@
                 android:textSize="12sp" />
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/floating_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@android:color/transparent"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="14dp">
+
+        <TextView
+            android:id="@+id/text_main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_header_title"
+            android:textColor="@color/primary_text"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_main_greeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/home_greeting"
+            android:textColor="@color/secondary_text"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/text_main_search"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_search"
+                android:drawablePadding="8dp"
+                android:imeOptions="actionSearch"
+                android:hint="@string/home_search_hint"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:textColor="@color/primary_text"
+                android:textColorHint="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/button_open_cart"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/bg_profile_icon_button"
+                android:gravity="center"
+                android:text="@string/home_cart_icon"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/smart_dock"

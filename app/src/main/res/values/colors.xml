@@ -28,6 +28,9 @@
     <color name="profile_member_end">#DCE9FF</color>
     <color name="profile_pill_background">#EEF1FF</color>
     <color name="profile_muted_text">#8E8E93</color>
+    <color name="profile_light_text">#C7C7CC</color>
+    <color name="profile_page_top">#F7F8FA</color>
+    <color name="profile_page_bottom">#F2F3F7</color>
     <color name="profile_icon_background">#FFFFFF</color>
     <color name="chip_background">#E8F0FF</color>
     <color name="banner_start">#007AFF</color>

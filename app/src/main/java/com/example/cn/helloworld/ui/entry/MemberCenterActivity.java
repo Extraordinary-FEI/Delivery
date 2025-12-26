@@ -30,13 +30,6 @@ public class MemberCenterActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        findViewById(R.id.button_service).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MemberCenterActivity.this, ServiceHelpActivity.class);
-                startActivity(intent);
-            }
-        });
         findViewById(R.id.entry_favorites).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,12 +54,6 @@ public class MemberCenterActivity extends BaseActivity {
                 startActivity(new Intent(MemberCenterActivity.this, PointsCenterActivity.class));
             }
         });
-        findViewById(R.id.entry_points_quick).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MemberCenterActivity.this, PointsCenterActivity.class));
-            }
-        });
         findViewById(R.id.layout_points_entry).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,34 +72,17 @@ public class MemberCenterActivity extends BaseActivity {
                 startActivity(new Intent(MemberCenterActivity.this, SettingsActivity.class));
             }
         });
-        findViewById(R.id.text_all_orders).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.entry_order_summary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openOrderList(OrderListActivity.FILTER_ALL);
             }
         });
-        findViewById(R.id.entry_order_all).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.entry_service).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openOrderList(OrderListActivity.FILTER_ALL);
-            }
-        });
-        findViewById(R.id.entry_order_pending).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openOrderList(OrderListActivity.FILTER_PENDING);
-            }
-        });
-        findViewById(R.id.entry_order_review).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openOrderList(OrderListActivity.FILTER_COMPLETED);
-            }
-        });
-        findViewById(R.id.entry_order_refund).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MemberCenterActivity.this, AfterSaleActivity.class));
+                Intent intent = new Intent(MemberCenterActivity.this, ServiceHelpActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -156,7 +126,7 @@ public class MemberCenterActivity extends BaseActivity {
         int points = profile.points;
         MemberLevel level = MemberLevel.resolve(points);
 
-        levelBadge.setText(level.title);
+        levelBadge.setText(level.displayTitle);
         levelTitle.setText(level.title);
         growthView.setText(getString(R.string.member_profile_growth_format, points, level.nextTarget));
         if (growthProgress != null) {
@@ -165,11 +135,7 @@ public class MemberCenterActivity extends BaseActivity {
             growthProgress.setProgress(progress);
         }
 
-        TextView pointsView = (TextView) findViewById(R.id.text_points_value);
-        TextView couponView = (TextView) findViewById(R.id.text_coupon_value);
         TextView balanceView = (TextView) findViewById(R.id.text_balance_value);
-        pointsView.setText(String.valueOf(points));
-        couponView.setText(getString(R.string.member_coupon_value));
         balanceView.setText(getString(R.string.member_balance_value));
     }
 
