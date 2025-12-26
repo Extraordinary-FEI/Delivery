@@ -35,11 +35,11 @@
     <string name="home_story_subtitle_four">Popular midnight favorites</string>
     <string name="home_story_shop_four">Night Sail Noodles</string>
     <string name="home_story_meta_four">From ¥24 · 20 mins</string>
-    <string name="home_filter_breakfast">☀️ Breakfast</string>
-    <string name="home_filter_afternoon">☕ Afternoon tea</string>
-    <string name="home_filter_night">🌙 Late night</string>
-    <string name="home_filter_light">🥗 Light</string>
-    <string name="home_filter_hot">🔥 Trending</string>
+    <string name="home_filter_breakfast">Breakfast</string>
+    <string name="home_filter_afternoon">Afternoon tea</string>
+    <string name="home_filter_night">Late night</string>
+    <string name="home_filter_light">Light</string>
+    <string name="home_filter_hot">Trending</string>
     <string name="home_feed_title">Feed</string>
     <string name="home_feed_shop_one">Starwish Coffee</string>
     <string name="home_feed_shop_one_meta">★ 4.8 · 500 m · 30 mins</string>
@@ -53,7 +53,7 @@
     <string name="home_feed_shop_two">Muchun Home-style</string>
     <string name="home_feed_shop_two_meta">★ 4.9 · 800 m · 35 mins</string>
     <string name="home_feed_shop_two_desc">Home-style stir fry · Lunch &amp; dinner</string>
-    <string name="home_cart_icon">🛒</string>
+    <string name="home_cart_icon">Cart</string>
     <string name="home_quick_entry">Quick access</string>
     <string name="home_action_flash_sale">Flash sale</string>
     <string name="home_action_flash_sale_desc">Selected hits up to 50% off</string>

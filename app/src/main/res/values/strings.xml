@@ -36,11 +36,11 @@
     <string name="home_story_subtitle_four">人气必点的宵夜口碑</string>
     <string name="home_story_shop_four">夜航面馆</string>
     <string name="home_story_meta_four">¥24 起 · 20 分钟</string>
-    <string name="home_filter_breakfast">☀️ 早餐</string>
-    <string name="home_filter_afternoon">☕ 下午茶</string>
-    <string name="home_filter_night">🌙 夜宵</string>
-    <string name="home_filter_light">🥗 轻食</string>
-    <string name="home_filter_hot">🔥 热销</string>
+    <string name="home_filter_breakfast">早餐</string>
+    <string name="home_filter_afternoon">下午茶</string>
+    <string name="home_filter_night">夜宵</string>
+    <string name="home_filter_light">轻食</string>
+    <string name="home_filter_hot">热销</string>
     <string name="home_feed_title">内容 Feed</string>
     <string name="home_feed_shop_one">星愿咖啡</string>
     <string name="home_feed_shop_one_meta">★ 4.8 · 500m · 30 分钟</string>
@@ -54,7 +54,7 @@
     <string name="home_feed_shop_two">沐春家常菜</string>
     <string name="home_feed_shop_two_meta">★ 4.9 · 800m · 35 分钟</string>
     <string name="home_feed_shop_two_desc">家常热炒 · 午晚餐</string>
-    <string name="home_cart_icon">🛒</string>
+    <string name="home_cart_icon">车</string>
     <string name="home_quick_entry">快捷入口</string>
     <string name="home_action_flash_sale">限时秒杀</string>
     <string name="home_action_flash_sale_desc">精选爆款低至 5 折</string>
