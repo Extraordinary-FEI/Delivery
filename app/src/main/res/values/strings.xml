@@ -14,11 +14,11 @@
     <string name="home_empty_action">浏览店铺</string>
     <string name="home_header_title">你好</string>
     <string name="home_greeting">今天想吃点什么？</string>
-    <string name="home_greeting_morning_title">早上好 ☀️</string>
+    <string name="home_greeting_morning_title">早上好</string>
     <string name="home_greeting_morning_subtitle">今天来点热乎的？</string>
-    <string name="home_greeting_noon_title">中午好 🍱</string>
+    <string name="home_greeting_noon_title">中午好</string>
     <string name="home_greeting_noon_subtitle">附近热卖 30 分钟送达</string>
-    <string name="home_greeting_evening_title">晚上好 🌙</string>
+    <string name="home_greeting_evening_title">晚上好</string>
     <string name="home_greeting_evening_subtitle">夜宵 / 减脂 / 快手推荐</string>
     <string name="home_search_hint">输入菜名 / 商家名</string>
     <string name="home_search_hint_compact">🔍 搜索 想吃什么</string>
@@ -69,7 +69,7 @@
     <string name="home_feed_shop_two">沐春家常菜</string>
     <string name="home_feed_shop_two_meta">★ 4.9 · 800m · 35 分钟</string>
     <string name="home_feed_shop_two_desc">家常热炒 · 午晚餐</string>
-    <string name="home_cart_icon">🚴 外卖</string>
+    <string name="home_cart_icon">外卖</string>
     <string name="home_quick_entry">快捷入口</string>
     <string name="home_action_flash_sale">限时秒杀</string>
     <string name="home_action_flash_sale_desc">精选爆款低至 5 折</string>
@@ -79,7 +79,8 @@
     <string name="home_action_coupon_desc">新人立减 + 夜宵补贴</string>
     <string name="home_action_service">精选服务</string>
     <string name="home_action_service_desc">跑腿、鲜花、药品极速达</string>
-    <string name="home_flash_sale_icon">⚡</string>
+    <string name="home_flash_sale_icon">秒杀</string>
+    <string name="home_flash_sale_icon_desc">秒杀标识</string>
     <string name="home_flash_sale_title">限时秒杀</string>
     <string name="home_flash_sale_subtitle">每日 10 点开抢</string>
     <string name="home_flash_sale_timer">02:35:42</string>
@@ -351,6 +352,7 @@
     <string name="flash_sale_admin_hint">管理员可在后台更新秒杀商品与库存。</string>
     <string name="flash_sale_stock_empty">库存不足</string>
     <string name="flash_sale_added_cart">已加入购物车</string>
+    <string name="flash_sale_limit_reached">每人限购 2 份</string>
     <string name="flash_sale_not_active">秒杀未开始或已结束</string>
     <string name="flash_sale_status_empty">暂无秒杀，敬请期待。</string>
     <string name="flash_sale_status_upcoming_format">下一场秒杀 %1$s 开始</string>

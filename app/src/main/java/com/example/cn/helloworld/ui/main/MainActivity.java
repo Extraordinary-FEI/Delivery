@@ -1,8 +1,11 @@
 package com.example.cn.helloworld.ui.main;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,6 +89,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        setupCartButtonIcon();
 
         View cartSummaryButton = findViewById(R.id.button_cart_summary);
         cartSummaryButton.setOnClickListener(new View.OnClickListener() {
@@ -330,15 +334,40 @@ public class MainActivity extends BaseActivity {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour >= 5 && hour < 11) {
-            headerTitle.setText(R.string.home_greeting_morning_title);
+            applyGreetingTitle(headerTitle, R.string.home_greeting_morning_title,
+                    R.drawable.ic_greeting_morning);
             headerGreeting.setText(R.string.home_greeting_morning_subtitle);
         } else if (hour >= 11 && hour < 17) {
-            headerTitle.setText(R.string.home_greeting_noon_title);
+            applyGreetingTitle(headerTitle, R.string.home_greeting_noon_title,
+                    R.drawable.ic_greeting_noon);
             headerGreeting.setText(R.string.home_greeting_noon_subtitle);
         } else {
-            headerTitle.setText(R.string.home_greeting_evening_title);
+            applyGreetingTitle(headerTitle, R.string.home_greeting_evening_title,
+                    R.drawable.ic_greeting_evening);
             headerGreeting.setText(R.string.home_greeting_evening_subtitle);
         }
+    }
+
+    private void applyGreetingTitle(TextView headerTitle, int titleResId, int iconResId) {
+        headerTitle.setText(titleResId);
+        applyCompoundIcon(headerTitle, iconResId);
+    }
+
+    private void setupCartButtonIcon() {
+        TextView cartButton = (TextView) findViewById(R.id.button_open_cart);
+        if (cartButton == null) {
+            return;
+        }
+        applyCompoundIcon(cartButton, R.drawable.ic_delivery);
+    }
+
+    private void applyCompoundIcon(TextView target, int iconResId) {
+        if (target == null) {
+            return;
+        }
+        target.setCompoundDrawablesWithIntrinsicBounds(iconResId, 0, 0, 0);
+        int tintColor = ContextCompat.getColor(this, R.color.primary_text);
+        TextViewCompat.setCompoundDrawableTintList(target, ColorStateList.valueOf(tintColor));
     }
 
     private String pickSearchHint() {

@@ -13,11 +13,11 @@
     <string name="home_empty_action">Browse shops</string>
     <string name="home_header_title">Hello</string>
     <string name="home_greeting">What would you like to eat today?</string>
-    <string name="home_greeting_morning_title">Good morning ☀️</string>
+    <string name="home_greeting_morning_title">Good morning</string>
     <string name="home_greeting_morning_subtitle">Something warm to start?</string>
-    <string name="home_greeting_noon_title">Good afternoon 🍱</string>
+    <string name="home_greeting_noon_title">Good afternoon</string>
     <string name="home_greeting_noon_subtitle">Top picks nearby, 30-min delivery</string>
-    <string name="home_greeting_evening_title">Good evening 🌙</string>
+    <string name="home_greeting_evening_title">Good evening</string>
     <string name="home_greeting_evening_subtitle">Late night / light / quick picks</string>
     <string name="home_search_hint">Search by dish or store name</string>
     <string name="home_search_hint_compact">🔍 Search cravings</string>
@@ -68,7 +68,7 @@
     <string name="home_feed_shop_two">Muchun Home-style</string>
     <string name="home_feed_shop_two_meta">★ 4.9 · 800 m · 35 mins</string>
     <string name="home_feed_shop_two_desc">Home-style stir fry · Lunch &amp; dinner</string>
-    <string name="home_cart_icon">🚴 Delivery</string>
+    <string name="home_cart_icon">Delivery</string>
     <string-array name="home_search_hints">
         <item>Search “beef noodle soup” for 5 off</item>
         <item>Try “nearby bestsellers”</item>
@@ -83,6 +83,7 @@
     <string name="home_action_coupon_desc">New user discount + late-night subsidy</string>
     <string name="home_action_service">Featured services</string>
     <string name="home_action_service_desc">Errands, flowers, pharmacy delivery</string>
+    <string name="home_flash_sale_icon_desc">Flash sale indicator</string>
     <string name="home_recommend_shops">Recommended shops</string>
     <string name="home_shop_title">Star Select Light Meals</string>
     <string name="home_shop_desc">Low-cal sets · ~30 mins · 4.9 rating</string>
@@ -169,6 +170,7 @@
     <string name="flash_sale_status_empty">No flash sales yet. Stay tuned.</string>
     <string name="flash_sale_status_upcoming_format">Next flash sale starts at %1$s</string>
     <string name="flash_sale_status_ended">Flash sale ended. Check back for the next one.</string>
+    <string name="flash_sale_limit_reached">Limit 2 per person.</string>
     <string name="hint_food_category">Market category (optional)</string>
     <string name="food_category_unassigned">No category</string>
     <string name="action_change_category">Change category</string>

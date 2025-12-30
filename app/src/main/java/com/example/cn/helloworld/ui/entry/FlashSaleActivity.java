@@ -135,6 +135,15 @@ public class FlashSaleActivity extends BaseActivity {
         if (item == null) {
             return;
         }
+        Food food = item.food;
+        String name = food == null ? item.productId : food.getName();
+        String desc = food == null ? "" : food.getDescription();
+        String imageUrl = food == null ? null : food.getImageUrl();
+        CartManager cartManager = CartManager.getInstance(this);
+        if (cartManager.getItemQuantity(name) >= 2) {
+            Toast.makeText(this, R.string.flash_sale_limit_reached, Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (item.stock <= 0) {
             Toast.makeText(this, R.string.flash_sale_stock_empty, Toast.LENGTH_SHORT).show();
             return;
@@ -146,12 +155,8 @@ public class FlashSaleActivity extends BaseActivity {
             return;
         }
 
-        Food food = item.food;
-        String name = food == null ? item.productId : food.getName();
-        String desc = food == null ? "" : food.getDescription();
-        String imageUrl = food == null ? null : food.getImageUrl();
         FoodItem foodItem = new FoodItem(name, item.seckillPrice, desc, 0, imageUrl);
-        CartManager.getInstance(this).addItem(foodItem);
+        cartManager.addItem(foodItem);
         Toast.makeText(this, R.string.flash_sale_added_cart, Toast.LENGTH_SHORT).show();
         loadSeckillList();
     }
