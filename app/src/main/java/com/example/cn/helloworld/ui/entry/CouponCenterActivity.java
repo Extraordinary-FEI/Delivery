@@ -1,8 +1,10 @@
 package com.example.cn.helloworld.ui.entry;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.CouponDao;
 import com.example.cn.helloworld.db.UserDao;
+import com.example.cn.helloworld.ui.cart.CartActivity;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.utils.SessionManager;
 
@@ -99,17 +102,47 @@ public class CouponCenterActivity extends BaseActivity {
         int margin = dpToPx(8);
         int padding = dpToPx(14);
         for (CouponDao.Coupon coupon : coupons) {
+            LinearLayout itemLayout = new LinearLayout(this);
+            itemLayout.setOrientation(LinearLayout.HORIZONTAL);
+            itemLayout.setBackgroundResource(R.drawable.bg_card);
+            itemLayout.setGravity(Gravity.CENTER_VERTICAL);
+            itemLayout.setPadding(padding, padding, padding, padding);
+
             TextView itemView = new TextView(this);
-            itemView.setBackgroundResource(R.drawable.bg_card);
             itemView.setTextColor(getResources().getColor(R.color.primary_text));
             itemView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            itemView.setPadding(padding, padding, padding, padding);
             itemView.setText(coupon.name);
+            LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    1f);
+            itemLayout.addView(itemView, nameParams);
+
+            TextView actionView = new TextView(this);
+            actionView.setText(R.string.cart_coupon_action);
+            actionView.setTextColor(getResources().getColor(R.color.card_background));
+            actionView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            actionView.setBackgroundResource(R.drawable.bg_primary_button);
+            int actionPaddingHorizontal = dpToPx(12);
+            int actionPaddingVertical = dpToPx(6);
+            actionView.setPadding(actionPaddingHorizontal, actionPaddingVertical,
+                    actionPaddingHorizontal, actionPaddingVertical);
+            actionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(CouponCenterActivity.this, CartActivity.class));
+                }
+            });
+            LinearLayout.LayoutParams actionParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            actionParams.leftMargin = dpToPx(8);
+            itemLayout.addView(actionView, actionParams);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             params.topMargin = margin;
-            couponListLayout.addView(itemView, params);
+            couponListLayout.addView(itemLayout, params);
         }
     }
 

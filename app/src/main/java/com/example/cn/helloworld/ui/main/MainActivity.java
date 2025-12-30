@@ -5,7 +5,8 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.TextViewCompat;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -367,7 +368,11 @@ public class MainActivity extends BaseActivity {
         }
         target.setCompoundDrawablesWithIntrinsicBounds(iconResId, 0, 0, 0);
         int tintColor = ContextCompat.getColor(this, R.color.primary_text);
-        TextViewCompat.setCompoundDrawableTintList(target, ColorStateList.valueOf(tintColor));
+        Drawable[] drawables = target.getCompoundDrawables();
+        if (drawables.length > 0 && drawables[0] != null) {
+            Drawable drawable = drawables[0].mutate();
+            DrawableCompat.setTintList(drawable, ColorStateList.valueOf(tintColor));
+        }
     }
 
     private String pickSearchHint() {
