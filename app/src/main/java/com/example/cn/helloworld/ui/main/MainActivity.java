@@ -32,6 +32,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TextView todayLabel = (TextView) findViewById(R.id.text_today_label);
+        todayLabel.setText(R.string.home_today_label);
+
         Button browseButton = (Button) findViewById(R.id.button_browse_shops);
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override
