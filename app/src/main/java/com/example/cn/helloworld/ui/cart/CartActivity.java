@@ -21,6 +21,11 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
 
     private RecyclerView cartRecyclerView;
     private TextView totalAmountView;
+    private TextView goodsTotalView;
+    private TextView payableView;
+    private TextView emptyView;
+    private View contentContainer;
+    private TextView clearButton;
     private Button checkoutButton;
     private CartAdapter cartAdapter;
     private final List<CartItem> cartItems = new ArrayList<CartItem>();
@@ -34,6 +39,11 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
 
         cartRecyclerView = (RecyclerView) findViewById(R.id.recycler_cart);
         totalAmountView = (TextView) findViewById(R.id.text_total_amount);
+        goodsTotalView = (TextView) findViewById(R.id.text_fee_goods_total);
+        payableView = (TextView) findViewById(R.id.text_fee_payable);
+        emptyView = (TextView) findViewById(R.id.text_empty_cart);
+        contentContainer = findViewById(R.id.cart_content_container);
+        clearButton = (TextView) findViewById(R.id.button_clear_cart);
         checkoutButton = (Button) findViewById(R.id.button_checkout);
 
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -42,6 +52,16 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
         cartRecyclerView.setAdapter(cartAdapter);
 
         refreshCartItems();
+
+        if (clearButton != null) {
+            clearButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cartManager.clear();
+                    refreshCartItems();
+                }
+            });
+        }
 
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,8 +101,25 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
             BigDecimal lineTotal = item.getUnitPrice().multiply(new BigDecimal(item.getQuantity()));
             total = total.add(lineTotal);
         }
-        totalAmountView.setText(getString(R.string.cart_total_format, total.toPlainString()));
-        checkoutButton.setEnabled(!cartItems.isEmpty());
+        String totalText = getString(R.string.cart_total_format, total.toPlainString());
+        totalAmountView.setText(totalText);
+        if (goodsTotalView != null) {
+            goodsTotalView.setText(getString(R.string.cart_amount_format, total.toPlainString()));
+        }
+        if (payableView != null) {
+            payableView.setText(getString(R.string.cart_amount_format, total.toPlainString()));
+        }
+        boolean hasItems = !cartItems.isEmpty();
+        checkoutButton.setEnabled(hasItems);
+        if (clearButton != null) {
+            clearButton.setEnabled(hasItems);
+        }
+        if (emptyView != null) {
+            emptyView.setVisibility(hasItems ? View.GONE : View.VISIBLE);
+        }
+        if (contentContainer != null) {
+            contentContainer.setVisibility(hasItems ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void refreshCartItems() {

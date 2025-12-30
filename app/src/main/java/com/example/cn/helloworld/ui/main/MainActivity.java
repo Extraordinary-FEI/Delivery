@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.data.FoodLocalRepository;
+import com.example.cn.helloworld.db.CategoryDao;
+import com.example.cn.helloworld.model.Food;
 import com.example.cn.helloworld.ui.cart.CartActivity;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.entry.CouponCenterActivity;
@@ -25,12 +28,24 @@ import com.example.cn.helloworld.ui.shop.ShopListActivity;
 import com.example.cn.helloworld.ui.shop.admin.AdminDashboardActivity;
 import com.example.cn.helloworld.utils.SessionManager;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 public class MainActivity extends BaseActivity {
+    private final FoodLocalRepository repository = new FoodLocalRepository();
+    private final List<String> homeCategories = new ArrayList<String>();
+    private HomeFilterAdapter homeFilterAdapter;
+    private CategoryDao categoryDao;
+    private String selectedHomeCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setupHomeFilters();
 
         TextView todayLabel = (TextView) findViewById(R.id.text_today_label);
         todayLabel.setText(R.string.home_today_label);
@@ -183,6 +198,70 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, MemberCenterActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadHomeFilters();
+    }
+
+    private void setupHomeFilters() {
+        android.support.v7.widget.RecyclerView filtersRecycler =
+                (android.support.v7.widget.RecyclerView) findViewById(R.id.recycler_home_filters);
+        if (filtersRecycler == null) {
+            return;
+        }
+        filtersRecycler.setLayoutManager(
+                new android.support.v7.widget.LinearLayoutManager(
+                        this,
+                        android.support.v7.widget.LinearLayoutManager.HORIZONTAL,
+                        false));
+        homeFilterAdapter = new HomeFilterAdapter(homeCategories, new HomeFilterAdapter.OnFilterClickListener() {
+            @Override
+            public void onFilterClick(String category) {
+                selectedHomeCategory = category;
+            }
+        });
+        filtersRecycler.setAdapter(homeFilterAdapter);
+        categoryDao = new CategoryDao(this);
+        loadHomeFilters();
+    }
+
+    private void loadHomeFilters() {
+        if (homeFilterAdapter == null || categoryDao == null) {
+            return;
+        }
+        try {
+            List<Food> foods = repository.getFoods(this);
+            Set<String> categorySet = new LinkedHashSet<String>();
+            categorySet.addAll(categoryDao.getCategoryNames());
+            for (Food food : foods) {
+                categorySet.add(resolveCategory(food));
+            }
+            homeCategories.clear();
+            for (String category : categorySet) {
+                if (!TextUtils.isEmpty(category)) {
+                    homeCategories.add(category);
+                }
+            }
+            if (homeCategories.isEmpty()) {
+                homeCategories.add(getString(R.string.category_unassigned));
+            }
+            if (TextUtils.isEmpty(selectedHomeCategory) || !homeCategories.contains(selectedHomeCategory)) {
+                selectedHomeCategory = homeCategories.get(0);
+            }
+            homeFilterAdapter.setSelectedCategory(selectedHomeCategory);
+            homeFilterAdapter.notifyDataSetChanged();
+        } catch (java.io.IOException ignored) {
+        }
+    }
+
+    private String resolveCategory(Food food) {
+        if (food == null || TextUtils.isEmpty(food.getCategory())) {
+            return getString(R.string.category_unassigned);
+        }
+        return food.getCategory();
     }
 
     private void showDock(final View smartDock, final View floatingBall) {
