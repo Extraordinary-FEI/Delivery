@@ -34,8 +34,7 @@ public class ShopListActivity extends BaseActivity implements ShopAdapter.OnShop
         setupBackButton();
 
         Button addButton = (Button) findViewById(R.id.button_add_shop);
-        boolean allowAddShop = getIntent().getBooleanExtra(EXTRA_ALLOW_ADD_SHOP, false);
-        if (SessionManager.isAdmin(this) && allowAddShop) {
+        if (SessionManager.isAdmin(this)) {
             addButton.setVisibility(Button.VISIBLE);
         }
         addButton.setOnClickListener(new android.view.View.OnClickListener() {

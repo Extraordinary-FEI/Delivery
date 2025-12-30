@@ -48,6 +48,20 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/button_admin_dashboard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_chip"
+                    android:gravity="center"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:text="@string/home_admin_dashboard"
+                    android:textColor="@color/primary_color"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
                     android:id="@+id/button_settings"
                     android:layout_width="44dp"
                     android:layout_height="44dp"

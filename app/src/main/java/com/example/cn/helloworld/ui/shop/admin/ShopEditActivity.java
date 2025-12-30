@@ -22,6 +22,7 @@ public class ShopEditActivity extends BaseActivity {
 
     private EditText nameInput;
     private EditText addressInput;
+    private EditText addressDetailInput;
     private EditText ratingInput;
     private EditText phoneInput;
     private EditText descriptionInput;
@@ -41,6 +42,7 @@ public class ShopEditActivity extends BaseActivity {
 
         nameInput = (EditText) findViewById(R.id.input_shop_name);
         addressInput = (EditText) findViewById(R.id.input_shop_address);
+        addressDetailInput = (EditText) findViewById(R.id.input_shop_address_detail);
         ratingInput = (EditText) findViewById(R.id.input_shop_rating);
         phoneInput = (EditText) findViewById(R.id.input_shop_phone);
         descriptionInput = (EditText) findViewById(R.id.input_shop_description);
@@ -92,7 +94,7 @@ public class ShopEditActivity extends BaseActivity {
                 return;
             }
             nameInput.setText(shop.getName());
-            addressInput.setText(shop.getAddress());
+            bindAddressFields(shop.getAddress());
             ratingInput.setText(String.valueOf(shop.getRating()));
             phoneInput.setText(shop.getPhone());
             descriptionInput.setText(shop.getDescription());
@@ -105,7 +107,9 @@ public class ShopEditActivity extends BaseActivity {
 
     private void saveShop() {
         String name = nameInput.getText().toString().trim();
-        String address = addressInput.getText().toString().trim();
+        String addressRegion = addressInput.getText().toString().trim();
+        String addressDetail = addressDetailInput.getText().toString().trim();
+        String address = buildFullAddress(addressRegion, addressDetail);
         String ratingValue = ratingInput.getText().toString().trim();
         String phone = phoneInput.getText().toString().trim();
         String description = descriptionInput.getText().toString().trim();
@@ -169,5 +173,35 @@ public class ShopEditActivity extends BaseActivity {
         if (!TextUtils.isEmpty(addressText)) {
             addressInput.setText(addressText);
         }
+    }
+
+    private void bindAddressFields(String address) {
+        if (TextUtils.isEmpty(address)) {
+            return;
+        }
+        String[] parts = address.split("\\s+");
+        if (parts.length >= 2) {
+            StringBuilder regionBuilder = new StringBuilder();
+            for (int i = 0; i < parts.length - 1; i++) {
+                if (regionBuilder.length() > 0) {
+                    regionBuilder.append(" ");
+                }
+                regionBuilder.append(parts[i]);
+            }
+            addressInput.setText(regionBuilder.toString());
+            addressDetailInput.setText(parts[parts.length - 1]);
+        } else {
+            addressDetailInput.setText(address);
+        }
+    }
+
+    private String buildFullAddress(String region, String detail) {
+        if (TextUtils.isEmpty(region)) {
+            return detail;
+        }
+        if (TextUtils.isEmpty(detail)) {
+            return region;
+        }
+        return region + " " + detail;
     }
 }

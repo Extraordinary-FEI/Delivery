@@ -292,6 +292,7 @@
     <string name="shop_image_description">店铺图片</string>
     <string name="hint_shop_name">店铺名称</string>
     <string name="hint_shop_address">店铺地址</string>
+    <string name="hint_shop_address_detail">详细地址</string>
     <string name="hint_shop_rating">评分（1-5）</string>
     <string name="hint_shop_phone">联系电话</string>
     <string name="hint_shop_description">店铺介绍</string>

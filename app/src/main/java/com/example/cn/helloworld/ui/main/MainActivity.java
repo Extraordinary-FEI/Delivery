@@ -30,10 +30,8 @@ import com.example.cn.helloworld.ui.food.FoodDetailActivity;
 import com.example.cn.helloworld.ui.market.FoodMarketActivity;
 import com.example.cn.helloworld.ui.shop.ShopDetailActivity;
 import com.example.cn.helloworld.ui.shop.ShopListActivity;
-import com.example.cn.helloworld.ui.shop.admin.AdminDashboardActivity;
 import com.example.cn.helloworld.ui.shop.FoodAdapter;
 import com.example.cn.helloworld.utils.ImageLoader;
-import com.example.cn.helloworld.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -168,17 +166,6 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
                 intent.putExtra(SearchResultActivity.EXTRA_QUERY, keyword);
                 startActivity(intent);
-            }
-        });
-
-        Button adminButton = (Button) findViewById(R.id.button_admin_dashboard);
-        if (SessionManager.isAdmin(this)) {
-            adminButton.setVisibility(View.VISIBLE);
-        }
-        adminButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AdminDashboardActivity.class));
             }
         });
 

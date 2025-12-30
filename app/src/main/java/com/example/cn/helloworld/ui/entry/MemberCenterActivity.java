@@ -14,6 +14,7 @@ import com.example.cn.helloworld.ui.cart.CartActivity;
 import com.example.cn.helloworld.ui.main.MainActivity;
 import com.example.cn.helloworld.ui.market.FoodMarketActivity;
 import com.example.cn.helloworld.ui.shop.ShopListActivity;
+import com.example.cn.helloworld.ui.shop.admin.AdminDashboardActivity;
 import com.example.cn.helloworld.utils.AvatarLoader;
 import com.example.cn.helloworld.utils.SessionManager;
 import com.example.cn.helloworld.ui.entry.FavoritesActivity;
@@ -34,6 +35,16 @@ public class MemberCenterActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        View adminButton = findViewById(R.id.button_admin_dashboard);
+        if (SessionManager.isAdmin(this)) {
+            adminButton.setVisibility(View.VISIBLE);
+            adminButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MemberCenterActivity.this, AdminDashboardActivity.class));
+                }
+            });
+        }
         findViewById(R.id.entry_favorites).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
