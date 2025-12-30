@@ -14,7 +14,22 @@
     <string name="home_empty_action">浏览店铺</string>
     <string name="home_header_title">你好</string>
     <string name="home_greeting">今天想吃点什么？</string>
-    <string name="home_search_hint">搜索店铺、商品或服务</string>
+    <string name="home_greeting_morning_title">早上好 ☀️</string>
+    <string name="home_greeting_morning_subtitle">今天来点热乎的？</string>
+    <string name="home_greeting_noon_title">中午好 🍱</string>
+    <string name="home_greeting_noon_subtitle">附近热卖 30 分钟送达</string>
+    <string name="home_greeting_evening_title">晚上好 🌙</string>
+    <string name="home_greeting_evening_subtitle">夜宵 / 减脂 / 快手推荐</string>
+    <string name="home_search_hint">输入菜名 / 商家名</string>
+    <string name="home_search_hint_compact">🔍 搜索 想吃什么</string>
+    <string name="home_chip_hot_beef">🔥 牛肉面</string>
+    <string name="home_chip_light_meal">🥗 减脂餐</string>
+    <string name="home_chip_fast_delivery">⚡ 30 分钟送达</string>
+    <string name="home_chip_member_offer">🏷 会员专享</string>
+    <string name="home_chip_hot_beef_query">牛肉面</string>
+    <string name="home_chip_light_meal_query">减脂餐</string>
+    <string name="home_chip_fast_delivery_query">30 分钟送达</string>
+    <string name="home_chip_member_offer_query">会员专享</string>
     <string name="home_today_label">TODAY</string>
     <string name="home_banner_title">今日品质优选</string>
     <string name="home_banner_subtitle">专属红包 · 会员折扣&#10;30 分钟送达</string>
@@ -54,7 +69,7 @@
     <string name="home_feed_shop_two">沐春家常菜</string>
     <string name="home_feed_shop_two_meta">★ 4.9 · 800m · 35 分钟</string>
     <string name="home_feed_shop_two_desc">家常热炒 · 午晚餐</string>
-    <string name="home_cart_icon">车</string>
+    <string name="home_cart_icon">🚴 外卖</string>
     <string name="home_quick_entry">快捷入口</string>
     <string name="home_action_flash_sale">限时秒杀</string>
     <string name="home_action_flash_sale_desc">精选爆款低至 5 折</string>
@@ -176,6 +191,11 @@
     <string name="review_empty">暂无评价，快来写第一条吧</string>
     <string name="title_product_list">商品列表</string>
     <string name="title_product_web_search">商品网页搜索</string>
+    <string-array name="home_search_hints">
+        <item>搜索「牛肉面」立减 5 元</item>
+        <item>试试「附近热销」</item>
+        <item>输入菜名 / 商家名</item>
+    </string-array>
     <string name="title_playlist_detail">播放列表详情</string>
     <string name="title_playlist_overview">播放列表概览</string>
     <string name="title_discover">发现</string>

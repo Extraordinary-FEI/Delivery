@@ -9,4 +9,12 @@
     <dimen name="ios_chip_radius">12dp</dimen>
     <dimen name="ios_badge_radius">999dp</dimen>
     <dimen name="ios_grid_item_spacing">12dp</dimen>
+    <dimen name="floating_header_padding_horizontal">20dp</dimen>
+    <dimen name="floating_header_padding_top_expanded">18dp</dimen>
+    <dimen name="floating_header_padding_bottom_expanded">14dp</dimen>
+    <dimen name="floating_header_padding_top_compact">10dp</dimen>
+    <dimen name="floating_header_padding_bottom_compact">10dp</dimen>
+    <dimen name="floating_header_search_height_expanded">44dp</dimen>
+    <dimen name="floating_header_search_height_compact">40dp</dimen>
+    <dimen name="floating_header_collapse_threshold">180dp</dimen>
 </resources>

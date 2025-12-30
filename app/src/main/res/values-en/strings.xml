@@ -13,7 +13,22 @@
     <string name="home_empty_action">Browse shops</string>
     <string name="home_header_title">Hello</string>
     <string name="home_greeting">What would you like to eat today?</string>
-    <string name="home_search_hint">Search shops, products, or services</string>
+    <string name="home_greeting_morning_title">Good morning ☀️</string>
+    <string name="home_greeting_morning_subtitle">Something warm to start?</string>
+    <string name="home_greeting_noon_title">Good afternoon 🍱</string>
+    <string name="home_greeting_noon_subtitle">Top picks nearby, 30-min delivery</string>
+    <string name="home_greeting_evening_title">Good evening 🌙</string>
+    <string name="home_greeting_evening_subtitle">Late night / light / quick picks</string>
+    <string name="home_search_hint">Search by dish or store name</string>
+    <string name="home_search_hint_compact">🔍 Search cravings</string>
+    <string name="home_chip_hot_beef">🔥 Beef noodle soup</string>
+    <string name="home_chip_light_meal">🥗 Light meal</string>
+    <string name="home_chip_fast_delivery">⚡ 30-min delivery</string>
+    <string name="home_chip_member_offer">🏷 Member deals</string>
+    <string name="home_chip_hot_beef_query">Beef noodle soup</string>
+    <string name="home_chip_light_meal_query">Light meal</string>
+    <string name="home_chip_fast_delivery_query">30-min delivery</string>
+    <string name="home_chip_member_offer_query">Member deals</string>
     <string name="home_today_label">Today</string>
     <string name="home_banner_title">Today’s Top Picks</string>
     <string name="home_banner_subtitle">Exclusive coupons · Member discounts\nDelivered in 30 minutes</string>
@@ -53,7 +68,12 @@
     <string name="home_feed_shop_two">Muchun Home-style</string>
     <string name="home_feed_shop_two_meta">★ 4.9 · 800 m · 35 mins</string>
     <string name="home_feed_shop_two_desc">Home-style stir fry · Lunch &amp; dinner</string>
-    <string name="home_cart_icon">Cart</string>
+    <string name="home_cart_icon">🚴 Delivery</string>
+    <string-array name="home_search_hints">
+        <item>Search “beef noodle soup” for 5 off</item>
+        <item>Try “nearby bestsellers”</item>
+        <item>Search by dish or store name</item>
+    </string-array>
     <string name="home_quick_entry">Quick access</string>
     <string name="home_action_flash_sale">Flash sale</string>
     <string name="home_action_flash_sale_desc">Selected hits up to 50% off</string>

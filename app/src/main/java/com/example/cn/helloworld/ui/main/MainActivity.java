@@ -7,9 +7,11 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
@@ -34,6 +36,7 @@ import com.example.cn.helloworld.ui.shop.FoodAdapter;
 import com.example.cn.helloworld.utils.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,7 +82,7 @@ public class MainActivity extends BaseActivity {
         cartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                Intent intent = new Intent(MainActivity.this, ShopListActivity.class);
                 startActivity(intent);
             }
         });
@@ -145,7 +148,16 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        final TextView headerTitle = (TextView) findViewById(R.id.text_main_title);
+        final TextView headerGreeting = (TextView) findViewById(R.id.text_main_greeting);
         final EditText searchInput = (EditText) findViewById(R.id.text_main_search);
+        final String expandedSearchHint = pickSearchHint();
+
+        updateGreeting(headerTitle, headerGreeting);
+        searchInput.setHint(expandedSearchHint);
+        setupFloatingHeaderBehavior(headerTitle, headerGreeting, searchInput, expandedSearchHint);
+        setupSearchChips();
+
         searchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -162,10 +174,7 @@ public class MainActivity extends BaseActivity {
         searchInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String keyword = searchInput.getText().toString().trim();
-                Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
-                intent.putExtra(SearchResultActivity.EXTRA_QUERY, keyword);
-                startActivity(intent);
+                openSearchWithKeyword(searchInput.getText().toString().trim());
             }
         });
 
@@ -228,8 +237,148 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        TextView headerTitle = (TextView) findViewById(R.id.text_main_title);
+        TextView headerGreeting = (TextView) findViewById(R.id.text_main_greeting);
+        updateGreeting(headerTitle, headerGreeting);
         loadHomeFilters();
         loadRecommendedShops();
+    }
+
+    private void setupFloatingHeaderBehavior(final TextView headerTitle,
+                                             final TextView headerGreeting,
+                                             final EditText searchInput,
+                                             final String expandedSearchHint) {
+        final View floatingHeader = findViewById(R.id.floating_header);
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.main_scroll);
+        if (floatingHeader == null || scrollView == null) {
+            return;
+        }
+        final int expandedPaddingHorizontal =
+                getResources().getDimensionPixelSize(R.dimen.floating_header_padding_horizontal);
+        final int expandedPaddingTop =
+                getResources().getDimensionPixelSize(R.dimen.floating_header_padding_top_expanded);
+        final int expandedPaddingBottom =
+                getResources().getDimensionPixelSize(R.dimen.floating_header_padding_bottom_expanded);
+        final int compactPaddingTop =
+                getResources().getDimensionPixelSize(R.dimen.floating_header_padding_top_compact);
+        final int compactPaddingBottom =
+                getResources().getDimensionPixelSize(R.dimen.floating_header_padding_bottom_compact);
+        final int expandedSearchHeight =
+                getResources().getDimensionPixelSize(R.dimen.floating_header_search_height_expanded);
+        final int compactSearchHeight =
+                getResources().getDimensionPixelSize(R.dimen.floating_header_search_height_compact);
+        final int collapseThreshold =
+                getResources().getDimensionPixelSize(R.dimen.floating_header_collapse_threshold);
+
+        applyFloatingHeaderState(false, floatingHeader, headerTitle, headerGreeting, searchInput,
+                expandedPaddingHorizontal, expandedPaddingTop, expandedPaddingBottom,
+                expandedSearchHeight, expandedSearchHint);
+
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            private boolean isCompact = false;
+
+            @Override
+            public void onScrollChanged() {
+                int threshold = scrollView.getHeight() > 0 ? scrollView.getHeight() : collapseThreshold;
+                boolean shouldCompact = scrollView.getScrollY() >= threshold;
+                if (shouldCompact == isCompact) {
+                    return;
+                }
+                isCompact = shouldCompact;
+                if (shouldCompact) {
+                    applyFloatingHeaderState(true, floatingHeader, headerTitle, headerGreeting,
+                            searchInput, expandedPaddingHorizontal, compactPaddingTop, compactPaddingBottom,
+                            compactSearchHeight, getString(R.string.home_search_hint_compact));
+                } else {
+                    applyFloatingHeaderState(false, floatingHeader, headerTitle, headerGreeting,
+                            searchInput, expandedPaddingHorizontal, expandedPaddingTop, expandedPaddingBottom,
+                            expandedSearchHeight, expandedSearchHint);
+                }
+            }
+        });
+    }
+
+    private void applyFloatingHeaderState(boolean compact,
+                                          View floatingHeader,
+                                          TextView headerTitle,
+                                          TextView headerGreeting,
+                                          EditText searchInput,
+                                          int paddingHorizontal,
+                                          int paddingTop,
+                                          int paddingBottom,
+                                          int searchHeight,
+                                          String hint) {
+        int titleVisibility = compact ? View.GONE : View.VISIBLE;
+        headerTitle.setVisibility(titleVisibility);
+        headerGreeting.setVisibility(titleVisibility);
+        floatingHeader.setBackgroundResource(compact
+                ? R.drawable.bg_floating_header_compact
+                : R.drawable.bg_floating_header);
+        floatingHeader.setPadding(paddingHorizontal, paddingTop, paddingHorizontal, paddingBottom);
+        ViewGroup.LayoutParams params = searchInput.getLayoutParams();
+        if (params != null && params.height != searchHeight) {
+            params.height = searchHeight;
+            searchInput.setLayoutParams(params);
+        }
+        searchInput.setHint(hint);
+    }
+
+    private void updateGreeting(TextView headerTitle, TextView headerGreeting) {
+        if (headerTitle == null || headerGreeting == null) {
+            return;
+        }
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        if (hour >= 5 && hour < 11) {
+            headerTitle.setText(R.string.home_greeting_morning_title);
+            headerGreeting.setText(R.string.home_greeting_morning_subtitle);
+        } else if (hour >= 11 && hour < 17) {
+            headerTitle.setText(R.string.home_greeting_noon_title);
+            headerGreeting.setText(R.string.home_greeting_noon_subtitle);
+        } else {
+            headerTitle.setText(R.string.home_greeting_evening_title);
+            headerGreeting.setText(R.string.home_greeting_evening_subtitle);
+        }
+    }
+
+    private String pickSearchHint() {
+        String[] hints = getResources().getStringArray(R.array.home_search_hints);
+        if (hints == null || hints.length == 0) {
+            return getString(R.string.home_search_hint);
+        }
+        int index = (int) (System.currentTimeMillis() % hints.length);
+        if (index < 0) {
+            index = 0;
+        }
+        return hints[index];
+    }
+
+    private void setupSearchChips() {
+        View[] chips = new View[] {
+                findViewById(R.id.chip_hot_beef),
+                findViewById(R.id.chip_light_meal),
+                findViewById(R.id.chip_fast_delivery),
+                findViewById(R.id.chip_member_offer)
+        };
+        for (View chip : chips) {
+            if (chip == null) {
+                continue;
+            }
+            chip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Object tag = v.getTag();
+                    String keyword = tag == null ? "" : tag.toString();
+                    openSearchWithKeyword(keyword);
+                }
+            });
+        }
+    }
+
+    private void openSearchWithKeyword(String keyword) {
+        Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
+        intent.putExtra(SearchResultActivity.EXTRA_QUERY, keyword);
+        startActivity(intent);
     }
 
     private void setupHomeFilters() {
