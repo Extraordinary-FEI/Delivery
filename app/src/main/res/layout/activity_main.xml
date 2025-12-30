@@ -271,16 +271,6 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_home_filters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingRight="16dp"
-                android:scrollbars="none" />
-
             <LinearLayout
                 android:id="@+id/section_flash_sale"
                 android:layout_width="match_parent"
@@ -454,6 +444,16 @@
                     android:layout_marginTop="16dp"
                     android:nestedScrollingEnabled="false" />
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_home_filters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingRight="16dp"
+                android:scrollbars="none" />
 
             <TextView
                 android:layout_width="wrap_content"

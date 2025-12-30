@@ -392,7 +392,7 @@ public class MainActivity extends BaseActivity {
         try {
             List<Shop> shops = shopRepository.getShops(this);
             recommendedShops.clear();
-            for (int i = 0; i < shops.size() && i < 3; i++) {
+            for (int i = 0; i < shops.size() && i < 1; i++) {
                 recommendedShops.add(shops.get(i));
             }
             recommendedShopAdapter.notifyDataSetChanged();
