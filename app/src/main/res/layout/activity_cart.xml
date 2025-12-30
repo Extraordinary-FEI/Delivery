@@ -33,7 +33,8 @@
             android:text="@string/cart_title"
             android:textColor="@color/primary_text"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginLeft="12dp" />
 
         <TextView
             android:id="@+id/button_clear_cart"
