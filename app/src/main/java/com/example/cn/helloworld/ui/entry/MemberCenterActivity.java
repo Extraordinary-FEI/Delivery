@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
+import com.example.cn.helloworld.db.CouponDao;
 import com.example.cn.helloworld.db.UserDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.cart.CartActivity;
@@ -153,6 +154,13 @@ public class MemberCenterActivity extends BaseActivity {
 
         TextView balanceView = (TextView) findViewById(R.id.text_balance_value);
         balanceView.setText(getString(R.string.member_balance_value));
+
+        TextView couponCountView = (TextView) findViewById(R.id.text_coupon_count);
+        if (couponCountView != null) {
+            CouponDao couponDao = new CouponDao(this);
+            int count = couponDao.getCouponCount(userId);
+            couponCountView.setText(getString(R.string.member_coupon_value_format, count));
+        }
     }
 
     private String maskPhone(String phone) {

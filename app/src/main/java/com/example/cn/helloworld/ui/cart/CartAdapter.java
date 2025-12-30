@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         void onQuantityChanged(CartItem item);
 
         void onItemRemoved(int position, CartItem item);
+
+        void onSelectionChanged(CartItem item);
     }
 
     private final List<CartItem> items;
@@ -52,6 +55,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         ImageLoader.load(holder.itemView.getContext(), holder.imageView, item.getImageUrl());
         holder.quantityView.setText(String.valueOf(item.getQuantity()));
         updateLineTotal(holder, item);
+        holder.selectBox.setOnCheckedChangeListener(null);
+        holder.selectBox.setChecked(item.isSelected());
+        holder.selectBox.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(android.widget.CompoundButton buttonView, boolean isChecked) {
+                item.setSelected(isChecked);
+                if (actionListener != null) {
+                    actionListener.onSelectionChanged(item);
+                }
+            }
+        });
 
         holder.quantityView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +178,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         private final Button minusButton;
         private final Button deleteButton;
         private final ImageView imageView;
+        private final CheckBox selectBox;
 
         CartViewHolder(View itemView) {
             super(itemView);
@@ -175,6 +190,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             minusButton = (Button) itemView.findViewById(R.id.button_quantity_minus);
             deleteButton = (Button) itemView.findViewById(R.id.button_delete_item);
             imageView = (ImageView) itemView.findViewById(R.id.image_cart_item);
+            selectBox = (CheckBox) itemView.findViewById(R.id.checkbox_cart_item);
         }
     }
 }

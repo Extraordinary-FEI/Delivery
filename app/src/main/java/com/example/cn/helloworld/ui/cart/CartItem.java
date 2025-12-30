@@ -10,12 +10,14 @@ public class CartItem {
     private final BigDecimal unitPrice;
     private final String imageUrl;
     private int quantity;
+    private boolean selected;
 
     public CartItem(String name, BigDecimal unitPrice, int quantity, String imageUrl) {
         this.name = name;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.imageUrl = imageUrl;
+        this.selected = true;
     }
 
     public String getName() {
@@ -36,6 +38,14 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public BigDecimal getSubtotal() {

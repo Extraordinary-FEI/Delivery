@@ -26,6 +26,7 @@ import java.util.Locale;
 
 public class CheckoutActivity extends BaseActivity {
     private static final int REQUEST_SELECT_ADDRESS = 2001;
+    public static final String EXTRA_SELECTED_ITEMS = "extra_selected_items";
 
     private AddressDao addressDao;
     private Address selectedAddress;
@@ -35,12 +36,17 @@ public class CheckoutActivity extends BaseActivity {
     private TextView couponRuleView;
     private TextView couponDiscountView;
     private TextView payAmountView;
+    private TextView totalCountView;
+    private TextView totalAmountView;
     private Button placeOrderButton;
     private int userId;
     private CouponDao couponDao;
     private OrderDao orderDao;
     private CouponOffer appliedOffer;
     private double totalAmount;
+    private final List<com.example.cn.helloworld.data.cart.CartItem> checkoutItems =
+            new ArrayList<com.example.cn.helloworld.data.cart.CartItem>();
+    private ArrayList<String> selectedItemNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +63,8 @@ public class CheckoutActivity extends BaseActivity {
         orderDao = new OrderDao(this);
 
         CartManager cartManager = CartManager.getInstance(this);
-        TextView totalCountView = (TextView) findViewById(R.id.text_checkout_total_count);
-        TextView totalAmountView = (TextView) findViewById(R.id.text_checkout_total_amount);
+        totalCountView = (TextView) findViewById(R.id.text_checkout_total_count);
+        totalAmountView = (TextView) findViewById(R.id.text_checkout_total_amount);
         couponDiscountView = (TextView) findViewById(R.id.text_checkout_coupon_discount);
         payAmountView = (TextView) findViewById(R.id.text_checkout_pay_amount);
         couponNameView = (TextView) findViewById(R.id.text_checkout_coupon_name);
@@ -68,10 +74,8 @@ public class CheckoutActivity extends BaseActivity {
         placeOrderButton = (Button) findViewById(R.id.button_place_order);
         View addressLayout = findViewById(R.id.layout_checkout_address);
 
-        totalCountView.setText(getString(R.string.checkout_item_count_format, cartManager.getTotalCount()));
-        totalAmount = cartManager.getTotalPrice();
-        BigDecimal totalValue = BigDecimal.valueOf(totalAmount);
-        totalAmountView.setText(getString(R.string.cart_total_format, totalValue.toPlainString()));
+        selectedItemNames = getIntent().getStringArrayListExtra(EXTRA_SELECTED_ITEMS);
+        refreshCheckoutItems(cartManager);
 
         addressLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +105,7 @@ public class CheckoutActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        refreshCheckoutItems(CartManager.getInstance(this));
         selectedAddress = addressDao.getDefaultAddress(userId);
         refreshAddress();
         refreshCoupons();
@@ -136,7 +141,7 @@ public class CheckoutActivity extends BaseActivity {
 
     private void updatePlaceOrderState() {
         boolean hasAddress = selectedAddress != null;
-        boolean hasItems = CartManager.getInstance(this).getTotalCount() > 0;
+        boolean hasItems = !checkoutItems.isEmpty();
         placeOrderButton.setEnabled(hasAddress && hasItems);
     }
 
@@ -152,13 +157,13 @@ public class CheckoutActivity extends BaseActivity {
             openAddressSelector();
             return;
         }
-        if (cartManager.getTotalCount() == 0) {
+        if (checkoutItems.isEmpty()) {
             updatePlaceOrderState();
             return;
         }
         ArrayList<String> items = new ArrayList<String>();
         ArrayList<OrderDao.OrderItem> orderItems = new ArrayList<OrderDao.OrderItem>();
-        for (com.example.cn.helloworld.data.cart.CartItem item : cartManager.getItems()) {
+        for (com.example.cn.helloworld.data.cart.CartItem item : checkoutItems) {
             items.add(item.getName() + " x" + item.getQuantity());
             double subtotal = item.getSubtotal();
             orderItems.add(new OrderDao.OrderItem(
@@ -187,7 +192,13 @@ public class CheckoutActivity extends BaseActivity {
         intent.putStringArrayListExtra(OrderConfirmActivity.EXTRA_ORDER_ITEMS, items);
         intent.putExtra(OrderConfirmActivity.EXTRA_ORDER_TOTAL, payAmount);
         intent.putExtra(OrderConfirmActivity.EXTRA_USER_ID, userId);
-        cartManager.clear();
+        if (selectedItemNames == null || selectedItemNames.isEmpty()) {
+            cartManager.clear();
+        } else {
+            for (com.example.cn.helloworld.data.cart.CartItem item : checkoutItems) {
+                cartManager.removeItem(item.getName());
+            }
+        }
         startActivity(intent);
     }
 
@@ -233,6 +244,29 @@ public class CheckoutActivity extends BaseActivity {
         }
         double payAmount = Math.max(0, totalAmount - discount);
         payAmountView.setText(getString(R.string.checkout_pay_amount_format, payAmount));
+    }
+
+    private void refreshCheckoutItems(CartManager cartManager) {
+        checkoutItems.clear();
+        int totalCount = 0;
+        double total = 0;
+        List<com.example.cn.helloworld.data.cart.CartItem> items = cartManager.getItems();
+        for (com.example.cn.helloworld.data.cart.CartItem item : items) {
+            if (selectedItemNames == null || selectedItemNames.isEmpty()
+                    || selectedItemNames.contains(item.getName())) {
+                checkoutItems.add(item);
+                totalCount += item.getQuantity();
+                total += item.getSubtotal();
+            }
+        }
+        totalAmount = total;
+        if (totalCountView != null) {
+            totalCountView.setText(getString(R.string.checkout_item_count_format, totalCount));
+        }
+        if (totalAmountView != null) {
+            BigDecimal totalValue = BigDecimal.valueOf(totalAmount);
+            totalAmountView.setText(getString(R.string.cart_total_format, totalValue.toPlainString()));
+        }
     }
 
     private CouponOffer resolveBestOffer(List<CouponDao.Coupon> coupons, double total) {

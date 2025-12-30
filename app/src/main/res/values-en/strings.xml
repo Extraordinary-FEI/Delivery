@@ -144,6 +144,7 @@
     <string name="cart_coupon_title">Coupons</string>
     <string name="cart_coupon_empty">No coupons available</string>
     <string name="cart_coupon_action">Use</string>
+    <string name="cart_coupon_available_format">%1$d coupons available</string>
     <string name="cart_fee_title">Fee details</string>
     <string name="cart_fee_goods_total">Items total</string>
     <string name="cart_fee_delivery">Delivery fee</string>
@@ -297,6 +298,8 @@
     <string name="cart_count_format">Items: %1$d</string>
     <string name="default_shop_name">Featured shop</string>
     <string name="default_shop_address">123 Main Street</string>
+    <string name="member_coupon_value">0 available</string>
+    <string name="member_coupon_value_format">%1$d available</string>
     <string name="member_profile_growth_format">Growth %1$d / %2$d</string>
     <string name="points_level_format">Current level: %1$s</string>
     <string name="points_gap_format">%1$d points to the next level</string>
