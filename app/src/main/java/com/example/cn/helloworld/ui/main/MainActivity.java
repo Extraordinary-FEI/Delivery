@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.data.FoodLocalRepository;
+import com.example.cn.helloworld.data.ShopLocalRepository;
 import com.example.cn.helloworld.db.CategoryDao;
 import com.example.cn.helloworld.model.Food;
+import com.example.cn.helloworld.model.Shop;
 import com.example.cn.helloworld.ui.cart.CartActivity;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.entry.CouponCenterActivity;
@@ -25,9 +28,11 @@ import com.example.cn.helloworld.ui.entry.SearchResultActivity;
 import com.example.cn.helloworld.ui.entry.ServiceHelpActivity;
 import com.example.cn.helloworld.ui.food.FoodDetailActivity;
 import com.example.cn.helloworld.ui.market.FoodMarketActivity;
+import com.example.cn.helloworld.ui.shop.ShopDetailActivity;
 import com.example.cn.helloworld.ui.shop.ShopListActivity;
 import com.example.cn.helloworld.ui.shop.admin.AdminDashboardActivity;
 import com.example.cn.helloworld.ui.shop.FoodAdapter;
+import com.example.cn.helloworld.utils.ImageLoader;
 import com.example.cn.helloworld.utils.SessionManager;
 
 import java.util.ArrayList;
@@ -37,13 +42,18 @@ import java.util.Set;
 
 public class MainActivity extends BaseActivity {
     private final FoodLocalRepository repository = new FoodLocalRepository();
+    private final ShopLocalRepository shopRepository = new ShopLocalRepository();
     private final List<String> homeCategories = new ArrayList<String>();
     private final List<Food> homeFoods = new ArrayList<Food>();
     private final List<Food> visibleHomeFoods = new ArrayList<Food>();
+    private final List<Shop> recommendedShops = new ArrayList<Shop>();
     private HomeFilterAdapter homeFilterAdapter;
     private FoodAdapter homeFoodAdapter;
+    private RecommendedShopAdapter recommendedShopAdapter;
     private CategoryDao categoryDao;
     private String selectedHomeCategory;
+    private ImageView flashSaleImage;
+    private TextView flashSaleName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,8 @@ public class MainActivity extends BaseActivity {
 
         setupHomeFilters();
         setupHomeFoods();
+        setupFlashSaleCard();
+        setupRecommendedShops();
 
         TextView todayLabel = (TextView) findViewById(R.id.text_today_label);
         todayLabel.setText(R.string.home_today_label);
@@ -90,6 +102,26 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, FlashSaleActivity.class));
             }
         });
+
+        View flashSaleCard = findViewById(R.id.card_flash_sale);
+        if (flashSaleCard != null) {
+            flashSaleCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, FlashSaleActivity.class));
+                }
+            });
+        }
+
+        View recommendMore = findViewById(R.id.text_recommend_more);
+        if (recommendMore != null) {
+            recommendMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, ShopListActivity.class));
+                }
+            });
+        }
 
         View memberEntry = findViewById(R.id.entry_member_center);
         memberEntry.setOnClickListener(new View.OnClickListener() {
@@ -210,6 +242,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         loadHomeFilters();
+        loadRecommendedShops();
     }
 
     private void setupHomeFilters() {
@@ -286,6 +319,7 @@ public class MainActivity extends BaseActivity {
             homeFilterAdapter.setSelectedCategory(selectedHomeCategory);
             homeFilterAdapter.notifyDataSetChanged();
             applyHomeCategoryFilter();
+            updateFlashSaleContent();
         } catch (java.io.IOException ignored) {
         }
     }
@@ -312,6 +346,58 @@ public class MainActivity extends BaseActivity {
             return getString(R.string.category_unassigned);
         }
         return food.getCategory();
+    }
+
+    private void setupFlashSaleCard() {
+        flashSaleImage = (ImageView) findViewById(R.id.image_flash_sale);
+        flashSaleName = (TextView) findViewById(R.id.text_flash_sale_name);
+    }
+
+    private void updateFlashSaleContent() {
+        if (flashSaleName == null || flashSaleImage == null || homeFoods.isEmpty()) {
+            return;
+        }
+        Food featured = homeFoods.get(0);
+        flashSaleName.setText(featured.getName());
+        ImageLoader.load(this, flashSaleImage, featured.getImageUrl());
+    }
+
+    private void setupRecommendedShops() {
+        android.support.v7.widget.RecyclerView recommendedRecycler =
+                (android.support.v7.widget.RecyclerView) findViewById(R.id.recycler_recommended_shops);
+        if (recommendedRecycler == null) {
+            return;
+        }
+        recommendedRecycler.setLayoutManager(new android.support.v7.widget.LinearLayoutManager(this));
+        recommendedShopAdapter = new RecommendedShopAdapter(recommendedShops,
+                new RecommendedShopAdapter.OnShopClickListener() {
+                    @Override
+                    public void onShopClick(Shop shop) {
+                        Intent intent = new Intent(MainActivity.this, ShopDetailActivity.class);
+                        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_ID, "shop_" + shop.getId());
+                        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_NAME, shop.getName());
+                        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_ADDRESS, shop.getAddress());
+                        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_RATING, (float) shop.getRating());
+                        intent.putExtra(ShopDetailActivity.EXTRA_SHOP_IMAGE, shop.getImageUrl());
+                        startActivity(intent);
+                    }
+                });
+        recommendedRecycler.setAdapter(recommendedShopAdapter);
+    }
+
+    private void loadRecommendedShops() {
+        if (recommendedShopAdapter == null) {
+            return;
+        }
+        try {
+            List<Shop> shops = shopRepository.getShops(this);
+            recommendedShops.clear();
+            for (int i = 0; i < shops.size() && i < 3; i++) {
+                recommendedShops.add(shops.get(i));
+            }
+            recommendedShopAdapter.notifyDataSetChanged();
+        } catch (java.io.IOException ignored) {
+        }
     }
 
     private void showDock(final View smartDock, final View floatingBall) {

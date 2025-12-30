@@ -64,6 +64,7 @@
             android:layout_marginStart="12dp"
             android:contentDescription="@string/shop_image_description"
             android:scaleType="centerCrop"
+            android:stateListAnimator="@animator/hover_scale_up"
             android:src="@mipmap/ic_launcher" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

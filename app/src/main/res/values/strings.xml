@@ -64,7 +64,15 @@
     <string name="home_action_coupon_desc">新人立减 + 夜宵补贴</string>
     <string name="home_action_service">精选服务</string>
     <string name="home_action_service_desc">跑腿、鲜花、药品极速达</string>
+    <string name="home_flash_sale_icon">⚡</string>
+    <string name="home_flash_sale_title">限时秒杀</string>
+    <string name="home_flash_sale_subtitle">每日 10 点开抢</string>
+    <string name="home_flash_sale_timer">02:35:42</string>
+    <string name="home_flash_sale_badge">秒杀</string>
+    <string name="home_flash_sale_default_name">川香麻辣香锅</string>
     <string name="home_recommend_shops">推荐店铺</string>
+    <string name="home_recommend_shops_subtitle">精选优质餐厅，口碑保证</string>
+    <string name="home_recommend_more">查看更多</string>
     <string name="home_shop_title">星选轻食料理</string>
     <string name="home_shop_desc">低卡套餐｜约 30 分钟送达｜评分 4.9</string>
     <string name="home_shop_tag">满 30 减 8</string>
