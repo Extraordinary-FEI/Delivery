@@ -107,7 +107,6 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/bg_profile_avatar_placeholder"
-                    android:clipToOutline="true"
                     android:contentDescription="@string/member_profile_avatar"
                     android:outlineProvider="background"
                     android:scaleType="centerCrop"
