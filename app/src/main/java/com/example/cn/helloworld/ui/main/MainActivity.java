@@ -23,9 +23,11 @@ import com.example.cn.helloworld.ui.entry.MemberCenterActivity;
 import com.example.cn.helloworld.ui.entry.PointsCenterActivity;
 import com.example.cn.helloworld.ui.entry.SearchResultActivity;
 import com.example.cn.helloworld.ui.entry.ServiceHelpActivity;
+import com.example.cn.helloworld.ui.food.FoodDetailActivity;
 import com.example.cn.helloworld.ui.market.FoodMarketActivity;
 import com.example.cn.helloworld.ui.shop.ShopListActivity;
 import com.example.cn.helloworld.ui.shop.admin.AdminDashboardActivity;
+import com.example.cn.helloworld.ui.shop.FoodAdapter;
 import com.example.cn.helloworld.utils.SessionManager;
 
 import java.util.ArrayList;
@@ -36,7 +38,10 @@ import java.util.Set;
 public class MainActivity extends BaseActivity {
     private final FoodLocalRepository repository = new FoodLocalRepository();
     private final List<String> homeCategories = new ArrayList<String>();
+    private final List<Food> homeFoods = new ArrayList<Food>();
+    private final List<Food> visibleHomeFoods = new ArrayList<Food>();
     private HomeFilterAdapter homeFilterAdapter;
+    private FoodAdapter homeFoodAdapter;
     private CategoryDao categoryDao;
     private String selectedHomeCategory;
 
@@ -46,6 +51,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         setupHomeFilters();
+        setupHomeFoods();
 
         TextView todayLabel = (TextView) findViewById(R.id.text_today_label);
         todayLabel.setText(R.string.home_today_label);
@@ -221,11 +227,35 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onFilterClick(String category) {
                 selectedHomeCategory = category;
+                applyHomeCategoryFilter();
             }
         });
         filtersRecycler.setAdapter(homeFilterAdapter);
         categoryDao = new CategoryDao(this);
         loadHomeFilters();
+    }
+
+    private void setupHomeFoods() {
+        android.support.v7.widget.RecyclerView foodsRecycler =
+                (android.support.v7.widget.RecyclerView) findViewById(R.id.recycler_home_foods);
+        if (foodsRecycler == null) {
+            return;
+        }
+        foodsRecycler.setLayoutManager(new android.support.v7.widget.LinearLayoutManager(this));
+        homeFoodAdapter = new FoodAdapter(visibleHomeFoods, new FoodAdapter.OnFoodClickListener() {
+            @Override
+            public void onFoodClick(Food food) {
+                Intent intent = new Intent(MainActivity.this, FoodDetailActivity.class);
+                intent.putExtra(FoodDetailActivity.EXTRA_FOOD_ID, food.getId());
+                intent.putExtra(FoodDetailActivity.EXTRA_FOOD_NAME, food.getName());
+                intent.putExtra(FoodDetailActivity.EXTRA_FOOD_PRICE, food.getPrice());
+                intent.putExtra(FoodDetailActivity.EXTRA_FOOD_DESCRIPTION, food.getDescription());
+                intent.putExtra(FoodDetailActivity.EXTRA_FOOD_IMAGE_URL, food.getImageUrl());
+                intent.putExtra(FoodDetailActivity.EXTRA_SHOP_ID, food.getShopId());
+                startActivity(intent);
+            }
+        });
+        foodsRecycler.setAdapter(homeFoodAdapter);
     }
 
     private void loadHomeFilters() {
@@ -234,6 +264,8 @@ public class MainActivity extends BaseActivity {
         }
         try {
             List<Food> foods = repository.getFoods(this);
+            homeFoods.clear();
+            homeFoods.addAll(foods);
             Set<String> categorySet = new LinkedHashSet<String>();
             categorySet.addAll(categoryDao.getCategoryNames());
             for (Food food : foods) {
@@ -253,8 +285,26 @@ public class MainActivity extends BaseActivity {
             }
             homeFilterAdapter.setSelectedCategory(selectedHomeCategory);
             homeFilterAdapter.notifyDataSetChanged();
+            applyHomeCategoryFilter();
         } catch (java.io.IOException ignored) {
         }
+    }
+
+    private void applyHomeCategoryFilter() {
+        if (homeFoodAdapter == null) {
+            return;
+        }
+        visibleHomeFoods.clear();
+        if (TextUtils.isEmpty(selectedHomeCategory)) {
+            selectedHomeCategory = getString(R.string.category_unassigned);
+        }
+        for (Food food : homeFoods) {
+            String foodCategory = resolveCategory(food);
+            if (selectedHomeCategory.equals(foodCategory)) {
+                visibleHomeFoods.add(food);
+            }
+        }
+        homeFoodAdapter.notifyDataSetChanged();
     }
 
     private String resolveCategory(Food food) {
