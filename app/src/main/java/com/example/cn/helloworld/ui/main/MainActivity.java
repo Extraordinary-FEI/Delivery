@@ -69,6 +69,7 @@ public class MainActivity extends BaseActivity {
         setupHomeFoods();
         setupFlashSaleCard();
         setupRecommendedShops();
+        setupTodayHeroCard();
 
         TextView todayLabel = (TextView) findViewById(R.id.text_today_label);
         todayLabel.setText(R.string.home_today_label);
@@ -521,6 +522,38 @@ public class MainActivity extends BaseActivity {
     private void setupFlashSaleCard() {
         flashSaleImage = (ImageView) findViewById(R.id.image_flash_sale);
         flashSaleName = (TextView) findViewById(R.id.text_flash_sale_name);
+    }
+
+    private void setupTodayHeroCard() {
+        final View todayHeroCard = findViewById(R.id.card_today_hero);
+        if (todayHeroCard == null) {
+            return;
+        }
+        float offset = getResources().getDisplayMetrics().density * 6f;
+        todayHeroCard.setAlpha(0f);
+        todayHeroCard.setTranslationY(offset);
+        todayHeroCard.post(new Runnable() {
+            @Override
+            public void run() {
+                todayHeroCard.animate()
+                        .alpha(1f)
+                        .translationY(0f)
+                        .setDuration(250)
+                        .start();
+            }
+        });
+        todayHeroCard.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    view.animate().scaleX(0.98f).scaleY(0.98f).setDuration(120).start();
+                } else if (event.getAction() == MotionEvent.ACTION_UP
+                        || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    view.animate().scaleX(1f).scaleY(1f).setDuration(120).start();
+                }
+                return false;
+            }
+        });
     }
 
     private void updateFlashSaleContent() {

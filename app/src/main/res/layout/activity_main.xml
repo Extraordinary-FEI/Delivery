@@ -84,48 +84,53 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/card_today_hero"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="220dp"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/bg_today_hero"
                 android:orientation="vertical"
-                android:padding="18dp">
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/text_today_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.01"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="11sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:lineSpacingMultiplier="1.25"
                     android:text="@string/home_banner_title"
                     android:textColor="@android:color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textSize="22sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="6dp"
                     android:text="@string/home_banner_subtitle"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp" />
+                    android:textColor="#D8FFFFFF"
+                    android:textSize="13sp" />
 
                 <Button
                     android:id="@+id/button_browse_shops"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="16dp"
                     android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif-medium"
                     android:padding="0dp"
                     android:text="@string/home_today_action"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp" />
+                    android:textColor="#E6FFFFFF"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <LinearLayout

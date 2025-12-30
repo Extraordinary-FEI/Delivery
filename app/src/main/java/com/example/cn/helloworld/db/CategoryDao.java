@@ -49,7 +49,7 @@ public class CategoryDao {
         if (name.equals(getDefaultCategoryName())) {
             return false;
         }
-        SQLiteDatabase db = helper.getWritableDatabase();
+        SQiteDatabase db = helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT 1 FROM " + DeliveryDatabaseHelper.TABLE_CATEGORIES + " WHERE name = ? LIMIT 1",
                 new String[]{name});
