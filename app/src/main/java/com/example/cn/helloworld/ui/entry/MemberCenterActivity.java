@@ -10,6 +10,10 @@ import android.widget.TextView;
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.UserDao;
 import com.example.cn.helloworld.ui.common.BaseActivity;
+import com.example.cn.helloworld.ui.cart.CartActivity;
+import com.example.cn.helloworld.ui.main.MainActivity;
+import com.example.cn.helloworld.ui.market.FoodMarketActivity;
+import com.example.cn.helloworld.ui.shop.ShopListActivity;
 import com.example.cn.helloworld.utils.AvatarLoader;
 import com.example.cn.helloworld.utils.SessionManager;
 import com.example.cn.helloworld.ui.entry.FavoritesActivity;
@@ -86,6 +90,7 @@ public class MemberCenterActivity extends BaseActivity {
             }
         });
 
+        setupDockActions();
         bindProfile();
     }
 
@@ -150,5 +155,42 @@ public class MemberCenterActivity extends BaseActivity {
         Intent intent = new Intent(this, OrderListActivity.class);
         intent.putExtra(OrderListActivity.EXTRA_FILTER, filter);
         startActivity(intent);
+    }
+
+    private void setupDockActions() {
+        findViewById(R.id.dock_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MemberCenterActivity.this, MainActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_delivery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MemberCenterActivity.this, ShopListActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_market).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MemberCenterActivity.this, FoodMarketActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_cart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MemberCenterActivity.this, CartActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_profile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Already on profile.
+            }
+        });
     }
 }

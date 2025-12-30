@@ -11,6 +11,10 @@ import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.data.ShopLocalRepository;
 import com.example.cn.helloworld.model.Shop;
+import com.example.cn.helloworld.ui.cart.CartActivity;
+import com.example.cn.helloworld.ui.entry.MemberCenterActivity;
+import com.example.cn.helloworld.ui.main.MainActivity;
+import com.example.cn.helloworld.ui.market.FoodMarketActivity;
 import com.example.cn.helloworld.ui.shop.admin.ShopEditActivity;
 import com.example.cn.helloworld.utils.SessionManager;
 
@@ -47,6 +51,7 @@ public class ShopListActivity extends BaseActivity implements ShopAdapter.OnShop
         adapter = new ShopAdapter(shops, this);
         recyclerView.setAdapter(adapter);
 
+        setupDockActions();
         loadShopData();
     }
 
@@ -75,5 +80,42 @@ public class ShopListActivity extends BaseActivity implements ShopAdapter.OnShop
         intent.putExtra(ShopDetailActivity.EXTRA_SHOP_RATING, (float) shop.getRating());
         intent.putExtra(ShopDetailActivity.EXTRA_SHOP_IMAGE, shop.getImageUrl());
         startActivity(intent);
+    }
+
+    private void setupDockActions() {
+        findViewById(R.id.dock_home).setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                startActivity(new Intent(ShopListActivity.this, MainActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_delivery).setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                // Already on delivery.
+            }
+        });
+
+        findViewById(R.id.dock_market).setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                startActivity(new Intent(ShopListActivity.this, FoodMarketActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_cart).setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                startActivity(new Intent(ShopListActivity.this, CartActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_profile).setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                startActivity(new Intent(ShopListActivity.this, MemberCenterActivity.class));
+            }
+        });
     }
 }

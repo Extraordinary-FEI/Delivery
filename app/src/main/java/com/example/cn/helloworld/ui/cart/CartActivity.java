@@ -11,7 +11,11 @@ import android.widget.TextView;
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.data.cart.CartManager;
 import com.example.cn.helloworld.ui.common.BaseActivity;
+import com.example.cn.helloworld.ui.entry.MemberCenterActivity;
+import com.example.cn.helloworld.ui.main.MainActivity;
+import com.example.cn.helloworld.ui.market.FoodMarketActivity;
 import com.example.cn.helloworld.ui.order.CheckoutActivity;
+import com.example.cn.helloworld.ui.shop.ShopListActivity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -51,6 +55,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
         cartAdapter = new CartAdapter(cartItems, this);
         cartRecyclerView.setAdapter(cartAdapter);
 
+        setupDockActions();
         refreshCartItems();
 
         if (clearButton != null) {
@@ -133,5 +138,42 @@ public class CartActivity extends BaseActivity implements CartAdapter.CartAction
         }
         cartAdapter.notifyDataSetChanged();
         updateTotal();
+    }
+
+    private void setupDockActions() {
+        findViewById(R.id.dock_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, MainActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_delivery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, ShopListActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_market).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, FoodMarketActivity.class));
+            }
+        });
+
+        findViewById(R.id.dock_cart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Already on cart.
+            }
+        });
+
+        findViewById(R.id.dock_profile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, MemberCenterActivity.class));
+            }
+        });
     }
 }
