@@ -7,6 +7,5 @@
         <item name="colorControlNormal">@color/appleControlNormal</item>
         <item name="colorControlActivated">@color/applePurple</item>
         <item name="android:textColorHighlight">@color/applePurple_20</item>
-        <item name="android:fontFamily">sans-serif</item>
     </style>
 </resources>
