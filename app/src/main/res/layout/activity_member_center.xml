@@ -72,7 +72,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:contentDescription="@string/member_profile_avatar"
-                    android:src="@drawable/ic_launcher" />
+                    android:src="@drawable/ic_brand_logo" />
 
                 <LinearLayout
                     android:layout_width="0dp"

@@ -1,0 +1,15 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="48dp" android:height="48dp" />
+            <corners android:radius="12dp" />
+            <gradient
+                android:angle="315"
+                android:endColor="#7B3FF5"
+                android:startColor="#3C6BFF" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_brand_bag"
+        android:gravity="center" />
+</layer-list>

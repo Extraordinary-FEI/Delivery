@@ -52,7 +52,7 @@
                 android:background="@drawable/bg_profile_icon_circle"
                 android:contentDescription="@string/member_profile_avatar"
                 android:padding="8dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/ic_brand_logo" />
 
             <LinearLayout
                 android:layout_width="0dp"
