@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#007AFF</color>
-    <color name="colorPrimaryDark">#0051C7</color>
-    <color name="colorAccent">#007AFF</color>
+    <color name="colorPrimary">#E53935</color>
+    <color name="colorPrimaryDark">#B71C1C</color>
+    <color name="colorAccent">#E53935</color>
     <color name="primary_text">#1C1C1E</color>
     <color name="secondary_text">#8E8E93</color>
-    <color name="primary_color">#007AFF</color>
-    <color name="primary_color_pressed">#0060D1</color>
+    <color name="primary_color">#E53935</color>
+    <color name="primary_color_pressed">#C62828</color>
     <color name="success_color">#34C759</color>
     <color name="warning_color">#FF9500</color>
     <color name="error_color">#FF3B30</color>
@@ -19,23 +19,25 @@
     <color name="ios_divider">#E5E5EA</color>
     <color name="ios_card_background">#FFFFFF</color>
     <color name="ios_icon_background">#FFFFFF</color>
-    <color name="ios_badge_background">#E8F0FF</color>
+    <color name="ios_badge_background">#FFE8E7</color>
     <color name="ios_progress_track">#E5E5EA</color>
-    <color name="ios_progress_fill">#007AFF</color>
+    <color name="ios_progress_fill">#E53935</color>
     <color name="profile_header_start">#F2F2F7</color>
     <color name="profile_header_end">#E9F2FF</color>
-    <color name="profile_member_start">#E9F2FF</color>
-    <color name="profile_member_end">#DCE9FF</color>
-    <color name="profile_pill_background">#EEF1FF</color>
+    <color name="profile_member_start">#FFECEC</color>
+    <color name="profile_member_end">#FFE1E1</color>
+    <color name="profile_pill_background">#FFE5E5</color>
     <color name="profile_muted_text">#8E8E93</color>
     <color name="profile_light_text">#C7C7CC</color>
     <color name="profile_page_top">#F7F8FA</color>
     <color name="profile_page_bottom">#F2F3F7</color>
     <color name="profile_icon_background">#FFFFFF</color>
-    <color name="chip_background">#E8F0FF</color>
-    <color name="banner_start">#007AFF</color>
-    <color name="banner_end">#5AC8FA</color>
-    <color name="applePurple">#007AFF</color>
+    <color name="profile_phone_text">#A1A1A6</color>
+    <color name="profile_icon_tint">#6E6E73</color>
+    <color name="chip_background">#FFE8E7</color>
+    <color name="banner_start">#E53935</color>
+    <color name="banner_end">#FF6B6B</color>
+    <color name="applePurple">#E53935</color>
     <color name="appleControlNormal">#1C1C1E</color>
-    <color name="applePurple_20">#33007AFF</color>
+    <color name="applePurple_20">#33E53935</color>
 </resources>

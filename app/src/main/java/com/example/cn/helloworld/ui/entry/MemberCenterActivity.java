@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.CompoundButton;
+import android.support.v7.widget.SwitchCompat;
 
 import com.example.cn.helloworld.R;
 import com.example.cn.helloworld.db.CouponDao;
@@ -18,6 +20,7 @@ import com.example.cn.helloworld.ui.shop.ShopListActivity;
 import com.example.cn.helloworld.ui.shop.admin.AdminDashboardActivity;
 import com.example.cn.helloworld.utils.AvatarLoader;
 import com.example.cn.helloworld.utils.SessionManager;
+import com.example.cn.helloworld.utils.ThemeManager;
 import com.example.cn.helloworld.ui.entry.FavoritesActivity;
 import com.example.cn.helloworld.ui.entry.HistoryActivity;
 import com.example.cn.helloworld.ui.order.OrderListActivity;
@@ -102,6 +105,18 @@ public class MemberCenterActivity extends BaseActivity {
             }
         });
 
+        SwitchCompat themeSwitch = (SwitchCompat) findViewById(R.id.switch_theme);
+        if (themeSwitch != null) {
+            themeSwitch.setChecked(ThemeManager.isNightMode(this));
+            themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    ThemeManager.setNightMode(MemberCenterActivity.this, isChecked);
+                    recreate();
+                }
+            });
+        }
+
         setupDockActions();
         bindProfile();
     }
@@ -159,7 +174,7 @@ public class MemberCenterActivity extends BaseActivity {
         if (couponCountView != null) {
             CouponDao couponDao = new CouponDao(this);
             int count = couponDao.getCouponCount(userId);
-            couponCountView.setText(getString(R.string.member_coupon_value_format, count));
+            couponCountView.setText(getString(R.string.member_coupon_count_format, count));
         }
     }
 

@@ -81,6 +81,21 @@
             android:textColor="@color/primary_color"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/button_edit_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_quantity_outline"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/admin_edit_food"
+            android:textColor="@color/primary_color"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/button_add_to_cart"
             android:layout_width="match_parent"

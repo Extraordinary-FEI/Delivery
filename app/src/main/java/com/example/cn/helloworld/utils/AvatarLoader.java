@@ -14,7 +14,7 @@ public final class AvatarLoader {
 
     public static void load(Context context, ImageView imageView, String avatar) {
         if (TextUtils.isEmpty(avatar)) {
-            imageView.setImageResource(R.drawable.ic_launcher);
+            imageView.setImageResource(R.drawable.bg_profile_avatar_placeholder);
             return;
         }
         String trimmed = avatar.trim();
@@ -36,9 +36,9 @@ public final class AvatarLoader {
             case 1:
             case 2:
             case 3:
-                return R.drawable.ic_launcher;
+                return R.drawable.bg_profile_avatar_placeholder;
             default:
-                return R.drawable.ic_launcher;
+                return R.drawable.bg_profile_avatar_placeholder;
         }
     }
 }

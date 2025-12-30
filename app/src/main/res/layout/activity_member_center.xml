@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_profile_header"
             android:orientation="vertical"
@@ -39,8 +39,8 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
                     android:text="‹"
-                    android:textColor="@color/ios_text_primary"
-                    android:textSize="20sp" />
+                    android:textColor="@color/profile_muted_text"
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="0dp"
@@ -60,6 +60,27 @@
                     android:textColor="@color/primary_color"
                     android:textSize="12sp"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/member_profile_theme_toggle"
+                        android:textColor="@color/profile_muted_text"
+                        android:textSize="12sp" />
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/switch_theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/button_settings"
@@ -85,8 +106,12 @@
                     android:id="@+id/image_avatar"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:background="@drawable/bg_profile_avatar_placeholder"
+                    android:clipToOutline="true"
                     android:contentDescription="@string/member_profile_avatar"
-                    android:src="@drawable/ic_brand_logo" />
+                    android:outlineProvider="background"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_profile_avatar_placeholder" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -101,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/member_profile_username"
                         android:textColor="@color/ios_text_primary"
-                        android:textSize="18sp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -110,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/member_profile_phone_unbound"
-                        android:textColor="@color/profile_muted_text"
+                        android:textColor="@color/profile_phone_text"
                         android:textSize="13sp" />
 
                     <TextView
@@ -130,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="140dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_profile_member"
             android:orientation="vertical"
@@ -260,11 +285,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
-            android:padding="18dp"
+            android:padding="20dp"
             android:stateListAnimator="@animator/profile_press_scale">
 
             <TextView
@@ -282,27 +307,28 @@
                 android:layout_marginTop="6dp"
                 android:text="@string/member_profile_assets_balance_label"
                 android:textColor="@color/profile_muted_text"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/text_assets_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:lineSpacingExtra="10dp"
                 android:text="@string/member_profile_assets_summary"
                 android:textColor="@color/profile_light_text"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -315,7 +341,7 @@
             <LinearLayout
                 android:id="@+id/entry_favorites"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:layout_marginTop="12dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -326,7 +352,7 @@
                     android:layout_height="20dp"
                     android:contentDescription="@string/member_profile_collect"
                     android:src="@android:drawable/btn_star_big_on"
-                    android:tint="@color/ios_text_primary" />
+                    android:tint="@color/profile_icon_tint" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -341,14 +367,29 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <TextView
-                    android:id="@+id/text_coupon_count"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="6dp"
-                    android:text="@string/member_coupon_value"
-                    android:textColor="@color/profile_muted_text"
-                    android:textSize="13sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_coupon_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/member_coupon_count"
+                        android:textColor="@color/ios_text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/member_coupon_count_label"
+                        android:textColor="@color/profile_muted_text"
+                        android:textSize="10sp" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -358,10 +399,17 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/ios_divider" />
+
             <LinearLayout
                 android:id="@+id/entry_history"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:stateListAnimator="@animator/profile_press_scale">
@@ -371,7 +419,7 @@
                     android:layout_height="20dp"
                     android:contentDescription="@string/member_profile_history"
                     android:src="@android:drawable/ic_menu_recent_history"
-                    android:tint="@color/ios_text_primary" />
+                    android:tint="@color/profile_icon_tint" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -394,10 +442,17 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/ios_divider" />
+
             <LinearLayout
                 android:id="@+id/entry_coupon_center"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:stateListAnimator="@animator/profile_press_scale">
@@ -407,7 +462,7 @@
                     android:layout_height="20dp"
                     android:contentDescription="@string/member_profile_coupon_card"
                     android:src="@android:drawable/ic_menu_share"
-                    android:tint="@color/ios_text_primary" />
+                    android:tint="@color/profile_icon_tint" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -430,10 +485,17 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/ios_divider" />
+
             <LinearLayout
                 android:id="@+id/entry_points_center"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:stateListAnimator="@animator/profile_press_scale">
@@ -443,7 +505,7 @@
                     android:layout_height="20dp"
                     android:contentDescription="@string/member_profile_points_coin"
                     android:src="@android:drawable/ic_menu_sort_by_size"
-                    android:tint="@color/ios_text_primary" />
+                    android:tint="@color/profile_icon_tint" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -471,16 +533,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <LinearLayout
                 android:id="@+id/entry_order_summary"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:stateListAnimator="@animator/profile_press_scale">
@@ -510,17 +572,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/bg_profile_group_card"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <LinearLayout
                 android:id="@+id/entry_service"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:stateListAnimator="@animator/profile_press_scale">

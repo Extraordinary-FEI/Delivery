@@ -383,6 +383,9 @@
     <string name="member_coupon_label">优惠券</string>
     <string name="member_coupon_value">0 张可用</string>
     <string name="member_coupon_value_format">%1$d 张可用</string>
+    <string name="member_coupon_count">0</string>
+    <string name="member_coupon_count_format">%1$d</string>
+    <string name="member_coupon_count_label">可用</string>
     <string name="member_actions_title">功能入口</string>
     <string name="member_action_orders">我的订单</string>
     <string name="member_action_address">收货地址</string>
@@ -390,8 +393,9 @@
     <string name="member_action_logout">退出登录</string>
     <string name="member_profile_username">pLD649847511</string>
     <string name="member_profile_member_level">白银会员</string>
-    <string name="member_profile_growth">成长值&#10;1473 / 2000</string>
-    <string name="member_profile_growth_format">成长值&#10;%1$d / %2$d</string>
+    <string name="member_profile_growth">成长值 1473 / 2000</string>
+    <string name="member_profile_growth_format">成长值 %1$d / %2$d</string>
+    <string name="member_profile_theme_toggle">夜间</string>
     <string name="member_profile_member_center">会员中心</string>
     <string name="member_profile_member_privilege">查看 9 项权益</string>
     <string name="member_profile_service">客服</string>

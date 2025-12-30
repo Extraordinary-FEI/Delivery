@@ -3,6 +3,7 @@ package com.example.cn.helloworld.ui.food;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import com.example.cn.helloworld.model.Food;
 import com.example.cn.helloworld.ui.common.BaseActivity;
 import com.example.cn.helloworld.ui.order.ReviewActivity;
 import com.example.cn.helloworld.ui.shop.ShopDetailActivity;
+import com.example.cn.helloworld.ui.shop.admin.FoodEditActivity;
 import com.example.cn.helloworld.utils.ImageLoader;
 import com.example.cn.helloworld.utils.SessionManager;
 
@@ -41,6 +43,7 @@ public class FoodDetailActivity extends BaseActivity {
     private TextView cartTotalView;
     private TextView favoriteButton;
     private TextView enterShopButton;
+    private TextView editFoodButton;
     private LinearLayout reviewList;
     private Button addReviewButton;
     private UserContentDao contentDao;
@@ -63,6 +66,7 @@ public class FoodDetailActivity extends BaseActivity {
         Button addToCartButton = (Button) findViewById(R.id.button_add_to_cart);
         favoriteButton = (TextView) findViewById(R.id.button_favorite);
         enterShopButton = (TextView) findViewById(R.id.button_enter_shop);
+        editFoodButton = (TextView) findViewById(R.id.button_edit_food);
         reviewList = (LinearLayout) findViewById(R.id.layout_review_list);
         addReviewButton = (Button) findViewById(R.id.button_add_review);
         cartCountView = (TextView) findViewById(R.id.cart_count);
@@ -102,6 +106,7 @@ public class FoodDetailActivity extends BaseActivity {
         resolveShopId();
         enterShopButton.setEnabled(!TextUtils.isEmpty(shopId));
         bindReviews();
+        bindEditAction();
 
         addToCartButton.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
@@ -195,6 +200,35 @@ public class FoodDetailActivity extends BaseActivity {
         }
         Intent intent = new Intent(this, ShopDetailActivity.class);
         intent.putExtra(ShopDetailActivity.EXTRA_SHOP_ID, shopId);
+        startActivity(intent);
+    }
+
+    private void bindEditAction() {
+        if (editFoodButton == null) {
+            return;
+        }
+        if (!SessionManager.isAdmin(this)) {
+            editFoodButton.setVisibility(View.GONE);
+            return;
+        }
+        editFoodButton.setVisibility(View.VISIBLE);
+        editFoodButton.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                openEditFood();
+            }
+        });
+    }
+
+    private void openEditFood() {
+        if (currentFood == null || TextUtils.isEmpty(currentFood.getId())) {
+            return;
+        }
+        Intent intent = new Intent(this, FoodEditActivity.class);
+        intent.putExtra(FoodEditActivity.EXTRA_FOOD_ID, currentFood.getId());
+        if (!TextUtils.isEmpty(shopId)) {
+            intent.putExtra(FoodEditActivity.EXTRA_SHOP_ID, shopId);
+        }
         startActivity(intent);
     }
 
