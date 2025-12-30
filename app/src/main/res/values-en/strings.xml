@@ -236,6 +236,8 @@
     <string name="discover_hot_desc">Top-rated shops and best-selling picks.</string>
     <string name="discover_deals_title">Deals zone</string>
     <string name="discover_deals_desc">Limited-time discounts and coupon savings.</string>
+    <string name="coupon_center_owned_title">My coupons</string>
+    <string name="coupon_center_owned_empty">No available coupons</string>
     <string name="discover_life_title">Life services</string>
     <string name="discover_life_desc">Errands, flowers, cleaning, and more.</string>
     <string name="user_action_favorites">Favorites</string>

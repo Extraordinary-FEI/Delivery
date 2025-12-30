@@ -17,12 +17,16 @@ public class CouponDao {
 
     public void insertCoupon(int userId, String couponName, int pointsCost) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("user_id", userId);
-        values.put("coupon_name", couponName);
-        values.put("points_cost", pointsCost);
-        values.put("created_at", System.currentTimeMillis());
-        db.insert("user_coupons", null, values);
+        try {
+            ContentValues values = new ContentValues();
+            values.put("user_id", userId);
+            values.put("coupon_name", couponName);
+            values.put("points_cost", pointsCost);
+            values.put("created_at", System.currentTimeMillis());
+            db.insert("user_coupons", null, values);
+        } finally {
+            db.close();
+        }
     }
 
     public boolean hasCouponSince(int userId, String couponName, long sinceTime) {
@@ -34,6 +38,7 @@ public class CouponDao {
             return cursor.moveToFirst();
         } finally {
             cursor.close();
+            db.close();
         }
     }
 
@@ -47,6 +52,7 @@ public class CouponDao {
             }
         } finally {
             cursor.close();
+            db.close();
         }
         return 0;
     }
@@ -64,6 +70,7 @@ public class CouponDao {
             }
         } finally {
             cursor.close();
+            db.close();
         }
         return coupons;
     }
